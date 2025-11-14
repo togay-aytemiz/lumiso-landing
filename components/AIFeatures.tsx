@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
-import SectionBadge from './ui/SectionBadge';
+import SectionHeader from './ui/SectionHeader';
 
 const AIFeatures: React.FC = () => {
     const { t } = useAppContext();
@@ -90,16 +90,13 @@ const AIFeatures: React.FC = () => {
     return (
         <section ref={sectionRef} id="ai-features" className={`py-20 sm:py-32 overflow-hidden ai-features-bg ${isSectionVisible ? 'visible' : ''}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div ref={headerRef} className={`max-w-3xl mx-auto text-center ${headerAnimationClasses}`}>
-                    <div className="inline-block mb-4">
-                        <SectionBadge>{t('aiFeatures.tag')}</SectionBadge>
-                    </div>
-                    <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
-                        {t('aiFeatures.title')}
-                    </h2>
-                    <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
-                        {t('aiFeatures.subtitle')}
-                    </p>
+                <div ref={headerRef} className={`max-w-3xl mx-auto ${headerAnimationClasses}`}>
+                    <SectionHeader
+                        align="center"
+                        badgeText={t('aiFeatures.tag')}
+                        title={t('aiFeatures.title')}
+                        subtitle={t('aiFeatures.subtitle')}
+                    />
                 </div>
 
                 <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16 items-start">

@@ -4,7 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { PlusIcon } from './icons/PlusIcon';
 import { MoreHorizontalIcon } from './icons/MoreHorizontalIcon';
-import SectionBadge from './ui/SectionBadge';
+import SectionHeader from './ui/SectionHeader';
 
 const Workflow: React.FC = () => {
     const { t } = useAppContext();
@@ -48,16 +48,13 @@ const Workflow: React.FC = () => {
     return (
         <section id="workflow" className="py-20 sm:py-32 bg-white dark:bg-slate-900/50">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div ref={headerRef} className={`max-w-3xl mx-auto text-center ${headerAnimationClasses}`}>
-                    <div className="inline-block mb-4">
-                        <SectionBadge>{t('workflow.tag')}</SectionBadge>
-                    </div>
-                    <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
-                        {t('workflow.title')}
-                    </h2>
-                    <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
-                        {t('workflow.subtitle')}
-                    </p>
+                <div ref={headerRef} className={`max-w-3xl mx-auto ${headerAnimationClasses}`}>
+                    <SectionHeader
+                        align="center"
+                        badgeText={t('workflow.tag')}
+                        title={t('workflow.title')}
+                        subtitle={t('workflow.subtitle')}
+                    />
                 </div>
 
                 <div ref={boardRef} className={`mt-16 ${boardAnimationClasses}`}>

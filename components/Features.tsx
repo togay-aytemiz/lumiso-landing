@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
-import SectionBadge from './ui/SectionBadge';
 import BrowserMockup from './ui/BrowserMockup';
+import SectionHeader from './ui/SectionHeader';
 
 const Features: React.FC = () => {
   const { t } = useAppContext();
@@ -37,16 +37,15 @@ const Features: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 lg:gap-x-24 gap-y-12 lg:gap-y-10 items-center">
             
             {/* Intro Text */}
-            <div ref={reportsTextRef} className={`text-center lg:text-left lg:col-start-1 ${animationClasses(isReportsTextVisible)}`}>
-              <div className="inline-block mb-4">
-                <SectionBadge>{t('features.reports.tag')}</SectionBadge>
-              </div>
-              <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                {t('features.reports.title')}
-              </h2>
-              <p className="mt-6 text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0">
-                {t('features.reports.subtitle')}
-              </p>
+            <div ref={reportsTextRef} className={`lg:col-start-1 ${animationClasses(isReportsTextVisible)}`}>
+              <SectionHeader
+                badgeText={t('features.reports.tag')}
+                title={t('features.reports.title')}
+                subtitle={t('features.reports.subtitle')}
+                align="left"
+                className="text-center lg:text-left"
+                subtitleClassName="mt-6 text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0"
+              />
             </div>
 
             {/* Image */}
@@ -86,16 +85,15 @@ const Features: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 lg:gap-x-24 gap-y-12 lg:gap-y-10 items-center">
             
             {/* Intro Text */}
-            <div ref={alertsTextRef} className={`text-center lg:text-left lg:col-start-2 ${animationClasses(isAlertsTextVisible)}`}>
-               <div className="inline-block mb-4">
-                <SectionBadge>{t('features.alerts.tag')}</SectionBadge>
-              </div>
-              <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                {t('features.alerts.title')}
-              </h2>
-              <p className="mt-6 text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0">
-                {t('features.alerts.subtitle')}
-              </p>
+            <div ref={alertsTextRef} className={`lg:col-start-2 ${animationClasses(isAlertsTextVisible)}`}>
+              <SectionHeader
+                badgeText={t('features.alerts.tag')}
+                title={t('features.alerts.title')}
+                subtitle={t('features.alerts.subtitle')}
+                align="left"
+                className="text-center lg:text-left"
+                subtitleClassName="mt-6 text-lg text-slate-600 dark:text-slate-300 max-w-xl mx-auto lg:mx-0"
+              />
             </div>
             
             {/* Image */}

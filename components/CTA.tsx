@@ -2,6 +2,7 @@
 import React from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import CTAButton from './ui/CTAButton';
+import SectionHeader from './ui/SectionHeader';
 
 const CTA: React.FC = () => {
   const { t } = useAppContext();
@@ -15,13 +16,14 @@ const CTA: React.FC = () => {
           
           <div className="grid lg:grid-cols-2 gap-12 items-center relative">
             {/* Left Column: Text Content */}
-            <div className="lg:col-span-1 text-center lg:text-left">
-              <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight">
-                {t('cta.title')}
-              </h2>
-              <p className="mt-6 text-lg text-slate-600 dark:text-slate-300 max-w-lg mx-auto lg:mx-0">
-                {t('cta.subtitle')}
-              </p>
+            <div className="lg:col-span-1">
+              <SectionHeader
+                title={t('cta.title')}
+                subtitle={t('cta.subtitle')}
+                titleClassName="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight text-center lg:text-left"
+                subtitleClassName="mt-6 text-lg text-slate-600 dark:text-slate-300 max-w-lg mx-auto lg:mx-0 text-center lg:text-left"
+                className="text-center lg:text-left"
+              />
 
               <div className="mt-12">
                   <CTAButton href="#" variant="gradient">

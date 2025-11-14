@@ -5,8 +5,8 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { XCircleIcon } from './icons/XCircleIcon';
 import { CheckCircleIcon } from './icons/CheckCircleIcon';
 import { ArrowLongRightIcon } from './icons/ArrowLongRightIcon';
-import SectionBadge from './ui/SectionBadge';
 import CTAButton from './ui/CTAButton';
+import SectionHeader from './ui/SectionHeader';
 
 const WhyPhotoFlow: React.FC = () => {
   const { t } = useAppContext();
@@ -29,16 +29,13 @@ const WhyPhotoFlow: React.FC = () => {
   return (
     <section id="why-photoflow" className="py-20 sm:py-32 bg-slate-100 dark:bg-slate-900 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div ref={headerRef} className={`max-w-3xl mx-auto text-center ${animationClasses(isHeaderVisible)}`}>
-          <div className="inline-block mb-4">
-            <SectionBadge>{t('whyPhotoFlow.tag')}</SectionBadge>
-          </div>
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
-            {t('whyPhotoFlow.title')}
-          </h2>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
-            {t('whyPhotoFlow.subtitle')}
-          </p>
+        <div ref={headerRef} className={`max-w-3xl mx-auto ${animationClasses(isHeaderVisible)}`}>
+          <SectionHeader
+            align="center"
+            badgeText={t('whyPhotoFlow.tag')}
+            title={t('whyPhotoFlow.title')}
+            subtitle={t('whyPhotoFlow.subtitle')}
+          />
         </div>
 
         <div className="mt-16 grid grid-cols-1 lg:grid-cols-[1fr,auto,1fr] gap-8 lg:gap-12 items-center">

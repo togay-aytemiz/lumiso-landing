@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAppContext } from '../contexts/AppContext';
-import SectionBadge from './ui/SectionBadge';
+import SectionHeader from './ui/SectionHeader';
 
 const Testimonials: React.FC = () => {
     const { t } = useAppContext();
@@ -35,16 +35,13 @@ const Testimonials: React.FC = () => {
   return (
     <section id="testimonials" className="py-20 sm:py-32 bg-slate-100 dark:bg-slate-900/70">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="inline-block mb-4">
-            <SectionBadge>{t('testimonials.tag')}</SectionBadge>
-          </div>
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
-            {t('testimonials.title')}
-          </h2>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
-            {t('testimonials.subtitle')}
-          </p>
+        <div className="max-w-2xl mx-auto">
+          <SectionHeader
+            align="center"
+            badgeText={t('testimonials.tag')}
+            title={t('testimonials.title')}
+            subtitle={t('testimonials.subtitle')}
+          />
         </div>
       </div>
       <div className="mt-16 marquee-container py-8">

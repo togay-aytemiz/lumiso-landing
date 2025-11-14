@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { useAppContext } from '../contexts/AppContext';
-import SectionBadge from './ui/SectionBadge';
 import CTAButton from './ui/CTAButton';
+import SectionHeader from './ui/SectionHeader';
 
 const Pricing: React.FC = () => {
   const { t } = useAppContext();
@@ -17,16 +17,13 @@ const Pricing: React.FC = () => {
   return (
     <section id="pricing" className="py-20 sm:py-32 bg-slate-100 dark:bg-slate-900/70">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="inline-block mb-4">
-            <SectionBadge>{t('pricing.tag')}</SectionBadge>
-          </div>
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
-            {t('pricing.title')}
-          </h2>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
-            {t('pricing.subtitle')}
-          </p>
+        <div className="max-w-2xl mx-auto">
+          <SectionHeader
+            align="center"
+            badgeText={t('pricing.tag')}
+            title={t('pricing.title')}
+            subtitle={t('pricing.subtitle')}
+          />
         </div>
         <div className="mt-16 max-w-lg mx-auto">
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700">

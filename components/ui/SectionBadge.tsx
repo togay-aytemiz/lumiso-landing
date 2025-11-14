@@ -1,6 +1,6 @@
 import React from 'react';
 
-type SectionBadgeVariant = 'muted' | 'glass';
+export type SectionBadgeVariant = 'muted' | 'glass';
 
 interface SectionBadgeProps {
   children: React.ReactNode;

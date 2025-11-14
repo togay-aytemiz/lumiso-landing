@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import useCountUp from '../hooks/useCountUp';
-import SectionBadge from './ui/SectionBadge';
+import SectionHeader from './ui/SectionHeader';
 
 const Results: React.FC = () => {
   const { t } = useAppContext();
@@ -53,16 +53,13 @@ const Results: React.FC = () => {
   return (
     <section id="results" className="py-20 sm:py-32 bg-slate-50 dark:bg-slate-900 overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div ref={headerRef} className={`max-w-4xl mx-auto text-center ${animationClasses(isHeaderVisible)}`}>
-          <div className="inline-block mb-4">
-            <SectionBadge>{t('results.tag')}</SectionBadge>
-          </div>
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
-            {t('results.title')}
-          </h2>
-          <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
-            {t('results.subtitle')}
-          </p>
+        <div ref={headerRef} className={`max-w-4xl mx-auto ${animationClasses(isHeaderVisible)}`}>
+          <SectionHeader
+            align="center"
+            badgeText={t('results.tag')}
+            title={t('results.title')}
+            subtitle={t('results.subtitle')}
+          />
         </div>
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
