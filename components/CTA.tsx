@@ -34,7 +34,7 @@ const CTA: React.FC = () => {
             <p className="text-lg sm:text-xl text-white/85 max-w-2xl">
               {t("cta.subtitle")}
             </p>
-            <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
+            <div className="mt-8 flex flex-col items-center gap-3">
               <CTAButton
                 href="#"
                 variant="contrast"
@@ -42,13 +42,7 @@ const CTA: React.FC = () => {
               >
                 {t("cta.button")}
               </CTAButton>
-              <CTAButton
-                href="#"
-                variant="muted"
-                className="rounded-full px-10 py-4 text-base sm:text-lg backdrop-blur"
-              >
-                {t("cta.secondaryButton")}
-              </CTAButton>
+              <p className="text-sm text-white/70">{t("hero.cta.subtext.line1")} {t("hero.cta.subtext.line2")}</p>
             </div>
           </div>
         </div>

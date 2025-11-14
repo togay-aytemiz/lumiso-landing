@@ -6,7 +6,8 @@ import useCountUp from '../hooks/useCountUp';
 import SectionHeader from './ui/SectionHeader';
 
 const Results: React.FC = () => {
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
+  const isTurkish = language === 'tr';
   
   // Refs for observing elements
   const headerRef = useRef<HTMLDivElement>(null);
@@ -28,15 +29,17 @@ const Results: React.FC = () => {
   const bookingRate = useCountUp(85, isCard3Visible);
   const satisfaction = useCountUp(95, isCard3Visible);
   const repeatBusiness = useCountUp(40, isCard3Visible);
+  const formattedTimePercent = isTurkish ? `%${timeSavings}` : `${timeSavings}%`;
+  const formattedBookingPercent = isTurkish ? `%${bookingIncrease}+` : `+${bookingIncrease}%`;
 
   const insightStats = [
-    { label: t('results.insights.bookingRate'), value: bookingRate, target: 85, color: 'bg-green-500' },
     { label: t('results.insights.satisfaction'), value: satisfaction, target: 95, color: 'bg-sky-500' },
+    { label: t('results.insights.bookingRate'), value: bookingRate, target: 85, color: 'bg-green-500' },
     { label: t('results.insights.repeatBusiness'), value: repeatBusiness, target: 40, color: 'bg-indigo-500' },
   ];
 
   const projectCards = [
-    { name: t('results.clientExp.project1.name'), status: t('results.clientExp.project1.status'), avatar: 'https://i.pravatar.cc/80?u=jessicamiller', statusIcon: (
+    { name: t('results.clientExp.project1.name'), status: t('results.clientExp.project1.status'), avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=facearea&w=80&h=80&q=80', statusIcon: (
       <svg className="w-4 h-4 mr-1.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
     )},
     { name: t('results.clientExp.project2.name'), status: t('results.clientExp.project2.status'), avatar: 'https://i.pravatar.cc/80?u=markchen', statusIcon: (
@@ -66,7 +69,7 @@ const Results: React.FC = () => {
           {/* Card 1: More Time for Your Craft */}
           <div ref={card1Ref} className={`bg-white dark:bg-slate-800/50 p-8 rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-700/50 ${animationClasses(isCard1Visible, 'delay-100')}`}>
             <p className="text-7xl font-bold text-slate-900 dark:text-white">
-              {timeSavings}%
+              {formattedTimePercent}
             </p>
             <p className="mt-2 text-lg font-medium text-slate-600 dark:text-slate-400">{t('results.timeSavings.label')}</p>
             <h3 className="mt-4 text-xl font-semibold text-slate-800 dark:text-slate-200">{t('results.timeSavings.title')}</h3>
@@ -76,7 +79,7 @@ const Results: React.FC = () => {
           {/* Card 2: Boost Your Bookings */}
           <div ref={card2Ref} className={`bg-sky-100 dark:bg-sky-950/40 p-8 rounded-2xl shadow-xl border border-sky-200 dark:border-sky-800/50 ${animationClasses(isCard2Visible, 'delay-200')}`}>
             <p className="text-7xl font-bold text-sky-800 dark:text-sky-300">
-              +{bookingIncrease}%
+              {formattedBookingPercent}
             </p>
             <p className="mt-2 text-lg font-medium text-sky-700 dark:text-sky-400">{t('results.bookingIncrease.label')}</p>
             <h3 className="mt-4 text-xl font-semibold text-sky-900 dark:text-sky-200">{t('results.bookingIncrease.title')}</h3>

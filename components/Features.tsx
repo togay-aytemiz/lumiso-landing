@@ -53,7 +53,7 @@ const Features: React.FC = () => {
               <BrowserMockup className="animate-float">
                   <img
                       src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop"
-                      alt="PhotoFlow Analytics Dashboard"
+                      alt="Lumiso Analytics Dashboard"
                       className="w-full h-full object-cover rounded-b-xl"
                       loading="lazy"
                       decoding="async"
@@ -101,7 +101,7 @@ const Features: React.FC = () => {
               <BrowserMockup className="animate-float" style={{ animationDelay: '-3s' }}>
                   <img
                       src="https://images.unsplash.com/photo-1634733350926-42d7654a5a74?q=80&w=1600&auto=format&fit=crop"
-                      alt="PhotoFlow Alerts and Workflow"
+                      alt="Lumiso Alerts and Workflow"
                       className="w-full h-full object-cover rounded-b-xl"
                       loading="lazy"
                       decoding="async"

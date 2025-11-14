@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import WhyPhotoFlow from './components/WhyPhotoFlow';
+import WhyLumiso from './components/WhyLumiso';
 import KeyFeatures from './components/KeyFeatures';
 import Features from './components/Features';
 import PackageFeatures from './components/PackageFeatures';
@@ -28,7 +28,7 @@ const App: React.FC = () => {
       <Header />
       <main className="-mt-16">
         <Hero />
-        <WhyPhotoFlow />
+        <WhyLumiso />
         <KeyFeatures />
         <Features />
         <PackageFeatures />

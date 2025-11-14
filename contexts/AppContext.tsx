@@ -153,7 +153,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       '@graph': [
         {
           '@type': 'Organization',
-          name: 'PhotoFlow',
+          name: 'Lumiso',
           url: SITE_URL,
           description: meta.description,
         },
@@ -164,7 +164,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           url: canonicalUrl,
           brand: {
             '@type': 'Organization',
-            name: 'PhotoFlow',
+            name: 'Lumiso',
           },
           offers: {
             '@type': 'AggregateOffer',
@@ -187,7 +187,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         },
       ],
     };
-    upsertJsonLd('photoflow-structured-data', structuredData);
+    upsertJsonLd('lumiso-structured-data', structuredData);
   }, [language]);
 
   const toggleTheme = () => {
