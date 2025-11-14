@@ -5,6 +5,8 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { XCircleIcon } from './icons/XCircleIcon';
 import { CheckCircleIcon } from './icons/CheckCircleIcon';
 import { ArrowLongRightIcon } from './icons/ArrowLongRightIcon';
+import SectionBadge from './ui/SectionBadge';
+import CTAButton from './ui/CTAButton';
 
 const WhyPhotoFlow: React.FC = () => {
   const { t } = useAppContext();
@@ -29,9 +31,7 @@ const WhyPhotoFlow: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={headerRef} className={`max-w-3xl mx-auto text-center ${animationClasses(isHeaderVisible)}`}>
           <div className="inline-block mb-4">
-            <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-sm">
-              {t('whyPhotoFlow.tag')}
-            </span>
+            <SectionBadge>{t('whyPhotoFlow.tag')}</SectionBadge>
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
             {t('whyPhotoFlow.title')}
@@ -80,12 +80,9 @@ const WhyPhotoFlow: React.FC = () => {
         </div>
 
         <div className="mt-16 text-center">
-                <a
-                    href="#"
-                    className="inline-block bg-gradient-to-r from-brand-teal-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-brand-teal-600 hover:to-cyan-600 transition-all duration-300 hover:scale-105 shadow-lg shadow-brand-teal-500/40"
-                >
+                <CTAButton href="#" variant="gradient">
                     {t('cta.button')}
-                </a>
+                </CTAButton>
             <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
                 {t('whyPhotoFlow.cta.subtext')}
             </p>

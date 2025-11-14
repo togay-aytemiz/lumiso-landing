@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import SectionBadge from './ui/SectionBadge';
+import CTAButton from './ui/CTAButton';
 
 const Pricing: React.FC = () => {
   const { t } = useAppContext();
@@ -17,9 +19,7 @@ const Pricing: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto text-center">
           <div className="inline-block mb-4">
-            <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-sm">
-              {t('pricing.tag')}
-            </span>
+            <SectionBadge>{t('pricing.tag')}</SectionBadge>
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
             {t('pricing.title')}
@@ -36,12 +36,9 @@ const Pricing: React.FC = () => {
               <div className="mt-8 flex items-baseline">
                 <span className="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">{t('pricing.price')}</span>
               </div>
-                <a
-                  href="#"
-                  className="mt-8 block w-full bg-brand-teal-500 text-white text-center px-6 py-3 rounded-md font-semibold text-lg hover:bg-brand-teal-600 transition-colors duration-200"
-                >
+                <CTAButton href="#" fullWidth>
                   {t('pricing.cta')}
-                </a>
+                </CTAButton>
             </div>
             <div className="p-8 border-t border-slate-200 dark:border-slate-700">
               <h4 className="text-lg font-semibold text-slate-900 dark:text-white">{t('pricing.featuresTitle')}</h4>

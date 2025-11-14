@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import { translations } from '../translations';
+import { SITE_URL, seoContent } from '../seo.config';
 
 type Language = 'en' | 'tr';
 type Theme = 'light' | 'dark';
@@ -35,6 +36,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   useEffect(() => {
+    if (typeof document === 'undefined') return;
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
@@ -42,6 +44,69 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    document.documentElement.lang = language;
+  }, [language]);
+
+  useEffect(() => {
+    if (typeof document === 'undefined' || typeof window === 'undefined') return;
+    const meta = seoContent[language];
+    document.title = meta.title;
+
+    const upsertMeta = (attribute: 'name' | 'property', key: string, content: string) => {
+      const selector = `meta[${attribute}="${key}"]`;
+      let element = document.head.querySelector<HTMLMetaElement>(selector);
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute(attribute, key);
+        document.head.appendChild(element);
+      }
+      element.setAttribute('content', content);
+    };
+
+    const upsertLink = (rel: string, attrs: Record<string, string>) => {
+      const selector = attrs.hreflang
+        ? `link[rel="${rel}"][hreflang="${attrs.hreflang}"]`
+        : `link[rel="${rel}"]:not([hreflang])`;
+      let element = document.head.querySelector<HTMLLinkElement>(selector);
+      if (!element) {
+        element = document.createElement('link');
+        element.setAttribute('rel', rel);
+        document.head.appendChild(element);
+      }
+      Object.entries(attrs).forEach(([attr, value]) => {
+        element!.setAttribute(attr, value);
+      });
+    };
+
+    const currentPath = window.location.pathname + window.location.search;
+    const canonicalUrl = `${SITE_URL}${currentPath}`;
+
+    upsertMeta('name', 'description', meta.description);
+    upsertMeta('name', 'keywords', meta.keywords);
+    upsertMeta('property', 'og:title', meta.ogTitle);
+    upsertMeta('property', 'og:description', meta.ogDescription);
+    upsertMeta('property', 'og:locale', meta.ogLocale);
+    upsertMeta('property', 'og:type', 'website');
+    upsertMeta('property', 'og:url', canonicalUrl);
+    upsertMeta('name', 'twitter:card', 'summary_large_image');
+    upsertMeta('name', 'twitter:title', meta.ogTitle);
+    upsertMeta('name', 'twitter:description', meta.ogDescription);
+    upsertMeta('name', 'twitter:url', canonicalUrl);
+
+    upsertLink('canonical', { href: canonicalUrl });
+    const supportedLanguages: Language[] = ['en', 'tr'];
+    supportedLanguages.forEach((lang) => {
+      const localizedUrl =
+        lang === 'en'
+          ? canonicalUrl
+          : `${SITE_URL}${window.location.pathname}?lang=${lang}`;
+      upsertLink('alternate', { href: localizedUrl, hreflang: lang });
+    });
+    upsertLink('alternate', { href: canonicalUrl, hreflang: 'x-default' });
+  }, [language]);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));

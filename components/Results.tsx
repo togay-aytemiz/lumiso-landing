@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import useCountUp from '../hooks/useCountUp';
+import SectionBadge from './ui/SectionBadge';
 
 const Results: React.FC = () => {
   const { t } = useAppContext();
@@ -54,9 +55,7 @@ const Results: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div ref={headerRef} className={`max-w-4xl mx-auto text-center ${animationClasses(isHeaderVisible)}`}>
           <div className="inline-block mb-4">
-            <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-sm">
-              {t('results.tag')}
-            </span>
+            <SectionBadge>{t('results.tag')}</SectionBadge>
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
             {t('results.title')}
@@ -117,7 +116,13 @@ const Results: React.FC = () => {
               {projectCards.map(card => (
                 <div key={card.name} className="flex items-center justify-between bg-slate-100/80 dark:bg-slate-700/50 p-3 rounded-lg">
                   <div className="flex items-center">
-                    <img src={card.avatar} alt={card.name} className="w-10 h-10 rounded-full" />
+                    <img
+                      src={card.avatar}
+                      alt={card.name}
+                      className="w-10 h-10 rounded-full"
+                      loading="lazy"
+                      decoding="async"
+                    />
                     <div className="ml-3">
                       <p className="font-semibold text-slate-800 dark:text-slate-200">{card.name}</p>
                       <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center">

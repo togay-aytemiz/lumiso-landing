@@ -2,6 +2,9 @@
 import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { CheckCircleIcon } from './icons/CheckCircleIcon';
+import SectionBadge from './ui/SectionBadge';
+import CTAButton from './ui/CTAButton';
+import BrowserMockup from './ui/BrowserMockup';
 
 const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
     <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -18,12 +21,7 @@ const DotsHorizontalIcon: React.FC<{ className?: string }> = ({ className }) => 
 
 const ProjectDashboardMockup: React.FC = () => {
     return (
-        <div className="browser-mockup max-w-7xl mx-auto">
-            <div className="browser-header">
-                <div className="browser-dot browser-dot-red"></div>
-                <div className="browser-dot browser-dot-yellow"></div>
-                <div className="browser-dot browser-dot-green"></div>
-            </div>
+        <BrowserMockup className="max-w-7xl mx-auto">
             <div className="p-4 sm:p-6 bg-white dark:bg-slate-900">
                 {/* Dashboard Header */}
                 <div className="flex justify-between items-center mb-4">
@@ -72,7 +70,13 @@ const ProjectDashboardMockup: React.FC = () => {
                     <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg">
                         <h3 className="font-semibold text-slate-700 dark:text-slate-200 text-sm">Client Details</h3>
                         <div className="flex items-center mt-3">
-                             <img src="https://i.pravatar.cc/150?u=alexthompson" alt="Alex Thompson" className="w-10 h-10 rounded-full" />
+                             <img
+                                src="https://i.pravatar.cc/150?u=alexthompson"
+                                alt="Alex Thompson"
+                                className="w-10 h-10 rounded-full"
+                                loading="lazy"
+                                decoding="async"
+                              />
                              <div className="ml-3">
                                 <p className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Alex Thompson</p>
                                 <p className="text-xs text-slate-500 dark:text-slate-400">alex.t@example.com</p>
@@ -85,7 +89,7 @@ const ProjectDashboardMockup: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </BrowserMockup>
     );
 };
 
@@ -102,9 +106,19 @@ const Hero: React.FC = () => {
   const { t } = useAppContext();
   const [activeIndex, setActiveIndex] = useState(0);
   const intervalRef = useRef<number | null>(null);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
+    handleChange();
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   const startTimer = useCallback(() => {
+    if (typeof window === 'undefined') return;
     if (intervalRef.current) {
         clearInterval(intervalRef.current);
     }
@@ -114,13 +128,17 @@ const Hero: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    if (prefersReducedMotion) {
+      setActiveIndex(0);
+      return;
+    }
     startTimer();
     return () => {
         if (intervalRef.current) {
             clearInterval(intervalRef.current);
         }
     };
-  }, [startTimer]);
+  }, [prefersReducedMotion, startTimer]);
 
   // Slot machine animation logic
   const animatedWords = t('hero.animatedWords') as unknown as string[];
@@ -129,16 +147,18 @@ const Hero: React.FC = () => {
   const wordSpanRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   useEffect(() => {
+    if (prefersReducedMotion || typeof window === 'undefined') return;
     const interval = setInterval(() => {
       setWordIndex(prev => (prev + 1) % animatedWords.length);
     }, 2500);
     return () => clearInterval(interval);
-  }, [animatedWords.length]);
+  }, [animatedWords.length, prefersReducedMotion]);
 
   // This effect calculates the width of the animated word container.
   // It runs when the word changes, and it also accounts for font-loading and window resizing
   // to prevent the text from being clipped.
   useLayoutEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
     const calculateAndSetWidth = () => {
       const currentWordRef = wordSpanRefs.current[wordIndex];
       if (currentWordRef) {
@@ -154,14 +174,23 @@ const Hero: React.FC = () => {
     calculateAndSetWidth();
     
     // Recalculate after fonts load to get the correct size with custom fonts applied.
-    document.fonts.ready.then(() => {
-      calculateAndSetWidth();
-    });
+    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
+    if (fonts) {
+      let isActive = true;
+      fonts.ready.then(() => {
+        if (isActive) {
+          calculateAndSetWidth();
+        }
+      });
+      // Add resize listener to handle responsive font sizes.
+      window.addEventListener('resize', calculateAndSetWidth);
+      return () => {
+        isActive = false;
+        window.removeEventListener('resize', calculateAndSetWidth);
+      };
+    }
 
-    // Add resize listener to handle responsive font sizes.
     window.addEventListener('resize', calculateAndSetWidth);
-
-    // Cleanup the event listener when the component unmounts or dependencies change.
     return () => window.removeEventListener('resize', calculateAndSetWidth);
   }, [wordIndex, animatedWords]);
 
@@ -187,6 +216,9 @@ const Hero: React.FC = () => {
                     src={src}
                     alt={t('hero.imageAlt')}
                     className="w-full h-full object-cover opacity-60 dark:opacity-50"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={index === 0 ? 'high' : 'auto'}
+                    decoding="async"
                 />
             </div>
         ))}
@@ -197,9 +229,7 @@ const Hero: React.FC = () => {
         <div className="text-center pt-12 sm:pt-20">
             <div className="max-w-4xl mx-auto">
                 <div className="inline-block mb-4 animate-slide-in-fade" style={{ animationDelay: '100ms' }}>
-                    <span className="inline-flex items-center px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 border border-white/20 text-white backdrop-blur-sm">
-                        {t('hero.tag')}
-                    </span>
+                    <SectionBadge variant="glass">{t('hero.tag')}</SectionBadge>
                 </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight animate-slide-in-fade" style={{ animationDelay: '300ms' }}>
                 <span className="block sm:inline">{t('hero.title.start')}</span>
@@ -239,12 +269,19 @@ const Hero: React.FC = () => {
                 {t('hero.subtitle')}
               </p>
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-in-fade" style={{ animationDelay: '700ms' }}>
-                  <a href="#" className="w-full sm:w-auto bg-brand-teal-500 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-brand-teal-600 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-brand-teal-500/40">
+                  <CTAButton href="#pricing" variant="primary" fullWidth className="sm:w-auto">
                     {t('hero.cta.primary')}
-                  </a>
-                  <a href="https://calendly.com/photoflow/demo" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto flex items-center justify-center px-8 py-3 text-white font-semibold text-lg bg-white/10 border border-white/20 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-all duration-200 transform hover:scale-105">
-                      <span>{t('hero.cta.secondary')}</span>
-                  </a>
+                  </CTAButton>
+                  <CTAButton
+                    href="https://calendly.com/photoflow/demo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="ghost"
+                    fullWidth
+                    className="sm:w-auto"
+                  >
+                    {t('hero.cta.secondary')}
+                  </CTAButton>
               </div>
               <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 text-base font-medium text-slate-200 animate-slide-in-fade" style={{ animationDelay: '800ms' }}>
                 <div className="flex items-center gap-2">

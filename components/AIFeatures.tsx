@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import SectionBadge from './ui/SectionBadge';
 
 const AIFeatures: React.FC = () => {
     const { t } = useAppContext();
@@ -91,9 +92,7 @@ const AIFeatures: React.FC = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div ref={headerRef} className={`max-w-3xl mx-auto text-center ${headerAnimationClasses}`}>
                     <div className="inline-block mb-4">
-                        <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-sm">
-                            {t('aiFeatures.tag')}
-                        </span>
+                        <SectionBadge>{t('aiFeatures.tag')}</SectionBadge>
                     </div>
                     <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
                         {t('aiFeatures.title')}

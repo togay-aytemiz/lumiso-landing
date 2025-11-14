@@ -4,6 +4,7 @@ import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { PlusIcon } from './icons/PlusIcon';
 import { MoreHorizontalIcon } from './icons/MoreHorizontalIcon';
+import SectionBadge from './ui/SectionBadge';
 
 const Workflow: React.FC = () => {
     const { t } = useAppContext();
@@ -49,9 +50,7 @@ const Workflow: React.FC = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div ref={headerRef} className={`max-w-3xl mx-auto text-center ${headerAnimationClasses}`}>
                     <div className="inline-block mb-4">
-                        <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-sm">
-                            {t('workflow.tag')}
-                        </span>
+                        <SectionBadge>{t('workflow.tag')}</SectionBadge>
                     </div>
                     <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
                         {t('workflow.title')}
@@ -84,7 +83,13 @@ const Workflow: React.FC = () => {
                                                     <span className="text-xs font-semibold bg-brand-teal-100 dark:bg-brand-teal-900/50 text-brand-teal-800 dark:text-brand-teal-300 px-2 py-1 rounded-full">{t(card.typeKey)}</span>
                                                     <p className="mt-2 font-medium text-slate-800 dark:text-slate-200">{t(card.titleKey)}</p>
                                                     <div className="mt-3 flex items-center">
-                                                        <img src={card.user.avatar} alt={t(card.user.nameKey)} className="w-6 h-6 rounded-full" />
+                                                        <img
+                                                          src={card.user.avatar}
+                                                          alt={t(card.user.nameKey)}
+                                                          className="w-6 h-6 rounded-full"
+                                                          loading="lazy"
+                                                          decoding="async"
+                                                        />
                                                         <span className="ml-2 text-sm text-slate-500 dark:text-slate-400">{t(card.user.nameKey)}</span>
                                                     </div>
                                                 </div>

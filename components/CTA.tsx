@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import CTAButton from './ui/CTAButton';
 
 const CTA: React.FC = () => {
   const { t } = useAppContext();
@@ -23,21 +24,20 @@ const CTA: React.FC = () => {
               </p>
 
               <div className="mt-12">
-                  <a
-                    href="#"
-                    className="inline-block bg-gradient-to-r from-brand-teal-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-brand-teal-600 hover:to-cyan-600 transition-all duration-300 hover:scale-105 shadow-lg shadow-brand-teal-500/40"
-                  >
+                  <CTAButton href="#" variant="gradient">
                     {t('cta.button')}
-                  </a>
+                  </CTAButton>
               </div>
             </div>
 
             {/* Right Column: Image */}
             <div className="lg:col-span-1 relative mt-12 lg:mt-0">
                 <img
-                    src="https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=2070&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=1600&auto=format&fit=crop"
                     alt={t('cta.imageAlt')}
                     className="relative w-full rounded-2xl shadow-2xl shadow-slate-400/20 dark:shadow-black/40 border border-slate-200/80 dark:border-slate-700/80"
+                    loading="lazy"
+                    decoding="async"
                 />
             </div>
           </div>

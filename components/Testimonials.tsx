@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import SectionBadge from './ui/SectionBadge';
 
 const Testimonials: React.FC = () => {
     const { t } = useAppContext();
@@ -16,7 +17,13 @@ const Testimonials: React.FC = () => {
     <div className="bg-white dark:bg-slate-800 p-8 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col shadow-lg mx-4 flex-shrink-0 w-80 md:w-96">
       <p className="text-slate-600 dark:text-slate-300 flex-grow">"{quote}"</p>
       <div className="mt-6 flex items-center">
-        <img className="h-12 w-12 rounded-full" src={avatar} alt={name} />
+        <img
+          className="h-12 w-12 rounded-full"
+          src={avatar}
+          alt={name}
+          loading="lazy"
+          decoding="async"
+        />
         <div className="ml-4">
           <p className="font-semibold text-slate-900 dark:text-white">{name}</p>
           <p className="text-sm text-brand-teal-600 dark:text-brand-teal-400">{title}</p>
@@ -30,9 +37,7 @@ const Testimonials: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto text-center">
           <div className="inline-block mb-4">
-            <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-sm">
-              {t('testimonials.tag')}
-            </span>
+            <SectionBadge>{t('testimonials.tag')}</SectionBadge>
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white">
             {t('testimonials.title')}

@@ -1,6 +1,8 @@
 import React, { useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
+import SectionBadge from './ui/SectionBadge';
+import BrowserMockup from './ui/BrowserMockup';
 
 const Features: React.FC = () => {
   const { t } = useAppContext();
@@ -37,9 +39,7 @@ const Features: React.FC = () => {
             {/* Intro Text */}
             <div ref={reportsTextRef} className={`text-center lg:text-left lg:col-start-1 ${animationClasses(isReportsTextVisible)}`}>
               <div className="inline-block mb-4">
-                <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-sm">
-                  {t('features.reports.tag')}
-                </span>
+                <SectionBadge>{t('features.reports.tag')}</SectionBadge>
               </div>
               <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {t('features.reports.title')}
@@ -51,18 +51,15 @@ const Features: React.FC = () => {
 
             {/* Image */}
             <div ref={reportsImageRef} className={`relative lg:col-start-2 lg:row-start-1 lg:row-span-2 ${animationClasses(isReportsImageVisible, 'delay-200')}`}>
-              <div className="browser-mockup animate-float">
-                  <div className="browser-header">
-                      <div className="browser-dot browser-dot-red"></div>
-                      <div className="browser-dot browser-dot-yellow"></div>
-                      <div className="browser-dot browser-dot-green"></div>
-                  </div>
+              <BrowserMockup className="animate-float">
                   <img
-                      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
+                      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop"
                       alt="PhotoFlow Analytics Dashboard"
                       className="w-full h-full object-cover rounded-b-xl"
+                      loading="lazy"
+                      decoding="async"
                   />
-              </div>
+              </BrowserMockup>
             </div>
 
             {/* Detailed Text */}
@@ -91,9 +88,7 @@ const Features: React.FC = () => {
             {/* Intro Text */}
             <div ref={alertsTextRef} className={`text-center lg:text-left lg:col-start-2 ${animationClasses(isAlertsTextVisible)}`}>
                <div className="inline-block mb-4">
-                <span className="inline-flex items-center px-4 py-1 rounded-full text-sm font-medium bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-sm">
-                  {t('features.alerts.tag')}
-                </span>
+                <SectionBadge>{t('features.alerts.tag')}</SectionBadge>
               </div>
               <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                 {t('features.alerts.title')}
@@ -105,18 +100,15 @@ const Features: React.FC = () => {
             
             {/* Image */}
             <div ref={alertsImageRef} className={`relative lg:col-start-1 lg:row-start-1 lg:row-span-2 ${animationClasses(isAlertsImageVisible, 'delay-200')}`}>
-              <div className="browser-mockup animate-float" style={{ animationDelay: '-3s' }}>
-                  <div className="browser-header">
-                      <div className="browser-dot browser-dot-red"></div>
-                      <div className="browser-dot browser-dot-yellow"></div>
-                      <div className="browser-dot browser-dot-green"></div>
-                  </div>
+              <BrowserMockup className="animate-float" style={{ animationDelay: '-3s' }}>
                   <img
-                      src="https://images.unsplash.com/photo-1634733350926-42d7654a5a74?q=80&w=1974&auto=format&fit=crop"
+                      src="https://images.unsplash.com/photo-1634733350926-42d7654a5a74?q=80&w=1600&auto=format&fit=crop"
                       alt="PhotoFlow Alerts and Workflow"
                       className="w-full h-full object-cover rounded-b-xl"
+                      loading="lazy"
+                      decoding="async"
                   />
-              </div>
+              </BrowserMockup>
             </div>
 
             {/* Detailed Text */}
