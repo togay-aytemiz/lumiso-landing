@@ -25,60 +25,44 @@ const AIFeatures: React.FC = () => {
 
     const features = [
         {
-          titleKey: 'aiFeatures.card3.title',
-          descriptionKey: 'aiFeatures.card3.description',
-          stage: '01 Inspiration',
-          visual: (
-            <div className="aspect-video bg-slate-100 dark:bg-slate-800 rounded-lg p-2 grid grid-cols-2 gap-2">
-                <div className="bg-cover bg-center rounded" style={{backgroundImage: "url('https://images.unsplash.com/photo-1572417939230-798882895f08?w=200')"}}></div>
-                <div className="bg-cover bg-center rounded" style={{backgroundImage: "url('https://images.unsplash.com/photo-1554629947-334ff61d85dc?w=200')"}}></div>
-                <div className="bg-cover bg-center rounded" style={{backgroundImage: "url('https://images.unsplash.com/photo-1542641197-cdc5b3b01523?w=200')"}}></div>
-                <div className="bg-slate-200 dark:bg-slate-700 rounded flex items-center justify-center animate-pulse-glow">
-                    <svg className="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+            titleKey: 'aiFeatures.card1.title',
+            descriptionKey: 'aiFeatures.card1.description',
+            icon: (
+                <div className="relative flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-teal-500/20 via-sky-500/20 to-indigo-500/30 text-brand-teal-500 dark:text-brand-teal-300">
+                    <svg viewBox="0 0 32 32" fill="none" className="w-6 h-6">
+                        <path d="M4 10h24M8 16h16M12 22h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-white/90 blur-[1px]" />
                 </div>
-            </div>
-          )
+            ),
         },
         {
-          titleKey: 'aiFeatures.card2.title',
-          descriptionKey: 'aiFeatures.card2.description',
-          stage: '02 Execution',
-          visual: (
-            <div className="aspect-video bg-slate-100 dark:bg-slate-800 rounded-lg p-2 flex items-center justify-center space-x-4">
-                <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-16 h-16 opacity-50">
-                    <circle cx="32" cy="14" r="5" stroke="#94a3b8" strokeWidth="2"/>
-                    <path d="M32 19V34" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"/>
-                    <path d="M24 30L32 34L40 28" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"/>
-                    <path d="M32 34L28 48" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"/>
-                    <path d="M32 34L38 48" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-                 <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-20 text-brand-teal-500">
-                    <circle cx="32" cy="14" r="5" stroke="currentColor" strokeWidth="2.5"/>
-                    <path d="M32 19V34" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                    <path d="M24 28L32 34L40 28" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                    <path d="M32 34L28 48" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                    <path d="M32 34L36 48" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
-                    <path d="M20 28C18 30 18 32 20 34" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="animate-fade-in-out"/>
-                    <path d="M44 28C46 30 46 32 44 34" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="animate-fade-in-out" style={{animationDelay: '0.5s'}}/>
-                </svg>
-            </div>
-          )
+            titleKey: 'aiFeatures.card2.title',
+            descriptionKey: 'aiFeatures.card2.description',
+            icon: (
+                <div className="relative flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-teal-400/20 via-cyan-400/20 to-purple-400/30 text-cyan-500 dark:text-cyan-300">
+                    <svg viewBox="0 0 32 32" fill="none" className="w-6 h-6">
+                        <path d="M6 12c6-8 14-8 20 0M6 20c6 8 14 8 20 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        <circle cx="16" cy="16" r="3" stroke="currentColor" strokeWidth="2" />
+                    </svg>
+                    <span className="absolute -top-0.5 left-0 w-1.5 h-1.5 rounded-full bg-fuchsia-200 animate-pulse" />
+                    <span className="absolute -bottom-1 -right-1 w-2 h-2 rounded-full bg-white/70 blur-[1px]" />
+                </div>
+            ),
         },
         {
-          titleKey: 'aiFeatures.card1.title',
-          descriptionKey: 'aiFeatures.card1.description',
-          stage: '03 Promotion',
-           visual: (
-            <div className="aspect-video bg-slate-100 dark:bg-slate-800 rounded-lg p-2 flex space-x-2">
-                <div className="w-2/3 bg-cover bg-center rounded" style={{backgroundImage: "url('https://images.unsplash.com/photo-1507525428034-b723a9ce6890?w=400')"}}></div>
-                <div className="w-1/3 flex flex-col space-y-2">
-                    <div className="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                    <div className="h-4 w-4/5 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                    <div className="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded-full animate-blink-cursor-border"></div>
+            titleKey: 'aiFeatures.card3.title',
+            descriptionKey: 'aiFeatures.card3.description',
+            icon: (
+                <div className="relative flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500/20 via-violet-500/20 to-pink-500/30 text-indigo-400 dark:text-indigo-200">
+                    <svg viewBox="0 0 32 32" fill="none" className="w-6 h-6">
+                        <path d="M10 8h12v16H10z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M10 14h12M16 14v10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                    <span className="absolute -top-1 left-2 w-1.5 h-1.5 rounded-full bg-white/80 animate-ping" />
                 </div>
-            </div>
-          )
-        }
+            ),
+        },
     ];
 
     const headerAnimationClasses = `transition-all duration-700 ease-out ${isHeaderVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`;
@@ -99,26 +83,24 @@ const AIFeatures: React.FC = () => {
                     />
                 </div>
 
-                <div className="mt-16 grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16 items-start">
+                <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {features.map((feature, index) => (
                         <div 
                             key={index} 
                             ref={cardRefs[index]}
-                            className={`relative ai-pipeline-stage ${cardAnimationClasses(cardVisibility[index], cardDelays[index])} ${cardVisibility[index] ? 'visible' : ''}`}
+                            className={`group relative overflow-hidden rounded-3xl border border-white/30 dark:border-white/5 bg-white/80 dark:bg-slate-900/70 backdrop-blur-xl shadow-[0_30px_80px_rgba(15,23,42,0.25)] p-6 ${cardAnimationClasses(cardVisibility[index], cardDelays[index])}`}
                         >
-                            <div className="text-sm font-bold text-brand-teal-500 dark:text-brand-teal-400">{feature.stage}</div>
-                            <h3 className="mt-2 text-xl font-bold text-slate-900 dark:text-white">{t(feature.titleKey)}</h3>
-                            <p className="mt-2 text-slate-600 dark:text-slate-300">{t(feature.descriptionKey)}</p>
-                            
-                            <div className="mt-6 p-1 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 rounded-xl shadow-lg">
-                                {feature.visual}
+                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <div className="absolute -inset-12 bg-gradient-to-br from-brand-teal-500/10 via-transparent to-indigo-500/20 blur-3xl" />
                             </div>
-                           
-                            <div className="mt-4 text-right">
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-brand-teal-100 dark:bg-brand-teal-900/50 text-brand-teal-700 dark:text-brand-teal-300">
+                            <div className="relative flex items-start justify-between gap-4">
+                                {feature.icon}
+                                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-200/80 dark:bg-white/10 text-slate-700 dark:text-white/80">
                                     {t('aiFeatures.comingSoon')}
                                 </span>
                             </div>
+                            <h3 className="relative mt-6 text-xl font-semibold text-slate-900 dark:text-white">{t(feature.titleKey)}</h3>
+                            <p className="relative mt-2 text-slate-600 dark:text-slate-300">{t(feature.descriptionKey)}</p>
                         </div>
                     ))}
                 </div>

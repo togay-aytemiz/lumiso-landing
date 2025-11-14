@@ -40,13 +40,6 @@ const Footer: React.FC = () => {
       { name: t('footer.features'), href: '#features' },
       { name: t('footer.pricing'), href: '#pricing' },
       { name: t('footer.aiFeatures'), href: '#ai-features' },
-      { name: t('footer.updates'), href: '#' },
-    ],
-    company: [
-      { name: t('footer.about'), href: '#' },
-      { name: t('footer.blog'), href: '#' },
-      { name: t('footer.careers'), href: '#' },
-      { name: t('footer.contact'), href: '#' },
     ],
     legal: [
       { name: t('footer.privacy'), href: '#' },
@@ -54,39 +47,59 @@ const Footer: React.FC = () => {
     ],
   };
 
+  const handleLinkClick = (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (href.startsWith('#')) {
+      event.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+
   return (
     <footer className="bg-slate-100 dark:bg-slate-900">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
-          <div className="col-span-2 md:col-span-4 lg:col-span-1">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          <div className="col-span-1 sm:col-span-2 lg:col-span-1">
             <a href="#" className="text-2xl font-bold text-slate-900 dark:text-white">
               Photo<span className="text-brand-teal-500 dark:text-brand-teal-400">Flow</span>
             </a>
             <p className="mt-4 text-slate-500 dark:text-slate-400">{t('footer.tagline')}</p>
           </div>
-          <div>
-            <h3 className="font-semibold text-slate-900 dark:text-white">{t('footer.product')}</h3>
-            <ul className="mt-4 space-y-2">
-              {footerLinks.product.map((link) => (
-                <li key={link.name}><a href={link.href} className="text-slate-500 dark:text-slate-400 hover:text-brand-teal-500 dark:hover:text-brand-teal-400">{link.name}</a></li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-slate-900 dark:text-white">{t('footer.company')}</h3>
-            <ul className="mt-4 space-y-2">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}><a href={link.href} className="text-slate-500 dark:text-slate-400 hover:text-brand-teal-500 dark:hover:text-brand-teal-400">{link.name}</a></li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-semibold text-slate-900 dark:text-white">{t('footer.legal')}</h3>
-            <ul className="mt-4 space-y-2">
-              {footerLinks.legal.map((link) => (
-                <li key={link.name}><a href={link.href} className="text-slate-500 dark:text-slate-400 hover:text-brand-teal-500 dark:hover:text-brand-teal-400">{link.name}</a></li>
-              ))}
-            </ul>
+          <div className="lg:col-span-2 flex flex-col sm:flex-row sm:gap-12 lg:justify-end lg:text-right">
+            <div className="mt-8 sm:mt-0">
+              <h3 className="font-semibold text-slate-900 dark:text-white">{t('footer.product')}</h3>
+              <ul className="mt-4 space-y-2">
+                {footerLinks.product.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      onClick={handleLinkClick(link.href)}
+                      className="text-slate-500 dark:text-slate-400 hover:text-brand-teal-500 dark:hover:text-brand-teal-400"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mt-8 sm:mt-0">
+              <h3 className="font-semibold text-slate-900 dark:text-white">{t('footer.legal')}</h3>
+              <ul className="mt-4 space-y-2">
+                {footerLinks.legal.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      onClick={handleLinkClick(link.href)}
+                      className="text-slate-500 dark:text-slate-400 hover:text-brand-teal-500 dark:hover:text-brand-teal-400"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
         <div className="mt-16 pt-8 border-t border-slate-200/80 dark:border-slate-700/50 flex flex-col sm:flex-row justify-between items-center gap-6">
