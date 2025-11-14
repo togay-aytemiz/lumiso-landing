@@ -1,4 +1,5 @@
 import React from "react";
+import { CheckCircleIcon } from "./icons/CheckCircleIcon";
 import { useAppContext } from "../contexts/AppContext";
 import CTAButton from "./ui/CTAButton";
 import PrismBackground from "./ui/PrismBackground";
@@ -24,6 +25,16 @@ const CTA: React.FC = () => {
             />
           </div>
           <div className="relative flex min-h-[560px] flex-col items-center justify-center text-center px-6 py-16 sm:py-24 gap-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm font-medium text-white/80">
+              <div className="flex items-center gap-2">
+                <CheckCircleIcon className="w-5 h-5 text-brand-teal-300" />
+                <span>{t("hero.cta.subtext.line1")}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircleIcon className="w-5 h-5 text-brand-teal-300" />
+                <span>{t("hero.cta.subtext.line2")}</span>
+              </div>
+            </div>
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/30 px-5 py-2 text-sm font-semibold tracking-wide uppercase">
               <span className="h-2 w-2 rounded-full bg-white" />
               {t("cta.badge")}
@@ -42,7 +53,6 @@ const CTA: React.FC = () => {
               >
                 {t("cta.button")}
               </CTAButton>
-              <p className="text-sm text-white/70">{t("hero.cta.subtext.line1")} {t("hero.cta.subtext.line2")}</p>
             </div>
           </div>
         </div>

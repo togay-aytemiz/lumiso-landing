@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { SunIcon } from './icons/SunIcon';
 import { MoonIcon } from './icons/MoonIcon';
+import Logo from './Logo';
 
 const ChevronDownIcon: React.FC = () => (
   <svg className="w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -62,8 +63,8 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
           <div className="col-span-1 sm:col-span-2 lg:col-span-1">
-            <a href="#" className="text-2xl font-bold text-slate-900 dark:text-white">
-              Photo<span className="text-brand-teal-500 dark:text-brand-teal-400">Flow</span>
+            <a href="/" className="inline-flex" aria-label="Lumiso homepage">
+              <Logo />
             </a>
             <p className="mt-4 text-slate-500 dark:text-slate-400">{t('footer.tagline')}</p>
           </div>

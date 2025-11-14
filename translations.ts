@@ -589,10 +589,10 @@ export const translations = {
     "testimonials.person10.title": "Moda Fotoğrafçısı",
 
     // CTA
-    "cta.badge": "Yeni Arka Plan",
-    "cta.title": "Yaratıcılığı ateşleyen ışık oyunları",
+    "cta.badge": "Işığınızı Ortaya Çıkarın",
+    "cta.title": "İşinizi kolaylaştırmanın tam zamanı",
     "cta.subtitle":
-      "Lumiso'nun yeni Prism deneyimiyle stüdyonuzu büyüleyici bir atmosferde sergileyin; otomasyonlar geri kalan işi üstlensin.",
+      "Kişilerinizi, çekimlerinizi ve ödemelerinizi tek merkezden yönetmeye başlayın. Lumiso stüdyonuzu düzenlerken siz yaratıcılığa odaklanın.",
     "cta.button": "Ücretsiz Denemenizi Başlatın",
     "cta.secondaryButton": "Daha Fazla Bilgi",
     "cta.imageAlt":
@@ -612,34 +612,39 @@ export const translations = {
     "faq.button": "Bize Ulaşın",
     "faq.items": [
       {
-        question: "Lumiso müşteri yönetimini nasıl basitleştirir?",
+        question: "Lumiso kimler için uygun?",
         answer:
-          "Lumiso, tüm müşteri iletişimlerinizi, dosyalarınızı, sözleşmelerinizi ve faturalarınızı tek bir yerde organize edebileceğiniz birleşik bir çalışma alanı sunar. Akıllı otomasyonumuz ayrıca hatırlatıcılar ve takipler gibi tekrarlayan görevleri de üstlenerek yaratıcı işlerinize odaklanmanız için size zaman kazandırır.",
+          "Yeni doğan, aile, düğün, marka ve konsept fotoğrafçıları başta olmak üzere, tek başına çalışan tüm fotoğrafçılar için tasarlandı. Kişi yönetimi, çekim planlama, ödeme takibi ve otomatik mesajlar gibi günlük işlerin tamamını sadeleştirir.",
       },
       {
-        question: "Platformdaki verilerim güvende mi?",
+        question: "Lumiso’da kişi (müşteri) bilgilerini nasıl takip ediyorum?",
         answer:
-          "Kesinlikle. Veri güvenliğini çok ciddiye alıyoruz. Tüm verileriniz, endüstri standardı güvenlik protokolleri kullanılarak hem aktarım sırasında hem de depolanırken şifrelenir. Bilgilerinizin her zaman korunduğundan emin olmak için düzenli güvenlik denetimleri gerçekleştiriyoruz.",
+          "Her müşterinin kendine ait bir kartı var. Çekim geçmişi, notlar, hatırlatmalar, iletişim bilgileri ve ödemeler tek yerde tutulur. Kiminle ne konuştuğunuzu, hangi çekimi yaptığınızı veya ne kadar ödendiğini hiçbir zaman kaybetmezsiniz.",
       },
       {
-        question: "Faturaları ve sözleşmeleri özelleştirebilir miyim?",
+        question: "Çekimleri nasıl planlıyorum?",
         answer:
-          "Evet, özelleştirebilirsiniz! Lumiso, faturalarınız ve sözleşmeleriniz için profesyonel, markalı şablonlar oluşturmanıza olanak tanır. Logonuzu ekleyebilir, şartları özelleştirebilir ve gelecekteki müşteriler için yeniden kullanmak üzere şablonları kaydederek tutarlı ve profesyonel bir marka imajı sağlayabilirsiniz.",
+          "Lumiso’nun takvimi gün, hafta ve ay görünümleriyle çalışır. Yeni bir çekim eklerken tarih, saat, seans türü ve notlar tek sayfada girilir. Otomatik hatırlatıcılar çekim yaklaşınca müşteriye gönderilir.",
       },
       {
-        question: "Mobil uygulama sürümünüz var mı?",
+        question: "Ödemeleri takip edebilir miyim?",
         answer:
-          "Özel bir yerel mobil uygulama geliştirme aşamasında olsak da, platformumuz tamamen duyarlıdır ve tüm modern mobil tarayıcılarda harika çalışır. İşinizi hareket halindeyken herhangi bir cihazdan, her yerden yönetebilirsiniz.",
+          "Evet. Kapora, kalan bakiye, ek hizmetler ve iadeler proje altında düzenli şekilde görüntülenir. Her ödemenin tarihi, tutarı ve açıklaması ayrı kaydedilir. Kimin ne kadar ödediğini düşünerek zaman kaybetmezsiniz.",
       },
       {
-        question: "Ne tür bir destek bekleyebilirim?",
+        question: "Mesajlar otomatik mi gidiyor?",
         answer:
-          "Tüm kullanıcılarımıza kapsamlı müşteri desteği sunuyoruz. Güler yüzlü destek ekibimize mesai saatleri içinde e-posta veya canlı sohbet yoluyla ulaşabilirsiniz. Ayrıca, Lumiso'dan en iyi şekilde yararlanmanıza yardımcı olacak eğitimler ve kıluzlar içeren geniş bir bilgi tabanımız bulunmaktadır.",
+          "İsterseniz evet. Çekim öncesi bilgilendirme, yol tarifi, hazırlık listesi, teşekkür mesajı gibi sık yazdığınız metinleri şablon haline getiriyorsunuz. Lumiso, doğru zamanda müşteriye otomatik gönderiyor.",
       },
       {
-        question: "Tüm özelliklere erişmek için premium üyelik gerekli mi?",
+        question: "Mobilde kullanabilir miyim?",
         answer:
-          "Pro Planımız, herhangi bir sınırlama olmaksızın tüm özelliklerimize erişim içerir. Basit, şeffaf fiyatlandırmaya inanıyoruz, bu nedenle işinizi yürütmek için ihtiyacınız olan her şeyi tek bir sabit aylık ücret karşılığında alırsınız. 14 günlük ücretsiz deneme süreniz boyunca her şeyi deneyebilirsiniz.",
+          "Evet. Lumiso mobil uyumlu yapısıyla telefon ve tabletlerde sorunsuz çalışır. Takvim, kişi kartları ve ödemeler mobilde de hızlıdır.",
+      },
+      {
+        question: "Kurulum zor mu?",
+        answer:
+          "Hayır. Kısa bir profil ayarı yaptıktan sonra çekim türlerinizi, paketlerinizi ve hizmetlerinizi ekleyerek hemen kullanmaya başlayabilirsiniz. İsterseniz demo verilerle hazır gelen bir başlangıç akışı da var.",
       },
     ],
 
