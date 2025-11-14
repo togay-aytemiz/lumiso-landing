@@ -244,7 +244,7 @@ const Hero: React.FC = () => {
   const commaPart = lastCommaIndex !== -1 ? titleEnd.substring(lastCommaIndex) : '';
 
   return (
-    <section className="relative bg-slate-950 text-white overflow-hidden pt-16 min-h-screen flex flex-col">
+    <section className="hero-critical relative bg-slate-950 text-white overflow-hidden pt-16 min-h-screen flex flex-col">
        <div className="absolute -left-[9999px] -top-[9999px] text-4xl sm:text-5xl md:text-6xl font-bold" aria-hidden="true">
         {animatedWords.map((word, index) => (
           // Fix: Ensure the ref callback function has a void return type by wrapping the assignment in curly braces.
@@ -253,7 +253,7 @@ const Hero: React.FC = () => {
           </span>
         ))}
       </div>
-      <div className="absolute inset-0">
+      <div className="hero-background absolute inset-0">
         {heroBackgroundImages.map(({ src, srcSet }, index) => (
             <div key={src} className={`absolute inset-0 transition-opacity duration-3000 ease-in-out ${index === activeIndex ? 'opacity-100' : 'opacity-0'}`}>
                 <img 
@@ -270,16 +270,16 @@ const Hero: React.FC = () => {
                 />
             </div>
         ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/10"></div>
+        <div className="hero-gradient absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/10"></div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col flex-grow">
+      <div className="hero-inner container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col flex-grow">
         <div className="text-center pt-12 sm:pt-20">
             <div className="max-w-4xl mx-auto">
                 <div className="inline-block mb-4 animate-slide-in-fade" style={{ animationDelay: '100ms' }}>
                     <SectionBadge variant="glass">{t('hero.tag')}</SectionBadge>
                 </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight animate-slide-in-fade" style={{ animationDelay: '300ms' }}>
+              <h1 className="hero-heading text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight animate-slide-in-fade" style={{ animationDelay: '300ms' }}>
                 <span className="block sm:inline">{t('hero.title.start')}</span>
                 <span className="block sm:inline-block">
                   <span
@@ -313,11 +313,11 @@ const Hero: React.FC = () => {
                 <span className="hidden sm:inline">{commaPart}</span>
                 <span className="block">{t('hero.title.line2')}</span>
               </h1>
-              <p className="mt-8 max-w-2xl mx-auto text-base sm:text-lg text-slate-300 animate-slide-in-fade" style={{ animationDelay: '500ms' }}>
+              <p className="hero-subtitle mt-8 max-w-2xl mx-auto text-base sm:text-lg text-slate-300 animate-slide-in-fade" style={{ animationDelay: '500ms' }}>
                 {t('hero.subtitle')}
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-in-fade" style={{ animationDelay: '700ms' }}>
-                  <CTAButton href="#pricing" variant="primary" fullWidth className="sm:w-auto">
+              <div className="hero-cta-group mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-in-fade" style={{ animationDelay: '700ms' }}>
+                  <CTAButton href="#pricing" variant="primary" fullWidth className="hero-primary-cta sm:w-auto">
                     {t('hero.cta.primary')}
                   </CTAButton>
                   <CTAButton
@@ -326,12 +326,12 @@ const Hero: React.FC = () => {
                     rel="noopener noreferrer"
                     variant="ghost"
                     fullWidth
-                    className="sm:w-auto"
+                    className="hero-secondary-cta sm:w-auto"
                   >
                     {t('hero.cta.secondary')}
                   </CTAButton>
               </div>
-              <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 text-base font-medium text-slate-200 animate-slide-in-fade" style={{ animationDelay: '800ms' }}>
+              <div className="hero-cta-subtext mt-6 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 text-base font-medium text-slate-200 animate-slide-in-fade" style={{ animationDelay: '800ms' }}>
                 <div className="flex items-center gap-2">
                     <CheckCircleIcon className="w-5 h-5 text-brand-teal-400 flex-shrink-0" />
                     <p>{t('hero.cta.subtext.line1')}</p>
@@ -344,7 +344,7 @@ const Hero: React.FC = () => {
             </div>
         </div>
         
-        <div className="mt-20 animate-slide-in-fade" style={{ animationDelay: '900ms' }}>
+        <div className="hero-dashboard mt-20 animate-slide-in-fade" style={{ animationDelay: '900ms' }}>
           <ProjectDashboardMockup />
         </div>
       </div>
