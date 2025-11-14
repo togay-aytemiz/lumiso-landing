@@ -32,7 +32,7 @@ const Header: React.FC = () => {
     { name: t('header.results'), href: '#results' },
     { name: t('header.pricing'), href: '#pricing' },
     { name: t('header.testimonials'), href: '#testimonials' },
-    { name: t('header.contact'), href: '#contact' },
+    { name: t('header.faq'), href: '#faq' },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
