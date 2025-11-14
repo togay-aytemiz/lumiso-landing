@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import SectionHeader from './ui/SectionHeader';
+import SpotlightCard from './ui/SpotlightCard';
 
 const KeyFeatures: React.FC = () => {
   const { t } = useAppContext();
@@ -28,6 +29,7 @@ const KeyFeatures: React.FC = () => {
       descriptionKey: 'keyFeatures.card1.description',
       bgColor: 'bg-amber-50 dark:bg-amber-900/20',
       borderColor: 'border-amber-200 dark:border-amber-800/30',
+      spotlightColor: 'rgba(245, 158, 11, 0.25)',
       illustration: (
         <div className="mt-8 bg-white/50 dark:bg-black/20 p-4 rounded-lg shadow-inner space-y-3">
           <div className="flex items-center">
@@ -47,6 +49,7 @@ const KeyFeatures: React.FC = () => {
       descriptionKey: 'keyFeatures.card2.description',
       bgColor: 'bg-sky-50 dark:bg-sky-900/20',
       borderColor: 'border-sky-200 dark:border-sky-800/30',
+      spotlightColor: 'rgba(14, 165, 233, 0.25)',
       illustration: (
          <div className="mt-8 bg-white/50 dark:bg-black/20 p-4 rounded-lg shadow-inner flex items-center justify-around">
             <div className="w-16 h-10 rounded-lg bg-slate-200 dark:bg-slate-700"></div>
@@ -60,6 +63,7 @@ const KeyFeatures: React.FC = () => {
       descriptionKey: 'keyFeatures.card3.description',
       bgColor: 'bg-violet-50 dark:bg-violet-900/20',
       borderColor: 'border-violet-200 dark:border-violet-800/30',
+      spotlightColor: 'rgba(167, 139, 250, 0.25)',
       illustration: (
         <div className="mt-8 bg-white/50 dark:bg-black/20 p-4 rounded-lg shadow-inner">
             <div className="grid grid-cols-3 gap-2">
@@ -96,16 +100,17 @@ const KeyFeatures: React.FC = () => {
 
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div 
-              key={index} 
+            <SpotlightCard
+              key={index}
               ref={cardRefs[index]}
-              className={`p-8 rounded-2xl shadow-lg border ${feature.bgColor} ${feature.borderColor} ${cardAnimationClasses(cardVisibility[index], cardDelays[index])}`}
+              spotlightColor={feature.spotlightColor}
+              className={`p-8 shadow-lg border ${feature.bgColor} ${feature.borderColor} ${cardAnimationClasses(cardVisibility[index], cardDelays[index])}`}
             >
               <div className="text-3xl font-bold text-slate-300 dark:text-slate-600">0{index + 1}</div>
               <h3 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">{t(feature.titleKey)}</h3>
               <p className="mt-2 text-slate-600 dark:text-slate-300">{t(feature.descriptionKey)}</p>
               {feature.illustration}
-            </div>
+            </SpotlightCard>
           ))}
         </div>
       </div>

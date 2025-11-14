@@ -1,6 +1,6 @@
 import React from 'react';
 
-type CTAButtonVariant = 'primary' | 'gradient' | 'ghost';
+type CTAButtonVariant = 'primary' | 'gradient' | 'ghost' | 'contrast' | 'muted';
 
 interface CTAButtonProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   variant?: CTAButtonVariant;
@@ -15,6 +15,10 @@ const variantClasses: Record<CTAButtonVariant, string> = {
     'bg-gradient-to-r from-brand-teal-500 to-cyan-500 text-white hover:from-brand-teal-600 hover:to-cyan-600 shadow-lg shadow-brand-teal-500/40',
   ghost:
     'bg-white/10 border border-white/20 text-white hover:bg-white/20 backdrop-blur-sm',
+  contrast:
+    'bg-white text-slate-900 hover:bg-white/90 shadow-[0_20px_50px_rgba(15,23,42,0.25)] border border-white/40',
+  muted:
+    'bg-white/15 border border-white/20 text-white/90 hover:bg-white/25'
 };
 
 const CTAButton: React.FC<CTAButtonProps> = ({

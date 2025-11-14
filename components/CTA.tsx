@@ -1,46 +1,54 @@
-
-import React from 'react';
-import { useAppContext } from '../contexts/AppContext';
-import CTAButton from './ui/CTAButton';
-import SectionHeader from './ui/SectionHeader';
+import React from "react";
+import { useAppContext } from "../contexts/AppContext";
+import CTAButton from "./ui/CTAButton";
+import PrismBackground from "./ui/PrismBackground";
 
 const CTA: React.FC = () => {
   const { t } = useAppContext();
 
   return (
-    <section id="contact" className="py-20 sm:py-32">
+    <section id="contact" className="py-12 sm:py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative p-12 lg:p-20 rounded-3xl shadow-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <div className="absolute -top-24 -right-24 w-72 h-72 bg-brand-teal-400/20 dark:bg-brand-teal-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-cyan-400/20 dark:bg-cyan-500/10 rounded-full blur-3xl"></div>
-          
-          <div className="grid lg:grid-cols-2 gap-12 items-center relative">
-            {/* Left Column: Text Content */}
-            <div className="lg:col-span-1">
-              <SectionHeader
-                title={t('cta.title')}
-                subtitle={t('cta.subtitle')}
-                titleClassName="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight text-center lg:text-left"
-                subtitleClassName="mt-6 text-lg text-slate-600 dark:text-slate-300 max-w-lg mx-auto lg:mx-0 text-center lg:text-left"
-                className="text-center lg:text-left"
-              />
-
-              <div className="mt-12">
-                  <CTAButton href="#" variant="gradient">
-                    {t('cta.button')}
-                  </CTAButton>
-              </div>
-            </div>
-
-            {/* Right Column: Image */}
-            <div className="lg:col-span-1 relative mt-12 lg:mt-0">
-                <img
-                    src="https://images.unsplash.com/photo-1522204523234-8729aa6e3d5f?q=80&w=1600&auto=format&fit=crop"
-                    alt={t('cta.imageAlt')}
-                    className="relative w-full rounded-2xl shadow-2xl shadow-slate-400/20 dark:shadow-black/40 border border-slate-200/80 dark:border-slate-700/80"
-                    loading="lazy"
-                    decoding="async"
-                />
+        <div className="relative overflow-hidden rounded-[3rem] border border-white/5 bg-[#030015] text-white shadow-[0_50px_140px_rgba(5,0,21,0.7)]">
+          <div className="absolute inset-0">
+            <PrismBackground
+              animationType="rotate"
+              timeScale={0.5}
+              height={3.5}
+              baseWidth={5.5}
+              scale={3.6}
+              hueShift={0}
+              colorFrequency={1}
+              noise={0.1}
+              glow={1}
+            />
+          </div>
+          <div className="relative flex min-h-[560px] flex-col items-center justify-center text-center px-6 py-16 sm:py-24 gap-6">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/30 px-5 py-2 text-sm font-semibold tracking-wide uppercase">
+              <span className="h-2 w-2 rounded-full bg-white" />
+              {t("cta.badge")}
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-bold leading-tight max-w-3xl drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
+              {t("cta.title")}
+            </h2>
+            <p className="text-lg sm:text-xl text-white/85 max-w-2xl">
+              {t("cta.subtitle")}
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row items-center gap-4">
+              <CTAButton
+                href="#"
+                variant="contrast"
+                className="rounded-full px-10 py-4 text-base sm:text-lg"
+              >
+                {t("cta.button")}
+              </CTAButton>
+              <CTAButton
+                href="#"
+                variant="muted"
+                className="rounded-full px-10 py-4 text-base sm:text-lg backdrop-blur"
+              >
+                {t("cta.secondaryButton")}
+              </CTAButton>
             </div>
           </div>
         </div>

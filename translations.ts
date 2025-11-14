@@ -196,9 +196,11 @@ export const translations = {
     'testimonials.person10.title': 'Fashion Photographer',
 
     // CTA
-    'cta.title': 'Ready to streamline your workflow?',
-    'cta.subtitle': "Join photographers who trust PhotoFlow to manage their business, so they can focus on what matters most. Sign up for your free trial today.",
+    'cta.badge': 'New Background',
+    'cta.title': 'A spectrum of workflows that spark creativity',
+    'cta.subtitle': 'Immerse your studio in the new Prism experience and keep clients inspired while PhotoFlow automates the busywork.',
     'cta.button': 'Start Your Free Trial',
+    'cta.secondaryButton': 'Learn More',
     'cta.imageAlt': 'A photographer editing photos on a laptop, demonstrating the PhotoFlow workflow.',
     'cta.stat1.value': '75%',
     'cta.stat1.label': 'Increase in Efficiency',
@@ -466,9 +468,11 @@ export const translations = {
     'testimonials.person10.title': 'Moda Fotoğrafçısı',
 
     // CTA
-    'cta.title': 'İş akışınızı kolaylaştırmaya hazır mısınız?',
-    'cta.subtitle': "İşlerini yönetmek için PhotoFlow'a güvenen fotoğrafçılara katılın, böylece en önemli şeye odaklanabilirler. Bugün ücretsiz deneme sürümünüze kaydolun.",
+    'cta.badge': 'Yeni Arka Plan',
+    'cta.title': 'Yaratıcılığı ateşleyen ışık oyunları',
+    'cta.subtitle': "PhotoFlow'un yeni Prism deneyimiyle stüdyonuzu büyüleyici bir atmosferde sergileyin; otomasyonlar geri kalan işi üstlensin.",
     'cta.button': 'Ücretsiz Denemenizi Başlatın',
+    'cta.secondaryButton': 'Daha Fazla Bilgi',
     'cta.imageAlt': 'PhotoFlow iş akışını gösteren bir dizüstü bilgisayarda fotoğraf düzenleyen bir fotoğrafçı.',
     'cta.stat1.value': '%75',
     'cta.stat1.label': 'Verimlilik Artışı',
