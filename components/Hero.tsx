@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, useCallback, useLayoutEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, useLayoutEffect } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { CheckCircleIcon } from './icons/CheckCircleIcon';
 import SectionBadge from './ui/SectionBadge';
@@ -123,6 +123,10 @@ const Hero: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const intervalRef = useRef<number | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [visibleIndex, setVisibleIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<boolean[]>(
+    () => heroBackgroundImages.map((_, index) => index === 0)
+  );
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -146,6 +150,7 @@ const Hero: React.FC = () => {
   useEffect(() => {
     if (prefersReducedMotion) {
       setActiveIndex(0);
+      setVisibleIndex(0);
       return;
     }
     startTimer();
@@ -155,6 +160,39 @@ const Hero: React.FC = () => {
         }
     };
   }, [prefersReducedMotion, startTimer]);
+
+  const handleImageLoad = useCallback((index: number) => {
+    setLoadedImages(prev => {
+      if (prev[index]) return prev;
+      const updated = [...prev];
+      updated[index] = true;
+      return updated;
+    });
+    if (index === activeIndex) {
+      setVisibleIndex(index);
+    }
+  }, [activeIndex]);
+
+  useEffect(() => {
+    if (loadedImages[activeIndex]) {
+      setVisibleIndex(activeIndex);
+    }
+  }, [activeIndex, loadedImages]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const preloadedImages = heroBackgroundImages.map(({ src }) => {
+      const image = new Image();
+      image.decoding = 'async';
+      image.src = src;
+      return image;
+    });
+    return () => {
+      preloadedImages.forEach((image) => {
+        image.src = '';
+      });
+    };
+  }, []);
 
   // Slot machine animation logic
   const animatedWords = useMemo(
@@ -175,6 +213,11 @@ const Hero: React.FC = () => {
     return () => clearInterval(interval);
   }, [animatedWords.length, prefersReducedMotion]);
 
+  const animatedWordSlotWidth = useMemo(() => {
+    const longestWordLength = animatedWords.reduce((maxLength, word) => Math.max(maxLength, word.length), 0);
+    return Math.max(longestWordLength + 2, 12);
+  }, [animatedWords]);
+
   useEffect(() => {
     currentWordIndexRef.current = wordIndex;
     const cachedWidth = wordWidthsRef.current[wordIndex];
@@ -185,6 +228,7 @@ const Hero: React.FC = () => {
 
   useEffect(() => {
     wordWidthsRef.current = [];
+    setContainerWidth(undefined);
   }, [animatedWords.length]);
 
   const measureWordWidths = useCallback(() => {
@@ -201,7 +245,6 @@ const Hero: React.FC = () => {
     }
   }, []);
 
-  // Measure animated text widths with minimal forced reflows.
   useLayoutEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
     let frame: number | null = null;
@@ -224,9 +267,7 @@ const Hero: React.FC = () => {
 
     const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
     if (fonts) {
-      fonts.ready.then(() => {
-        scheduleMeasure();
-      });
+      fonts.ready.then(() => scheduleMeasure());
     }
 
     return () => {
@@ -245,9 +286,8 @@ const Hero: React.FC = () => {
 
   return (
     <section className="hero-critical relative bg-slate-950 text-white overflow-hidden pt-16 min-h-screen flex flex-col">
-       <div className="absolute -left-[9999px] -top-[9999px] text-4xl sm:text-5xl md:text-6xl font-bold" aria-hidden="true">
+      <div className="absolute -left-[9999px] -top-[9999px] text-4xl sm:text-5xl md:text-6xl font-bold" aria-hidden="true">
         {animatedWords.map((word, index) => (
-          // Fix: Ensure the ref callback function has a void return type by wrapping the assignment in curly braces.
           <span key={index} ref={el => { wordSpanRefs.current[index] = el; }}>
             {word}
           </span>
@@ -255,7 +295,10 @@ const Hero: React.FC = () => {
       </div>
       <div className="hero-background absolute inset-0">
         {heroBackgroundImages.map(({ src, srcSet }, index) => (
-            <div key={src} className={`absolute inset-0 transition-opacity duration-3000 ease-in-out ${index === activeIndex ? 'opacity-100' : 'opacity-0'}`}>
+            <div
+              key={src}
+              className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${index === visibleIndex ? 'opacity-100' : 'opacity-0'}`}
+            >
                 <img 
                     src={src}
                     srcSet={srcSet}
@@ -265,8 +308,9 @@ const Hero: React.FC = () => {
                     alt={t('hero.imageAlt')}
                     className="w-full h-full object-cover opacity-60 dark:opacity-50"
                     loading={index === 0 ? 'eager' : 'lazy'}
-                    fetchpriority={index === 0 ? 'high' : 'auto'}
+                    fetchPriority={index === 0 ? 'high' : 'auto'}
                     decoding="async"
+                    onLoad={() => handleImageLoad(index)}
                 />
             </div>
         ))}
@@ -286,9 +330,9 @@ const Hero: React.FC = () => {
                     className="inline-block relative overflow-hidden align-text-bottom leading-tight top-0.5"
                     style={{
                       height: '1.25em', // Corresponds to leading-tight
-                      width: containerWidth ? `${containerWidth}px` : 'auto',
+                      width: containerWidth ? `${containerWidth}px` : `${animatedWordSlotWidth}ch`,
                       transition: 'width 0.4s ease-in-out, opacity 0.2s linear',
-                      opacity: containerWidth ? 1 : 0,
+                      opacity: containerWidth ? 1 : 0.95,
                     }}
                   >
                     <span
@@ -301,7 +345,7 @@ const Hero: React.FC = () => {
                       {animatedWords.map((word) => (
                         <span
                           key={word}
-                          className="block text-center shimmer-gradient animate-shimmer leading-tight"
+                          className="block text-center leading-tight hero-highlight-word"
                         >
                           {word}
                         </span>

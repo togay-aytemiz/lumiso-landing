@@ -251,6 +251,17 @@
   animation: shimmer 3s linear infinite;
 }
 
+.hero-highlight-word {
+  color: #5eead4;
+  letter-spacing: -0.01em;
+  text-shadow: 0 8px 30px rgba(13, 148, 136, 0.45);
+}
+
+.dark .hero-highlight-word {
+  color: #5eead4;
+  text-shadow: 0 10px 30px rgba(45, 212, 191, 0.35);
+}
+
 .browser-mockup {
   position: relative;
   border-radius: 0.75rem;

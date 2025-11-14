@@ -4,6 +4,10 @@ import { useAppContext } from '../contexts/AppContext';
 
 const LIGHT_LOGO_PLACEHOLDER = '/logo-light.svg';
 const DARK_LOGO_PLACEHOLDER = '/logo-dark.svg';
+const LOGO_BASE_WIDTH = 71;
+const LOGO_BASE_HEIGHT = 22;
+const LOGO_DISPLAY_HEIGHT = 32;
+const LOGO_DISPLAY_WIDTH = Math.round((LOGO_BASE_WIDTH / LOGO_BASE_HEIGHT) * LOGO_DISPLAY_HEIGHT);
 
 const Logo: React.FC<{ className?: string; forceTheme?: 'light' | 'dark' }> = ({ className = '', forceTheme }) => {
   const lightClasses = forceTheme
@@ -18,16 +22,25 @@ const Logo: React.FC<{ className?: string; forceTheme?: 'light' | 'dark' }> = ({
     : 'hidden dark:block';
 
   return (
-    <div className={`flex items-center ${className}`}>
+    <div
+      className={`relative flex items-center ${className}`}
+      style={{ width: LOGO_DISPLAY_WIDTH, height: LOGO_DISPLAY_HEIGHT }}
+    >
       <img
         src={LIGHT_LOGO_PLACEHOLDER}
         alt="PhotoFlow logo for light mode"
-        className={`h-8 w-auto transition-opacity duration-300 ${lightClasses}`}
+        width={LOGO_BASE_WIDTH}
+        height={LOGO_BASE_HEIGHT}
+        decoding="async"
+        className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${lightClasses}`}
       />
       <img
         src={DARK_LOGO_PLACEHOLDER}
         alt="PhotoFlow logo for dark mode"
-        className={`h-8 w-auto transition-opacity duration-300 ${darkClasses}`}
+        width={LOGO_BASE_WIDTH}
+        height={LOGO_BASE_HEIGHT}
+        decoding="async"
+        className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${darkClasses}`}
       />
     </div>
   );
