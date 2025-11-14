@@ -2,6 +2,37 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 
+const LIGHT_LOGO_PLACEHOLDER = '/logo-light.svg';
+const DARK_LOGO_PLACEHOLDER = '/logo-dark.svg';
+
+const Logo: React.FC<{ className?: string; forceTheme?: 'light' | 'dark' }> = ({ className = '', forceTheme }) => {
+  const lightClasses = forceTheme
+    ? forceTheme === 'light'
+      ? 'block'
+      : 'hidden'
+    : 'block dark:hidden';
+  const darkClasses = forceTheme
+    ? forceTheme === 'dark'
+      ? 'block'
+      : 'hidden'
+    : 'hidden dark:block';
+
+  return (
+    <div className={`flex items-center ${className}`}>
+      <img
+        src={LIGHT_LOGO_PLACEHOLDER}
+        alt="PhotoFlow logo for light mode"
+        className={`h-8 w-auto transition-opacity duration-300 ${lightClasses}`}
+      />
+      <img
+        src={DARK_LOGO_PLACEHOLDER}
+        alt="PhotoFlow logo for dark mode"
+        className={`h-8 w-auto transition-opacity duration-300 ${darkClasses}`}
+      />
+    </div>
+  );
+};
+
 const Header: React.FC = () => {
   const { t } = useAppContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -80,8 +111,16 @@ const Header: React.FC = () => {
       <header className={headerClasses}>
         <div className="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
           <div className="flex items-center space-x-10">
-            <a href="/" onClick={handleLogoClick} className={`flex-shrink-0 text-2xl font-bold ${isScrolled ? 'text-slate-900 dark:text-white' : 'text-white'} cursor-pointer transition-colors duration-300`}>
-              Photo<span className="text-brand-teal-500 dark:text-brand-teal-400">Flow</span>
+            <a
+              href="/"
+              onClick={handleLogoClick}
+              className="flex-shrink-0 inline-flex cursor-pointer"
+              aria-label="Scroll to top"
+            >
+              <Logo
+                className="transition-opacity duration-300"
+                forceTheme={isScrolled ? undefined : 'dark'}
+              />
             </a>
             <nav className="hidden md:flex md:items-center md:space-x-8">
               {navLinks.map((link) => (
@@ -138,8 +177,13 @@ const Header: React.FC = () => {
         >
            <div className="flex flex-col h-full">
             <div className="flex items-center justify-between h-16 px-4 sm:px-6 border-b border-slate-800">
-              <a href="/" onClick={handleLogoClick} className="text-2xl font-bold text-white">
-                Photo<span className="text-brand-teal-400">Flow</span>
+              <a
+                href="/"
+                onClick={handleLogoClick}
+                className="inline-flex cursor-pointer"
+                aria-label="Scroll to top"
+              >
+                <Logo forceTheme="dark" />
               </a>
               <button
                 onClick={() => setIsMenuOpen(false)}
