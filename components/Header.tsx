@@ -99,10 +99,10 @@ const Header: React.FC = () => {
   };
 
   const headerClasses = `
-    sticky top-0 z-40 transition-all duration-300
+    sticky top-0 z-40 border-b transition-all duration-500 ease-out
     ${isScrolled
-      ? 'bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800 shadow-sm'
-      : 'bg-transparent'
+      ? 'bg-white/80 dark:bg-slate-950/80 border-slate-200 dark:border-slate-800 backdrop-blur-sm shadow-sm'
+      : 'bg-transparent border-transparent'
     }
   `;
 

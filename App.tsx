@@ -1,6 +1,4 @@
-
-
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import WhyPhotoFlow from './components/WhyPhotoFlow';
@@ -8,14 +6,21 @@ import KeyFeatures from './components/KeyFeatures';
 import Features from './components/Features';
 import PackageFeatures from './components/PackageFeatures';
 import Workflow from './components/Workflow';
-import AIFeatures from './components/AIFeatures';
-import Results from './components/Results';
-import Pricing from './components/Pricing';
-import Testimonials from './components/Testimonials';
-import CTA from './components/CTA';
-import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
+
+const AIFeatures = lazy(() => import('./components/AIFeatures'));
+const Results = lazy(() => import('./components/Results'));
+const Pricing = lazy(() => import('./components/Pricing'));
+const Testimonials = lazy(() => import('./components/Testimonials'));
+const CTA = lazy(() => import('./components/CTA'));
+const FAQ = lazy(() => import('./components/FAQ'));
+
+const SectionFallback: React.FC = () => (
+  <div className="py-20 text-center text-slate-400 dark:text-slate-500">
+    Loading…
+  </div>
+);
 
 const App: React.FC = () => {
   return (
@@ -28,12 +33,24 @@ const App: React.FC = () => {
         <Features />
         <PackageFeatures />
         <Workflow />
-        <AIFeatures />
-        <Results />
-        <Pricing />
-        <Testimonials />
-        <CTA />
-        <FAQ />
+        <Suspense fallback={<SectionFallback />}>
+          <AIFeatures />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Results />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Pricing />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Testimonials />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <CTA />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <FAQ />
+        </Suspense>
       </main>
       <Footer />
       <ScrollToTopButton />

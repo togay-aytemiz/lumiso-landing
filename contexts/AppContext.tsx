@@ -5,6 +5,8 @@ import { SITE_URL, seoContent } from '../seo.config';
 type Language = 'en' | 'tr';
 type Theme = 'light' | 'dark';
 
+const SUPPORTED_LANGUAGES: Language[] = ['en', 'tr'];
+
 interface AppContextType {
   language: Language;
   setLanguage: (language: Language) => void;
@@ -16,17 +18,31 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window === 'undefined') return 'en';
+
+    const params = new URLSearchParams(window.location.search);
+    const paramLang = params.get('lang');
+    if (paramLang && SUPPORTED_LANGUAGES.includes(paramLang as Language)) {
+      return paramLang as Language;
+    }
+
+    const storedLang = localStorage.getItem('language') as Language | null;
+    if (storedLang && SUPPORTED_LANGUAGES.includes(storedLang)) {
+      return storedLang;
+    }
+
+    const userLang = navigator.language.split('-')[0] as Language;
+    if (SUPPORTED_LANGUAGES.includes(userLang)) {
+      return userLang;
+    }
+
+    return 'en';
+  });
   const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
-    // Detect browser language
-    const userLang = navigator.language.split('-')[0];
-    if (userLang === 'tr') {
-      setLanguage('tr');
-    }
-
-    // Check for saved theme in localStorage
+    if (typeof window === 'undefined') return;
     const savedTheme = localStorage.getItem('theme') as Theme;
     if (savedTheme) {
       setTheme(savedTheme);
@@ -48,6 +64,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     if (typeof document === 'undefined') return;
     document.documentElement.lang = language;
+  }, [language]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    localStorage.setItem('language', language);
+    const url = new URL(window.location.href);
+    if (language === 'en') {
+      url.searchParams.delete('lang');
+    } else {
+      url.searchParams.set('lang', language);
+    }
+    if (url.href !== window.location.href) {
+      window.history.replaceState({}, '', url.href);
+    }
   }, [language]);
 
   useEffect(() => {
@@ -80,6 +110,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         element!.setAttribute(attr, value);
       });
     };
+    const upsertJsonLd = (id: string, data: Record<string, unknown>) => {
+      let script = document.head.querySelector<HTMLScriptElement>(`script#${id}`);
+      if (!script) {
+        script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = id;
+        document.head.appendChild(script);
+      }
+      script.textContent = JSON.stringify(data);
+    };
 
     const currentPath = window.location.pathname + window.location.search;
     const canonicalUrl = `${SITE_URL}${currentPath}`;
@@ -97,8 +137,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     upsertMeta('name', 'twitter:url', canonicalUrl);
 
     upsertLink('canonical', { href: canonicalUrl });
-    const supportedLanguages: Language[] = ['en', 'tr'];
-    supportedLanguages.forEach((lang) => {
+    SUPPORTED_LANGUAGES.forEach((lang) => {
       const localizedUrl =
         lang === 'en'
           ? canonicalUrl
@@ -106,6 +145,49 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       upsertLink('alternate', { href: localizedUrl, hreflang: lang });
     });
     upsertLink('alternate', { href: canonicalUrl, hreflang: 'x-default' });
+
+    const faqItems = (translations[language]['faq.items'] as Array<{ question: string; answer: string }>) || [];
+    const faqTitle = `${translations[language]['faq.title.regular'] ?? ''} ${translations[language]['faq.title.bold'] ?? ''}`.trim();
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'Organization',
+          name: 'PhotoFlow',
+          url: SITE_URL,
+          description: meta.description,
+        },
+        {
+          '@type': 'Product',
+          name: meta.title,
+          description: meta.description,
+          url: canonicalUrl,
+          brand: {
+            '@type': 'Organization',
+            name: 'PhotoFlow',
+          },
+          offers: {
+            '@type': 'AggregateOffer',
+            priceCurrency: 'USD',
+            price: '0',
+            availability: 'https://schema.org/PreOrder',
+          },
+        },
+        {
+          '@type': 'FAQPage',
+          name: faqTitle || meta.title,
+          mainEntity: faqItems.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer,
+            },
+          })),
+        },
+      ],
+    };
+    upsertJsonLd('photoflow-structured-data', structuredData);
   }, [language]);
 
   const toggleTheme = () => {
