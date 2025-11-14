@@ -49,7 +49,6 @@ const AIFeatures: React.FC = () => {
                         <path d="M11 16h8" stroke="#E5F3FF" strokeWidth="1.6" strokeLinecap="round" />
                         <circle cx="10" cy="10.5" r="1.2" fill="#C8FDFF" />
                     </svg>
-                    <span className="absolute inset-0 rounded-3xl bg-white/10 blur-xl opacity-60" />
                 </div>
             ),
         },
@@ -76,7 +75,6 @@ const AIFeatures: React.FC = () => {
                         <path d="M9 12V8h4M23 12V8h-4M9 20v4h4M23 20v4h-4" stroke="#BDF2FF" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
                         <circle cx="16" cy="16" r="2" fill="#F5FDFF" opacity="0.6" />
                     </svg>
-                    <span className="absolute -bottom-1 -right-1 w-2 h-2 rounded-full bg-white/70 blur-[1px]" />
                 </div>
             ),
         },
@@ -104,7 +102,6 @@ const AIFeatures: React.FC = () => {
                         <circle cx="20.8" cy="12" r="1.3" fill="#FFE0FF" />
                         <circle cx="13.2" cy="11.8" r="0.9" fill="#D4C8FF" />
                     </svg>
-                    <span className="absolute -top-1 left-2 w-1.5 h-1.5 rounded-full bg-white/80 animate-ping" />
                 </div>
             ),
         },

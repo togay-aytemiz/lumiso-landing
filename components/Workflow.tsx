@@ -20,23 +20,23 @@ const Workflow: React.FC = () => {
     
     const columns = [
         { titleKey: 'workflow.column.newLeads', cards: [
-            { id: 1, titleKey: 'workflow.project.chenPortraits', typeKey: 'workflow.cardType.portraits', user: { nameKey: 'workflow.client.markChen', avatar: 'https://i.pravatar.cc/150?u=markchen' } },
-            { id: 2, titleKey: 'workflow.project.springMinis', typeKey: 'workflow.cardType.event', user: { nameKey: 'workflow.client.multipleClients', avatar: 'https://i.pravatar.cc/150?u=clients' } }
+            { id: 1, titleKey: 'workflow.project.chenPortraits', typeKey: 'workflow.cardType.portraits', user: { nameKey: 'workflow.client.markChen', avatar: 'https://i.pravatar.cc/80?u=markchen' } },
+            { id: 2, titleKey: 'workflow.project.springMinis', typeKey: 'workflow.cardType.event', user: { nameKey: 'workflow.client.multipleClients', avatar: 'https://i.pravatar.cc/80?u=clients' } }
         ], color: 'bg-sky-500' },
         { titleKey: 'workflow.column.booked', cards: [
-            { id: 3, titleKey: 'workflow.project.thompsonWedding', typeKey: 'workflow.cardType.wedding', user: { nameKey: 'workflow.client.alexThompson', avatar: 'https://i.pravatar.cc/150?u=alexthompson' } },
-            { id: 4, titleKey: 'workflow.project.garciaProduct', typeKey: 'workflow.cardType.commercial', user: { nameKey: 'workflow.client.chloeGarcia', avatar: 'https://i.pravatar.cc/150?u=chloegarcia' } },
-            { id: 5, titleKey: 'workflow.project.williamsBaby', typeKey: 'workflow.cardType.newborn', user: { nameKey: 'workflow.client.benWilliams', avatar: 'https://i.pravatar.cc/150?u=benwilliams' } }
+            { id: 3, titleKey: 'workflow.project.thompsonWedding', typeKey: 'workflow.cardType.wedding', user: { nameKey: 'workflow.client.alexThompson', avatar: 'https://i.pravatar.cc/80?u=alexthompson' } },
+            { id: 4, titleKey: 'workflow.project.garciaProduct', typeKey: 'workflow.cardType.commercial', user: { nameKey: 'workflow.client.chloeGarcia', avatar: 'https://i.pravatar.cc/80?u=chloegarcia' } },
+            { id: 5, titleKey: 'workflow.project.williamsBaby', typeKey: 'workflow.cardType.newborn', user: { nameKey: 'workflow.client.benWilliams', avatar: 'https://i.pravatar.cc/80?u=benwilliams' } }
         ], color: 'bg-violet-500' },
         { titleKey: 'workflow.column.inProgress', cards: [
-            { id: 6, titleKey: 'workflow.project.millerEdits', typeKey: 'workflow.cardType.wedding', user: { nameKey: 'workflow.client.jessicaMiller', avatar: 'https://i.pravatar.cc/150?u=jessicamiller' } }
+            { id: 6, titleKey: 'workflow.project.millerEdits', typeKey: 'workflow.cardType.wedding', user: { nameKey: 'workflow.client.jessicaMiller', avatar: 'https://i.pravatar.cc/80?u=jessicamiller' } }
         ], color: 'bg-amber-500' },
         { titleKey: 'workflow.column.review', cards: [
-             { id: 7, titleKey: 'workflow.project.jonesHeadshots', typeKey: 'workflow.cardType.corporate', user: { nameKey: 'workflow.client.sarahJones', avatar: 'https://i.pravatar.cc/150?u=sarahjones' } }
+             { id: 7, titleKey: 'workflow.project.jonesHeadshots', typeKey: 'workflow.cardType.corporate', user: { nameKey: 'workflow.client.sarahJones', avatar: 'https://i.pravatar.cc/80?u=sarahjones' } }
         ], color: 'bg-rose-500' },
         { titleKey: 'workflow.column.completed', cards: [
-            { id: 8, titleKey: 'workflow.project.leeRealEstate', typeKey: 'workflow.cardType.realEstate', user: { nameKey: 'workflow.client.davidLee', avatar: 'https://i.pravatar.cc/150?u=davidlee' } },
-            { id: 9, titleKey: 'workflow.project.carterMaternity', typeKey: 'workflow.cardType.maternity', user: { nameKey: 'workflow.client.emilyCarter', avatar: 'https://i.pravatar.cc/150?u=emilycarter' } }
+            { id: 8, titleKey: 'workflow.project.leeRealEstate', typeKey: 'workflow.cardType.realEstate', user: { nameKey: 'workflow.client.davidLee', avatar: 'https://i.pravatar.cc/80?u=davidlee' } },
+            { id: 9, titleKey: 'workflow.project.carterMaternity', typeKey: 'workflow.cardType.maternity', user: { nameKey: 'workflow.client.emilyCarter', avatar: 'https://i.pravatar.cc/80?u=emilycarter' } }
         ], color: 'bg-green-500' }
     ];
 
@@ -86,6 +86,8 @@ const Workflow: React.FC = () => {
                                                           className="w-6 h-6 rounded-full"
                                                           loading="lazy"
                                                           decoding="async"
+                                                          width={24}
+                                                          height={24}
                                                         />
                                                         <span className="ml-2 text-sm text-slate-500 dark:text-slate-400">{t(card.user.nameKey)}</span>
                                                     </div>

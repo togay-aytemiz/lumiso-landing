@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, useCallback, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useLayoutEffect, useMemo } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { CheckCircleIcon } from './icons/CheckCircleIcon';
 import SectionBadge from './ui/SectionBadge';
@@ -71,11 +71,13 @@ const ProjectDashboardMockup: React.FC = () => {
                         <h3 className="font-semibold text-slate-700 dark:text-slate-200 text-sm">Client Details</h3>
                         <div className="flex items-center mt-3">
                              <img
-                                src="https://i.pravatar.cc/150?u=alexthompson"
+                                src="https://i.pravatar.cc/80?u=alexthompson"
                                 alt="Alex Thompson"
                                 className="w-10 h-10 rounded-full"
                                 loading="lazy"
                                 decoding="async"
+                                width={40}
+                                height={40}
                               />
                              <div className="ml-3">
                                 <p className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Alex Thompson</p>
@@ -93,13 +95,27 @@ const ProjectDashboardMockup: React.FC = () => {
     );
 };
 
-const backgroundImages = [
-    'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1475274226786-e636f48a5645?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1623783356340-95375aac85ce?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1594296459195-8b2f3fbf1c86?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1699401984773-f6bf9a20b774?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop'
+const HERO_IMAGE_WIDTHS = [768, 1200, 1600, 2000];
+const HERO_IMAGE_QUALITY = 70;
+
+const heroBackgroundImageUrls = [
+    'https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'https://images.unsplash.com/photo-1475274226786-e636f48a5645?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'https://images.unsplash.com/photo-1623783356340-95375aac85ce?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'https://images.unsplash.com/photo-1594296459195-8b2f3fbf1c86?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'https://images.unsplash.com/photo-1699401984773-f6bf9a20b774?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 ];
+
+const withImageParams = (url: string, width: number) => {
+    const separator = url.includes('?') ? '&' : '?';
+    return `${url}${separator}auto=format&fit=crop&q=${HERO_IMAGE_QUALITY}&w=${width}`;
+};
+
+const heroBackgroundImages = heroBackgroundImageUrls.map(url => ({
+    original: url,
+    src: withImageParams(url, 1600),
+    srcSet: HERO_IMAGE_WIDTHS.map(width => `${withImageParams(url, width)} ${width}w`).join(', '),
+}));
 
 
 const Hero: React.FC = () => {
@@ -123,7 +139,7 @@ const Hero: React.FC = () => {
         clearInterval(intervalRef.current);
     }
     intervalRef.current = window.setInterval(() => {
-        setActiveIndex(prevIndex => (prevIndex + 1) % backgroundImages.length);
+        setActiveIndex(prevIndex => (prevIndex + 1) % heroBackgroundImages.length);
     }, 5000);
   }, []);
 
@@ -141,10 +157,15 @@ const Hero: React.FC = () => {
   }, [prefersReducedMotion, startTimer]);
 
   // Slot machine animation logic
-  const animatedWords = t('hero.animatedWords') as unknown as string[];
+  const animatedWords = useMemo(
+    () => t('hero.animatedWords') as unknown as string[],
+    [t]
+  );
   const [wordIndex, setWordIndex] = useState(0);
   const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined);
   const wordSpanRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const wordWidthsRef = useRef<number[]>([]);
+  const currentWordIndexRef = useRef(0);
 
   useEffect(() => {
     if (prefersReducedMotion || typeof window === 'undefined') return;
@@ -154,45 +175,68 @@ const Hero: React.FC = () => {
     return () => clearInterval(interval);
   }, [animatedWords.length, prefersReducedMotion]);
 
-  // This effect calculates the width of the animated word container.
-  // It runs when the word changes, and it also accounts for font-loading and window resizing
-  // to prevent the text from being clipped.
+  useEffect(() => {
+    currentWordIndexRef.current = wordIndex;
+    const cachedWidth = wordWidthsRef.current[wordIndex];
+    if (cachedWidth) {
+      setContainerWidth(cachedWidth);
+    }
+  }, [wordIndex]);
+
+  useEffect(() => {
+    wordWidthsRef.current = [];
+  }, [animatedWords.length]);
+
+  const measureWordWidths = useCallback(() => {
+    wordSpanRefs.current.forEach((span, index) => {
+      if (!span) return;
+      const width = span.getBoundingClientRect().width;
+      if (width > 0) {
+        wordWidthsRef.current[index] = width;
+      }
+    });
+    const currentWidth = wordWidthsRef.current[currentWordIndexRef.current];
+    if (currentWidth) {
+      setContainerWidth(currentWidth);
+    }
+  }, []);
+
+  // Measure animated text widths with minimal forced reflows.
   useLayoutEffect(() => {
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
-    const calculateAndSetWidth = () => {
-      const currentWordRef = wordSpanRefs.current[wordIndex];
-      if (currentWordRef) {
-        const newWidth = currentWordRef.offsetWidth;
-        // Set width only if it's a valid positive number to avoid flicker on re-renders.
-        if (newWidth > 0) {
-          setContainerWidth(newWidth);
-        }
+    let frame: number | null = null;
+    let isActive = true;
+
+    const scheduleMeasure = () => {
+      if (!isActive) return;
+      if (frame) {
+        cancelAnimationFrame(frame);
       }
+      frame = window.requestAnimationFrame(() => {
+        measureWordWidths();
+      });
     };
 
-    // Calculate width immediately on render.
-    calculateAndSetWidth();
-    
-    // Recalculate after fonts load to get the correct size with custom fonts applied.
+    scheduleMeasure();
+
+    const handleResize = () => scheduleMeasure();
+    window.addEventListener('resize', handleResize);
+
     const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
     if (fonts) {
-      let isActive = true;
       fonts.ready.then(() => {
-        if (isActive) {
-          calculateAndSetWidth();
-        }
+        scheduleMeasure();
       });
-      // Add resize listener to handle responsive font sizes.
-      window.addEventListener('resize', calculateAndSetWidth);
-      return () => {
-        isActive = false;
-        window.removeEventListener('resize', calculateAndSetWidth);
-      };
     }
 
-    window.addEventListener('resize', calculateAndSetWidth);
-    return () => window.removeEventListener('resize', calculateAndSetWidth);
-  }, [wordIndex, animatedWords]);
+    return () => {
+      isActive = false;
+      window.removeEventListener('resize', handleResize);
+      if (frame) {
+        cancelAnimationFrame(frame);
+      }
+    };
+  }, [measureWordWidths, animatedWords.length]);
 
   const titleEnd = t('hero.title.end');
   const lastCommaIndex = titleEnd.lastIndexOf(',');
@@ -210,10 +254,14 @@ const Hero: React.FC = () => {
         ))}
       </div>
       <div className="absolute inset-0">
-        {backgroundImages.map((src, index) => (
+        {heroBackgroundImages.map(({ src, srcSet }, index) => (
             <div key={src} className={`absolute inset-0 transition-opacity duration-3000 ease-in-out ${index === activeIndex ? 'opacity-100' : 'opacity-0'}`}>
                 <img 
                     src={src}
+                    srcSet={srcSet}
+                    sizes="100vw"
+                    width={1600}
+                    height={900}
                     alt={t('hero.imageAlt')}
                     className="w-full h-full object-cover opacity-60 dark:opacity-50"
                     loading={index === 0 ? 'eager' : 'lazy'}
