@@ -71,7 +71,8 @@ const Header: React.FC = () => {
   const headerClasses = `
     sticky top-0 z-40 transition-all duration-500 ease-out
     ${isScrolled
-      ? 'bg-transparent backdrop-blur-sm shadow-[0_1px_0_0_rgba(15,23,42,0.08)] dark:shadow-[0_1px_0_0_rgba(15,23,42,0.6)]'
+      ? `backdrop-blur-xl supports-[backdrop-filter]:bg-white/75 supports-[backdrop-filter]:dark:bg-slate-950/60
+         bg-white/90 dark:bg-slate-950/80 shadow-[0_1px_0_0_rgba(15,23,42,0.08)] dark:shadow-[0_1px_0_0_rgba(15,23,42,0.6)]`
       : 'bg-transparent'
     }
   `;
