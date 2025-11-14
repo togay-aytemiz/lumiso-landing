@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, useCallback, useMemo, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { CheckCircleIcon } from './icons/CheckCircleIcon';
 import SectionBadge from './ui/SectionBadge';
@@ -194,105 +194,8 @@ const Hero: React.FC = () => {
     };
   }, []);
 
-  // Slot machine animation logic
-  const animatedWords = useMemo(
-    () => t('hero.animatedWords') as unknown as string[],
-    [t]
-  );
-  const [wordIndex, setWordIndex] = useState(0);
-  const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined);
-  const wordSpanRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const wordWidthsRef = useRef<number[]>([]);
-  const currentWordIndexRef = useRef(0);
-
-  useEffect(() => {
-    if (prefersReducedMotion || typeof window === 'undefined') return;
-    const interval = setInterval(() => {
-      setWordIndex(prev => (prev + 1) % animatedWords.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, [animatedWords.length, prefersReducedMotion]);
-
-  const animatedWordSlotWidth = useMemo(() => {
-    const longestWordLength = animatedWords.reduce((maxLength, word) => Math.max(maxLength, word.length), 0);
-    return Math.max(longestWordLength + 2, 12);
-  }, [animatedWords]);
-
-  useEffect(() => {
-    currentWordIndexRef.current = wordIndex;
-    const cachedWidth = wordWidthsRef.current[wordIndex];
-    if (cachedWidth) {
-      setContainerWidth(cachedWidth);
-    }
-  }, [wordIndex]);
-
-  useEffect(() => {
-    wordWidthsRef.current = [];
-    setContainerWidth(undefined);
-  }, [animatedWords.length]);
-
-  const measureWordWidths = useCallback(() => {
-    wordSpanRefs.current.forEach((span, index) => {
-      if (!span) return;
-      const width = span.getBoundingClientRect().width;
-      if (width > 0) {
-        wordWidthsRef.current[index] = width;
-      }
-    });
-    const currentWidth = wordWidthsRef.current[currentWordIndexRef.current];
-    if (currentWidth) {
-      setContainerWidth(currentWidth);
-    }
-  }, []);
-
-  useLayoutEffect(() => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') return;
-    let frame: number | null = null;
-    let isActive = true;
-
-    const scheduleMeasure = () => {
-      if (!isActive) return;
-      if (frame) {
-        cancelAnimationFrame(frame);
-      }
-      frame = window.requestAnimationFrame(() => {
-        measureWordWidths();
-      });
-    };
-
-    scheduleMeasure();
-
-    const handleResize = () => scheduleMeasure();
-    window.addEventListener('resize', handleResize);
-
-    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
-    if (fonts) {
-      fonts.ready.then(() => scheduleMeasure());
-    }
-
-    return () => {
-      isActive = false;
-      window.removeEventListener('resize', handleResize);
-      if (frame) {
-        cancelAnimationFrame(frame);
-      }
-    };
-  }, [measureWordWidths, animatedWords.length]);
-
-  const titleEnd = t('hero.title.end');
-  const lastCommaIndex = titleEnd.lastIndexOf(',');
-  const mainPart = lastCommaIndex !== -1 ? titleEnd.substring(0, lastCommaIndex) : titleEnd;
-  const commaPart = lastCommaIndex !== -1 ? titleEnd.substring(lastCommaIndex) : '';
-
   return (
     <section className="hero-critical relative bg-slate-950 text-white overflow-hidden pt-16 min-h-screen flex flex-col">
-      <div className="absolute -left-[9999px] -top-[9999px] text-4xl sm:text-5xl md:text-6xl font-bold" aria-hidden="true">
-        {animatedWords.map((word, index) => (
-          <span key={index} ref={el => { wordSpanRefs.current[index] = el; }}>
-            {word}
-          </span>
-        ))}
-      </div>
       <div className="hero-background absolute inset-0">
         {heroBackgroundImages.map(({ src, srcSet }, index) => (
             <div
@@ -324,38 +227,7 @@ const Hero: React.FC = () => {
                     <SectionBadge variant="glass">{t('hero.tag')}</SectionBadge>
                 </div>
               <h1 className="hero-heading text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight animate-slide-in-fade" style={{ animationDelay: '300ms' }}>
-                <span className="block sm:inline">{t('hero.title.start')}</span>
-                <span className="block sm:inline-block">
-                  <span
-                    className="inline-block relative overflow-hidden align-text-bottom leading-tight top-0.5"
-                    style={{
-                      height: '1.25em', // Corresponds to leading-tight
-                      width: containerWidth ? `${containerWidth}px` : `${animatedWordSlotWidth}ch`,
-                      transition: 'width 0.4s ease-in-out, opacity 0.2s linear',
-                      opacity: containerWidth ? 1 : 0.95,
-                    }}
-                  >
-                    <span
-                      className="absolute left-0 w-full"
-                      style={{
-                        transform: `translateY(-${wordIndex * 1.25}em)`,
-                        transition: 'transform 1s cubic-bezier(0.76, 0, 0.24, 1)',
-                      }}
-                    >
-                      {animatedWords.map((word) => (
-                        <span
-                          key={word}
-                          className="block text-center leading-tight hero-highlight-word"
-                        >
-                          {word}
-                        </span>
-                      ))}
-                    </span>
-                  </span>
-                </span>
-                <span className="block sm:inline">{mainPart}</span>
-                <span className="hidden sm:inline">{commaPart}</span>
-                <span className="block">{t('hero.title.line2')}</span>
+                {t('hero.title')}
               </h1>
               <p className="hero-subtitle mt-8 max-w-2xl mx-auto text-base sm:text-lg text-slate-300 animate-slide-in-fade" style={{ animationDelay: '500ms' }}>
                 {t('hero.subtitle')}
