@@ -3,6 +3,8 @@ import { useAppContext } from "../contexts/AppContext";
 import { CheckCircleIcon } from "./icons/CheckCircleIcon";
 import SectionBadge from "./ui/SectionBadge";
 import CTAButton from "./ui/CTAButton";
+import PrismaticBurst from "./PrismaticBurst";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
@@ -96,6 +98,7 @@ const heroBackgroundImages = heroBackgroundImageUrls.map((url) => ({
 
 const Hero: React.FC = () => {
   const { t } = useAppContext();
+  const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
   const intervalRef = useRef<number | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -126,9 +129,12 @@ const Hero: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || isMobile) {
       setActiveIndex(0);
       setVisibleIndex(0);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
       return;
     }
     startTimer();
@@ -137,7 +143,7 @@ const Hero: React.FC = () => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [prefersReducedMotion, startTimer]);
+  }, [prefersReducedMotion, startTimer, isMobile]);
 
   const handleImageLoad = useCallback(
     (index: number) => {
@@ -155,37 +161,58 @@ const Hero: React.FC = () => {
   );
 
   useEffect(() => {
+    if (isMobile) return;
     if (loadedImages[activeIndex]) {
       setVisibleIndex(activeIndex);
     }
-  }, [activeIndex, loadedImages]);
+  }, [activeIndex, loadedImages, isMobile]);
 
   return (
     <section className="hero-critical relative bg-slate-950 text-white overflow-hidden pt-16 min-h-screen flex flex-col">
       <div className="hero-background absolute inset-0">
-        {heroBackgroundImages.map(({ src, srcSet }, index) => (
-          <div
-            key={src}
-            className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${
-              index === visibleIndex ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <img
-              src={src}
-              srcSet={srcSet}
-              sizes="100vw"
-              width={1600}
-              height={900}
-              alt={t("hero.imageAlt")}
-              className="w-full h-full object-cover opacity-60 dark:opacity-50"
-              loading={index === 0 ? "eager" : "lazy"}
-              fetchPriority={index === 0 ? "high" : "auto"}
-              decoding="async"
-              onLoad={() => handleImageLoad(index)}
+        {isMobile ? (
+          <div style={{ width: "100%", height: "100%", position: "relative" }}>
+            <PrismaticBurst
+              animationType="rotate3d"
+              intensity={2}
+              speed={0.5}
+              distort={1}
+              paused={false}
+              offset={{ x: 0, y: 0 }}
+              hoverDampness={0.25}
+              rayCount={24}
+              mixBlendMode="lighten"
+              colors={["#ff007a", "#4d3dff", "#ffffff"]}
+              className="absolute inset-0"
             />
           </div>
-        ))}
-        <div className="hero-gradient absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/10"></div>
+        ) : (
+          <>
+            {heroBackgroundImages.map(({ src, srcSet }, index) => (
+              <div
+                key={src}
+                className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${
+                  index === visibleIndex ? "opacity-100" : "opacity-0"
+                }`}
+              >
+                <img
+                  src={src}
+                  srcSet={srcSet}
+                  sizes="100vw"
+                  width={1600}
+                  height={900}
+                  alt={t("hero.imageAlt")}
+                  className="w-full h-full object-cover opacity-60 dark:opacity-50"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                  decoding="async"
+                  onLoad={() => handleImageLoad(index)}
+                />
+              </div>
+            ))}
+            <div className="hero-gradient absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/10"></div>
+          </>
+        )}
       </div>
 
       <div className="hero-inner container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col flex-grow">

@@ -3,21 +3,7 @@ import { CheckCircleIcon } from "./icons/CheckCircleIcon";
 import { useAppContext } from "../contexts/AppContext";
 import CTAButton from "./ui/CTAButton";
 import PrismBackground from "./ui/PrismBackground";
-
-const useIsMobile = () => {
-  const [isMobile, setIsMobile] = React.useState(() =>
-    typeof window === "undefined" ? false : window.innerWidth < 640
-  );
-
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-    const onResize = () => setIsMobile(window.innerWidth < 640);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  return isMobile;
-};
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const BadgeList: React.FC<{ className?: string }> = ({ className }) => {
   const { t } = useAppContext();
