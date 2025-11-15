@@ -70,8 +70,18 @@ const Workflow: React.FC = () => {
                                                 <span className="ml-2 text-sm font-medium bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-full w-6 h-6 flex items-center justify-center">{column.cards.length}</span>
                                             </div>
                                             <div className="flex items-center space-x-1">
-                                                <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"><PlusIcon /></button>
-                                                <button className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"><MoreHorizontalIcon /></button>
+                                                <button
+                                                    className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                                                    aria-label={t('workflow.actions.addCard', { column: t(column.titleKey) })}
+                                                >
+                                                    <PlusIcon />
+                                                </button>
+                                                <button
+                                                    className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                                                    aria-label={t('workflow.actions.moreOptions', { column: t(column.titleKey) })}
+                                                >
+                                                    <MoreHorizontalIcon />
+                                                </button>
                                             </div>
                                         </div>
                                         <div className="p-4 space-y-4">

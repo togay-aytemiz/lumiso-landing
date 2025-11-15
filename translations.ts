@@ -162,6 +162,8 @@ export const translations = {
     "workflow.client.davidLee": "David Lee",
     "workflow.project.carterMaternity": "Carter Maternity Shoot",
     "workflow.client.emilyCarter": "Emily Carter",
+    "workflow.actions.addCard": "Add card to {column}",
+    "workflow.actions.moreOptions": "Open options for the {column} column",
 
     // AI Features
     "aiFeatures.tag": "Powered by AI",
@@ -205,6 +207,7 @@ export const translations = {
     "results.clientExp.project1.status": "Gallery Delivered",
     "results.clientExp.project2.name": "Chen Family Portraits",
     "results.clientExp.project2.status": "Editing Phase",
+    "results.clientExp.moreOptionsAria": "Open actions for {name}",
 
     // Testimonials
     "testimonials.tag": "From Our Community",
@@ -487,6 +490,8 @@ export const translations = {
     "workflow.client.davidLee": "Davut Işık",
     "workflow.project.carterMaternity": "Kaya Doğum Çekimi",
     "workflow.client.emilyCarter": "Emel Kaya",
+    "workflow.actions.addCard": "{column} sütununa kart ekle",
+    "workflow.actions.moreOptions": "{column} sütunu seçeneklerini aç",
 
     // AI Features
     "aiFeatures.tag": "Yapay Zeka Destekli",
@@ -530,6 +535,7 @@ export const translations = {
     "results.clientExp.project1.status": "Galeri Teslim Edildi",
     "results.clientExp.project2.name": "Can Aile Portreleri",
     "results.clientExp.project2.status": "Düzenleme Aşamasında",
+    "results.clientExp.moreOptionsAria": "{name} kartı seçeneklerini aç",
 
     // Testimonials
     "testimonials.tag": "Topluluğumuzdan",

@@ -14,14 +14,14 @@ const CTA: React.FC = () => {
           <div className="absolute inset-0">
             <PrismBackground
               animationType="rotate"
-              timeScale={0.5}
+              timeScale={0.4}
               height={3.5}
-              baseWidth={5.5}
-              scale={3.6}
+              baseWidth={6}
+              scale={4}
               hueShift={0}
               colorFrequency={1}
               noise={0.1}
-              glow={1}
+              glow={0.7}
             />
           </div>
           <div className="relative flex min-h-[560px] flex-col items-center justify-center text-center px-6 py-16 sm:py-24 gap-6">

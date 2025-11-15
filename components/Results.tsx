@@ -134,7 +134,10 @@ const Results: React.FC = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <button className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
+                    <button
+                      className="text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
+                      aria-label={t('results.clientExp.moreOptionsAria', { name: card.name })}
+                    >
                       <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" /></svg>
                     </button>
                   </div>

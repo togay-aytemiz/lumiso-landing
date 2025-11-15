@@ -7,17 +7,52 @@ import CTAButton from './ui/CTAButton';
 import BrowserMockup from './ui/BrowserMockup';
 
 const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      width="24"
+      height="24"
+      aria-hidden="true"
+      focusable="false"
+    >
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
 );
 
 const DotsHorizontalIcon: React.FC<{ className?: string }> = ({ className }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      width="24"
+      height="24"
+      aria-hidden="true"
+      focusable="false"
+    >
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
     </svg>
 );
 
+
+const heroMockupImages = [
+    {
+        src: 'https://images.unsplash.com/photo-1516726817505-f5ed825624d8?auto=format&fit=crop&w=600&q=75',
+        alt: 'Bride getting ready before a photoshoot'
+    },
+    {
+        src: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=75',
+        alt: 'Photographer guiding a couple during an outdoor session'
+    },
+    {
+        src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=75',
+        alt: 'Photographer editing images on a laptop'
+    },
+];
 
 const ProjectDashboardMockup: React.FC = () => {
     return (
@@ -57,9 +92,19 @@ const ProjectDashboardMockup: React.FC = () => {
                         <div>
                             <h3 className="font-semibold text-slate-700 dark:text-slate-200 text-sm mb-2">Recent Files</h3>
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                <div className="aspect-[3/4] bg-slate-200 dark:bg-slate-700 rounded-md bg-cover bg-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1542042161-d10f76236248?w=200')"}}></div>
-                                <div className="aspect-[3/4] bg-slate-200 dark:bg-slate-700 rounded-md bg-cover bg-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1519225345934-2b99b278d488?w=200')"}}></div>
-                                <div className="aspect-[3/4] bg-slate-200 dark:bg-slate-700 rounded-md bg-cover bg-center" style={{backgroundImage: "url('https://images.unsplash.com/photo-1515934751635-481eff0422d7?w=200')"}}></div>
+                                {heroMockupImages.map(image => (
+                                    <div key={image.src} className="aspect-[3/4] bg-slate-200 dark:bg-slate-700 rounded-md overflow-hidden">
+                                        <img
+                                          src={image.src}
+                                          alt={image.alt}
+                                          loading="lazy"
+                                          decoding="async"
+                                          width={600}
+                                          height={800}
+                                          className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                ))}
                                 <div className="aspect-[3/4] bg-slate-100 dark:bg-slate-800 rounded-md flex items-center justify-center">
                                     <DotsHorizontalIcon className="w-6 h-6 text-slate-400"/>
                                 </div>
@@ -178,21 +223,6 @@ const Hero: React.FC = () => {
       setVisibleIndex(activeIndex);
     }
   }, [activeIndex, loadedImages]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const preloadedImages = heroBackgroundImages.map(({ src }) => {
-      const image = new Image();
-      image.decoding = 'async';
-      image.src = src;
-      return image;
-    });
-    return () => {
-      preloadedImages.forEach((image) => {
-        image.src = '';
-      });
-    };
-  }, []);
 
   return (
     <section className="hero-critical relative bg-slate-950 text-white overflow-hidden pt-16 min-h-screen flex flex-col">
