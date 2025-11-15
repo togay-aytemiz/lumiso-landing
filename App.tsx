@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import WhyLumiso from './components/WhyLumiso';
@@ -23,6 +23,11 @@ const SectionFallback: React.FC = () => (
 );
 
 const App: React.FC = () => {
+  useEffect(() => {
+    document.documentElement.classList.remove('preload');
+    document.documentElement.classList.add('app-ready');
+  }, []);
+
   return (
     <div className="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200 font-sans antialiased transition-colors duration-300">
       <Header />
