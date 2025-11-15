@@ -11,7 +11,6 @@ import ScrollToTopButton from './components/ScrollToTopButton';
 
 const AIFeatures = lazy(() => import('./components/AIFeatures'));
 const Results = lazy(() => import('./components/Results'));
-const Pricing = lazy(() => import('./components/Pricing'));
 const Testimonials = lazy(() => import('./components/Testimonials'));
 const CTA = lazy(() => import('./components/CTA'));
 const FAQ = lazy(() => import('./components/FAQ'));
@@ -43,9 +42,6 @@ const App: React.FC = () => {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Results />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Pricing />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Testimonials />

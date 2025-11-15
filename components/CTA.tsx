@@ -4,8 +4,44 @@ import { useAppContext } from "../contexts/AppContext";
 import CTAButton from "./ui/CTAButton";
 import PrismBackground from "./ui/PrismBackground";
 
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = React.useState(() =>
+    typeof window === "undefined" ? false : window.innerWidth < 640
+  );
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  return isMobile;
+};
+
+const BadgeList: React.FC<{ className?: string }> = ({ className }) => {
+  const { t } = useAppContext();
+  return (
+    <div
+      className={`flex flex-col sm:flex-row items-center justify-center gap-4 text-sm font-medium text-white/80 ${
+        className ?? ""
+      }`}
+    >
+      <div className="flex items-center gap-2">
+        <CheckCircleIcon className="w-5 h-5 text-brand-teal-300" />
+        <span>{t("hero.cta.subtext.line1")}</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <CheckCircleIcon className="w-5 h-5 text-brand-teal-300" />
+        <span>{t("hero.cta.subtext.line2")}</span>
+      </div>
+    </div>
+  );
+};
+
 const CTA: React.FC = () => {
   const { t } = useAppContext();
+  const isMobile = useIsMobile();
 
   return (
     <section id="contact" className="py-12 sm:py-20">
@@ -16,44 +52,36 @@ const CTA: React.FC = () => {
               animationType="rotate"
               timeScale={0.4}
               height={3.5}
-              baseWidth={6}
-              scale={4}
+              baseWidth={isMobile ? 2 : 6}
+              scale={isMobile ? 3.6 : 4}
               hueShift={0}
               colorFrequency={1}
               noise={0.1}
               glow={0.7}
             />
           </div>
-          <div className="relative flex min-h-[560px] flex-col items-center justify-center text-center px-6 py-16 sm:py-24 gap-6">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm font-medium text-white/80">
-              <div className="flex items-center gap-2">
-                <CheckCircleIcon className="w-5 h-5 text-brand-teal-300" />
-                <span>{t("hero.cta.subtext.line1")}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircleIcon className="w-5 h-5 text-brand-teal-300" />
-                <span>{t("hero.cta.subtext.line2")}</span>
-              </div>
-            </div>
+          <div className="relative flex min-h-[480px] sm:min-h-[560px] flex-col items-center justify-center text-center px-5 sm:px-6 py-12 sm:py-24 gap-5">
+            <BadgeList className="hidden sm:flex" />
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/30 px-5 py-2 text-sm font-semibold tracking-wide uppercase">
               <span className="h-2 w-2 rounded-full bg-white" />
               {t("cta.badge")}
             </span>
-            <h2 className="text-4xl sm:text-5xl font-bold leading-tight max-w-3xl drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
+            <h2 className="text-3xl sm:text-5xl font-bold leading-snug max-w-3xl drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
               {t("cta.title")}
             </h2>
-            <p className="text-lg sm:text-xl text-white/85 max-w-2xl">
+            <p className="text-base sm:text-xl text-white/85 max-w-2xl">
               {t("cta.subtitle")}
             </p>
-            <div className="mt-8 flex flex-col items-center gap-3">
+            <div className="mt-4 flex flex-col items-center gap-3">
               <CTAButton
                 href="#"
                 variant="contrast"
-                className="rounded-full px-10 py-4 text-base sm:text-lg"
+                className="rounded-full px-8 py-3 text-base sm:px-10 sm:py-4 sm:text-lg whitespace-nowrap"
               >
                 {t("cta.button")}
               </CTAButton>
             </div>
+            <BadgeList className="flex sm:hidden pt-2" />
           </div>
         </div>
       </div>

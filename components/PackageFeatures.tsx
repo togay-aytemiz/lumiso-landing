@@ -6,6 +6,16 @@ import { ServiceIcon } from './icons/ServiceIcon';
 import { SessionIcon } from './icons/SessionIcon';
 import { ProposalIcon } from './icons/ProposalIcon';
 
+const ScreenshotPlaceholder: React.FC<{ label: string; description?: string }> = ({ label, description }) => (
+    <div className="flex flex-col items-center justify-center w-full h-full text-center px-6 py-10 gap-4 text-slate-500 dark:text-slate-300">
+        <p className="text-xl font-semibold">{label}</p>
+        {description && <p className="text-sm text-slate-500/80 dark:text-slate-300/80 max-w-sm">{description}</p>}
+        <div className="rounded-xl border border-dashed border-slate-400/70 dark:border-slate-600/70 px-4 py-2 text-sm">
+            Add a 1600×1600 PNG here
+        </div>
+    </div>
+);
+
 const PackageFeatures: React.FC = () => {
     const { t } = useAppContext();
     const [activeIndex, setActiveIndex] = useState(0);
@@ -23,23 +33,10 @@ const PackageFeatures: React.FC = () => {
             descriptionKey: 'packageFeatures.tab1.description', 
             icon: <PackageIcon />,
             visual: (
-                <div className="flex flex-col space-y-3 p-4">
-                    <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg shadow-inner">
-                        <h4 className="font-bold text-slate-700 dark:text-slate-200">Gold Wedding Package</h4>
-                    </div>
-                    <div className="flex items-center">
-                        <div className="w-12 h-12 bg-sky-200 dark:bg-sky-900 rounded-lg flex items-center justify-center"><SessionIcon className="w-6 h-6 text-sky-600 dark:text-sky-300" /></div>
-                        <div className="ml-3 h-5 w-32 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                    </div>
-                    <div className="flex items-center">
-                        <div className="w-12 h-12 bg-amber-200 dark:bg-amber-900 rounded-lg flex items-center justify-center"><ServiceIcon className="w-6 h-6 text-amber-600 dark:text-amber-300" /></div>
-                        <div className="ml-3 h-5 w-48 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                    </div>
-                    <div className="flex items-center ring-2 ring-brand-teal-500 rounded-lg p-2 bg-slate-100/50 dark:bg-slate-800/50">
-                        <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-lg flex items-center justify-center"><PlusIcon /></div>
-                        <div className="ml-3 h-5 w-24 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                    </div>
-                </div>
+                <ScreenshotPlaceholder
+                    label="Package Builder Screenshot"
+                    description="Drop your package creation UI here to show how photographers assemble offers."
+                />
             )
         },
         { 
@@ -47,18 +44,10 @@ const PackageFeatures: React.FC = () => {
             descriptionKey: 'packageFeatures.tab2.description', 
             icon: <ServiceIcon />,
             visual: (
-                <div className="flex flex-col space-y-3 p-4">
-                    {[
-                        { title: 'Full Day Coverage', price: '$3500' },
-                        { title: 'Engagement Session', price: '$500' },
-                        { title: 'Fine Art Album', price: '$1200' },
-                    ].map(item => (
-                        <div key={item.title} className="flex items-center justify-between bg-slate-100 dark:bg-slate-800 p-3 rounded-lg shadow-inner">
-                            <div className="h-5 w-40 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                            <div className="h-5 w-20 bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                        </div>
-                    ))}
-                </div>
+                <ScreenshotPlaceholder
+                    label="Service Catalog Screenshot"
+                    description="Show the list of services with prices and availability."
+                />
             )
         },
         { 
@@ -66,18 +55,10 @@ const PackageFeatures: React.FC = () => {
             descriptionKey: 'packageFeatures.tab3.description', 
             icon: <SessionIcon />,
             visual: (
-                <div className="grid grid-cols-2 gap-3 p-4">
-                    {[
-                        { title: 'Wedding', color: 'bg-rose-100 dark:bg-rose-900/50 text-rose-700 dark:text-rose-300' },
-                        { title: 'Newborn', color: 'bg-sky-100 dark:bg-sky-900/50 text-sky-700 dark:text-sky-300' },
-                        { title: 'Commercial', color: 'bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300' },
-                        { title: 'Portraits', color: 'bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300' },
-                    ].map(item => (
-                        <div key={item.title} className={`${item.color} aspect-square rounded-lg flex items-center justify-center font-bold text-lg`}>
-                            {item.title}
-                        </div>
-                    ))}
-                </div>
+                <ScreenshotPlaceholder
+                    label="Session Types Screenshot"
+                    description="Illustrate how session pipelines look inside the product."
+                />
             )
         },
         { 
@@ -85,14 +66,10 @@ const PackageFeatures: React.FC = () => {
             descriptionKey: 'packageFeatures.tab4.description', 
             icon: <ProposalIcon />,
             visual: (
-                <div className="p-4">
-                    <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-lg shadow-inner">
-                        <div className="h-8 w-3/4 bg-slate-200 dark:bg-slate-700 rounded-full mb-4"></div>
-                        <div className="h-4 w-full bg-slate-200 dark:bg-slate-700 rounded-full"></div>
-                        <div className="h-4 w-5/6 bg-slate-200 dark:bg-slate-700 rounded-full mt-2"></div>
-                        <div className="h-12 w-1/2 bg-brand-teal-200 dark:bg-brand-teal-900/50 rounded-lg mt-6"></div>
-                    </div>
-                </div>
+                <ScreenshotPlaceholder
+                    label="Proposal / Pricing Screenshot"
+                    description="Show case your interactive proposals or payment planner."
+                />
             )
         },
     ];

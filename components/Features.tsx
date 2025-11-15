@@ -1,7 +1,31 @@
 import React, { useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
-import BrowserMockup from './ui/BrowserMockup';
+const BrowserMockup: React.FC<{ className?: string; style?: React.CSSProperties; children?: React.ReactNode }> = ({ className = '', style, children }) => (
+  <div
+    className={`relative rounded-[28px] border border-white/30 dark:border-slate-800 bg-white/70 dark:bg-slate-900/80 shadow-2xl shadow-black/20 overflow-hidden backdrop-blur-xl ${className}`}
+    style={style}
+  >
+    <div className="flex items-center gap-1 px-5 py-4 border-b border-white/40 dark:border-slate-800 bg-white/40 dark:bg-slate-900/60">
+      <span className="w-3 h-3 rounded-full bg-red-400"></span>
+      <span className="w-3 h-3 rounded-full bg-amber-300"></span>
+      <span className="w-3 h-3 rounded-full bg-emerald-400"></span>
+    </div>
+    {children}
+  </div>
+);
+
+const ScreenshotPlaceholder: React.FC<{ label: string }> = ({ label }) => (
+  <div className="flex flex-col gap-6 items-center justify-center w-full h-full text-center px-10 py-12 text-slate-500 dark:text-slate-300">
+    <p className="text-xl font-semibold">{label}</p>
+    <p className="text-base text-slate-500/80 dark:text-slate-300/80 max-w-md">
+      Replace this placeholder with a high-resolution screenshot to show the product in action.
+    </p>
+    <div className="rounded-xl border border-dashed border-slate-400/60 dark:border-slate-600/60 px-6 py-3 text-sm">
+      Suggested size: 1600×1000 PNG
+    </div>
+  </div>
+);
 import SectionHeader from './ui/SectionHeader';
 
 const Features: React.FC = () => {
@@ -50,14 +74,8 @@ const Features: React.FC = () => {
 
             {/* Image */}
             <div ref={reportsImageRef} className={`relative lg:col-start-2 lg:row-start-1 lg:row-span-2 ${animationClasses(isReportsImageVisible, 'delay-200')}`}>
-              <BrowserMockup className="animate-float">
-                  <img
-                      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop"
-                      alt="Lumiso Analytics Dashboard"
-                      className="w-full h-full object-cover rounded-b-xl"
-                      loading="lazy"
-                      decoding="async"
-                  />
+              <BrowserMockup style={{ minHeight: '420px' }}>
+                <ScreenshotPlaceholder label="Screenshot slot: Analytics / Reports" />
               </BrowserMockup>
             </div>
 
@@ -98,14 +116,8 @@ const Features: React.FC = () => {
             
             {/* Image */}
             <div ref={alertsImageRef} className={`relative lg:col-start-1 lg:row-start-1 lg:row-span-2 ${animationClasses(isAlertsImageVisible, 'delay-200')}`}>
-              <BrowserMockup className="animate-float" style={{ animationDelay: '-3s' }}>
-                  <img
-                      src="https://images.unsplash.com/photo-1634733350926-42d7654a5a74?q=80&w=1600&auto=format&fit=crop"
-                      alt="Lumiso Alerts and Workflow"
-                      className="w-full h-full object-cover rounded-b-xl"
-                      loading="lazy"
-                      decoding="async"
-                  />
+              <BrowserMockup style={{ minHeight: '400px' }}>
+                <ScreenshotPlaceholder label="Screenshot slot: Workflow / Alerts" />
               </BrowserMockup>
             </div>
 

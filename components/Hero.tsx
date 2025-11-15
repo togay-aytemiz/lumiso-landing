@@ -4,7 +4,6 @@ import { useAppContext } from '../contexts/AppContext';
 import { CheckCircleIcon } from './icons/CheckCircleIcon';
 import SectionBadge from './ui/SectionBadge';
 import CTAButton from './ui/CTAButton';
-import BrowserMockup from './ui/BrowserMockup';
 
 const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
     <svg
@@ -39,106 +38,22 @@ const DotsHorizontalIcon: React.FC<{ className?: string }> = ({ className }) => 
 );
 
 
-const heroMockupImages = [
-    {
-        src: 'https://images.unsplash.com/photo-1516726817505-f5ed825624d8?auto=format&fit=crop&w=600&q=75',
-        alt: 'Bride getting ready before a photoshoot'
-    },
-    {
-        src: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=75',
-        alt: 'Photographer guiding a couple during an outdoor session'
-    },
-    {
-        src: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=75',
-        alt: 'Photographer editing images on a laptop'
-    },
-];
-
-const ProjectDashboardMockup: React.FC = () => {
-    return (
-        <BrowserMockup className="max-w-7xl mx-auto">
-            <div className="p-4 sm:p-6 bg-white dark:bg-slate-900">
-                {/* Dashboard Header */}
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg sm:text-xl font-bold text-slate-800 dark:text-white">Thompson Wedding</h2>
-                    <span className="px-3 py-1 text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300 rounded-full">In Progress</span>
-                </div>
-                {/* Dashboard Body */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                    {/* Left Column */}
-                    <div className="lg:col-span-2 space-y-4">
-                        {/* Timeline Widget */}
-                        <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg">
-                            <h3 className="font-semibold text-slate-700 dark:text-slate-200 text-sm">Project Timeline</h3>
-                            <ul className="mt-3 space-y-3">
-                                <li className="flex items-center">
-                                    <CheckCircleIcon className="w-5 h-5 text-green-500 mr-3" />
-                                    <span className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm">Booking Confirmed</span>
-                                    <span className="ml-auto text-slate-400 text-xs">June 1st</span>
-                                </li>
-                                <li className="flex items-center">
-                                    <ClockIcon className="w-5 h-5 text-amber-500 mr-3" />
-                                    <span className="text-slate-800 dark:text-slate-100 font-medium text-xs sm:text-sm">Editing Photos</span>
-                                    <span className="ml-auto text-slate-400 text-xs">In Progress</span>
-                                </li>
-                                <li className="flex items-center opacity-50">
-                                    <ClockIcon className="w-5 h-5 text-slate-400 mr-3" />
-                                    <span className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm">Gallery Delivery</span>
-                                    <span className="ml-auto text-slate-400 text-xs">Est. July 15th</span>
-                                </li>
-                            </ul>
-                        </div>
-                        {/* Recent Files Widget */}
-                        <div>
-                            <h3 className="font-semibold text-slate-700 dark:text-slate-200 text-sm mb-2">Recent Files</h3>
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                                {heroMockupImages.map(image => (
-                                    <div key={image.src} className="aspect-[3/4] bg-slate-200 dark:bg-slate-700 rounded-md overflow-hidden">
-                                        <img
-                                          src={image.src}
-                                          alt={image.alt}
-                                          loading="lazy"
-                                          decoding="async"
-                                          width={600}
-                                          height={800}
-                                          className="w-full h-full object-cover"
-                                        />
-                                    </div>
-                                ))}
-                                <div className="aspect-[3/4] bg-slate-100 dark:bg-slate-800 rounded-md flex items-center justify-center">
-                                    <DotsHorizontalIcon className="w-6 h-6 text-slate-400"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Right Column */}
-                    <div className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-lg">
-                        <h3 className="font-semibold text-slate-700 dark:text-slate-200 text-sm">Client Details</h3>
-                        <div className="flex items-center mt-3">
-                             <img
-                                src="https://i.pravatar.cc/80?u=alexthompson"
-                                alt="Alex Thompson"
-                                className="w-10 h-10 rounded-full"
-                                loading="lazy"
-                                decoding="async"
-                                width={40}
-                                height={40}
-                              />
-                             <div className="ml-3">
-                                <p className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Alex Thompson</p>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">alex.t@example.com</p>
-                             </div>
-                        </div>
-                        <h3 className="font-semibold text-slate-700 dark:text-slate-200 text-sm mt-4">Notes</h3>
-                        <p className="mt-2 text-xs text-slate-500 dark:text-slate-400 italic">
-                            Client requested extra edits for black & white photos. Follow up on album design choices.
-                        </p>
-                    </div>
-                </div>
+const HeroScreenshotPlaceholder: React.FC = () => (
+    <div className="w-full max-w-5xl mx-auto mt-16 rounded-[22px] border border-white/10 bg-white/5 dark:bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/30 overflow-hidden">
+        <div className="bg-slate-900/60 text-white px-6 py-3 flex items-center justify-between text-sm">
+            <p className="font-semibold">App screenshot coming soon</p>
+            <span className="text-slate-300">Drop your image into `public/hero-screenshot.png`</span>
+        </div>
+        <div className="relative aspect-[16/9] flex items-center justify-center bg-slate-900/40">
+            <div className="w-3/4 text-center space-y-3">
+                <p className="text-slate-300 text-lg font-semibold">Reserved for product preview</p>
+                <p className="text-slate-400 text-base">
+                    Replace this placeholder with your hero screenshot to immediately show the UI. Suggested size: 1600×900 PNG with transparent corners.
+                </p>
             </div>
-        </BrowserMockup>
-    );
-};
+        </div>
+    </div>
+);
 
 const HERO_IMAGE_WIDTHS = [768, 1200, 1600, 2000];
 const HERO_IMAGE_QUALITY = 70;
@@ -291,7 +206,7 @@ const Hero: React.FC = () => {
         </div>
         
         <div className="hero-dashboard mt-20 animate-slide-in-fade" style={{ animationDelay: '900ms' }}>
-          <ProjectDashboardMockup />
+          <HeroScreenshotPlaceholder />
         </div>
       </div>
     </section>

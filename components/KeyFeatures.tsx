@@ -5,6 +5,14 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import SectionHeader from './ui/SectionHeader';
 import SpotlightCard from './ui/SpotlightCard';
 
+const FeatureIllustrationPlaceholder: React.FC<{ label: string; note?: string }> = ({ label, note }) => (
+  <div className="mt-8 border border-dashed border-slate-300/80 dark:border-slate-600/80 rounded-2xl bg-white/60 dark:bg-black/30 px-6 py-8 text-center text-slate-500 dark:text-slate-300">
+    <p className="text-lg font-semibold">{label}</p>
+    {note && <p className="mt-2 text-sm text-slate-500/80 dark:text-slate-300/80">{note}</p>}
+    <div className="mt-6 text-xs uppercase tracking-wide text-slate-400">Drop UI screenshot here</div>
+  </div>
+);
+
 const KeyFeatures: React.FC = () => {
   const { t } = useAppContext();
 
@@ -30,19 +38,7 @@ const KeyFeatures: React.FC = () => {
       bgColor: 'bg-amber-50 dark:bg-amber-900/20',
       borderColor: 'border-amber-200 dark:border-amber-800/30',
       spotlightColor: 'rgba(245, 158, 11, 0.25)',
-      illustration: (
-        <div className="mt-8 bg-white/50 dark:bg-black/20 p-4 rounded-lg shadow-inner space-y-3">
-          <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex-shrink-0"></div>
-            <div className="ml-3 w-full">
-              <div className="h-3 w-24 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-              <div className="h-2 w-32 mt-1.5 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-            </div>
-          </div>
-          <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-700"></div>
-          <div className="h-2 w-4/5 rounded-full bg-slate-200 dark:bg-slate-700"></div>
-        </div>
-      )
+      illustration: <FeatureIllustrationPlaceholder label="Screenshot slot: Contact timeline" note="Show the full client card with notes, invoices, reminders." />
     },
     {
       titleKey: 'keyFeatures.card2.title',
@@ -50,13 +46,7 @@ const KeyFeatures: React.FC = () => {
       bgColor: 'bg-sky-50 dark:bg-sky-900/20',
       borderColor: 'border-sky-200 dark:border-sky-800/30',
       spotlightColor: 'rgba(14, 165, 233, 0.25)',
-      illustration: (
-         <div className="mt-8 bg-white/50 dark:bg-black/20 p-4 rounded-lg shadow-inner flex items-center justify-around">
-            <div className="w-16 h-10 rounded-lg bg-slate-200 dark:bg-slate-700"></div>
-             <svg className="w-8 h-8 text-slate-300 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            <div className="w-16 h-10 rounded-lg bg-slate-200 dark:bg-slate-700"></div>
-        </div>
-      )
+      illustration: <FeatureIllustrationPlaceholder label="Screenshot slot: Calendar + reminders" note="Highlight the daily digest or calendar UI here." />
     },
     {
       titleKey: 'keyFeatures.card3.title',
@@ -64,18 +54,7 @@ const KeyFeatures: React.FC = () => {
       bgColor: 'bg-violet-50 dark:bg-violet-900/20',
       borderColor: 'border-violet-200 dark:border-violet-800/30',
       spotlightColor: 'rgba(167, 139, 250, 0.25)',
-      illustration: (
-        <div className="mt-8 bg-white/50 dark:bg-black/20 p-4 rounded-lg shadow-inner">
-            <div className="grid grid-cols-3 gap-2">
-                <div className="aspect-square rounded bg-slate-200 dark:bg-slate-700"></div>
-                <div className="aspect-square rounded bg-slate-200 dark:bg-slate-700 ring-2 ring-brand-teal-500"></div>
-                <div className="aspect-square rounded bg-slate-200 dark:bg-slate-700"></div>
-                <div className="aspect-square rounded bg-slate-200 dark:bg-slate-700"></div>
-                <div className="aspect-square rounded bg-slate-200 dark:bg-slate-700"></div>
-                <div className="aspect-square rounded bg-slate-200 dark:bg-slate-700"></div>
-            </div>
-        </div>
-      )
+      illustration: <FeatureIllustrationPlaceholder label="Screenshot slot: Gallery / session grid" note="Use a grid of sessions or albums to illustrate the experience." />
     }
   ];
 

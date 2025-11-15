@@ -257,9 +257,9 @@ export const translations = {
 
     // CTA
     "cta.badge": "New Background",
-    "cta.title": "A spectrum of workflows that spark creativity",
+    "cta.title": "Keep every shoot on track",
     "cta.subtitle":
-      "Immerse your studio in the new Prism experience and keep clients inspired while Lumiso automates the busywork.",
+      "Run contacts, shoots, and payments from one workspace so you can stay focused on the art.",
     "cta.button": "Start Your Free Trial",
     "cta.secondaryButton": "Learn More",
     "cta.imageAlt":
@@ -585,10 +585,10 @@ export const translations = {
 
     // CTA
     "cta.badge": "Işığınızı Ortaya Çıkarın",
-    "cta.title": "İşinizi kolaylaştırmanın tam zamanı",
+    "cta.title": "Stüdyonuzu tek yerden yönetin",
     "cta.subtitle":
-      "Kişilerinizi, çekimlerinizi ve ödemelerinizi tek merkezden yönetmeye başlayın. Lumiso stüdyonuzu düzenlerken siz yaratıcılığa odaklanın.",
-    "cta.button": "Ücretsiz Denemenizi Başlatın",
+      "Kişiler, çekimler ve ödemeler Lumiso'da birleşsin; siz çekiminize odaklanın.",
+    "cta.button": "Ücretsiz Denemeye Başla",
     "cta.secondaryButton": "Daha Fazla Bilgi",
     "cta.imageAlt":
       "Lumiso iş akışını gösteren bir dizüstü bilgisayarda fotoğraf düzenleyen bir fotoğrafçı.",
