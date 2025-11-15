@@ -1,5 +1,27 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type CSSProperties } from 'react';
 import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl';
+
+interface PrismaticBurstProps {
+  intensity?: number;
+  speed?: number;
+  animationType?: 'rotate' | 'rotate3d' | 'hover';
+  colors?: string[];
+  distort?: number;
+  paused?: boolean;
+  offset?: {
+    x?: number | string;
+    y?: number | string;
+  };
+  hoverDampness?: number;
+  rayCount?: number;
+  mixBlendMode?: CSSProperties['mixBlendMode'];
+  className?: string;
+}
+
+type BrowserWindow = Window & typeof globalThis & {
+  ResizeObserver?: typeof ResizeObserver;
+  IntersectionObserver?: typeof IntersectionObserver;
+};
 
 const vertexShader = `#version 300 es
 in vec2 position;
@@ -174,7 +196,7 @@ void main(){
     fragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
 }`;
 
-const hexToRgb01 = hex => {
+const hexToRgb01 = (hex: string): [number, number, number] => {
   let h = hex.trim();
   if (h.startsWith('#')) h = h.slice(1);
   if (h.length === 3) {
@@ -191,12 +213,11 @@ const hexToRgb01 = hex => {
   return [r, g, b];
 };
 
-const toPx = v => {
-  if (v == null) return 0;
-  if (typeof v === 'number') return v;
-  const s = String(v).trim();
-  const num = parseFloat(s.replace('px', ''));
-  return isNaN(num) ? 0 : num;
+const toPx = (value?: number | string): number => {
+  if (value == null) return 0;
+  if (typeof value === 'number') return value;
+  const num = parseFloat(value.replace('px', '').trim());
+  return Number.isNaN(num) ? 0 : num;
 };
 
 const PrismaticBurst = ({
@@ -209,19 +230,20 @@ const PrismaticBurst = ({
   offset = { x: 0, y: 0 },
   hoverDampness = 0,
   rayCount,
-  mixBlendMode = 'lighten'
-}) => {
-  const containerRef = useRef(null);
-  const programRef = useRef(null);
-  const rendererRef = useRef(null);
-  const mouseTargetRef = useRef([0.5, 0.5]);
-  const mouseSmoothRef = useRef([0.5, 0.5]);
+  mixBlendMode = 'lighten',
+  className = '',
+}: PrismaticBurstProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const programRef = useRef<Program | null>(null);
+  const rendererRef = useRef<Renderer | null>(null);
+  const mouseTargetRef = useRef<[number, number]>([0.5, 0.5]);
+  const mouseSmoothRef = useRef<[number, number]>([0.5, 0.5]);
   const pausedRef = useRef(paused);
-  const gradTexRef = useRef(null);
+  const gradTexRef = useRef<Texture | null>(null);
   const hoverDampRef = useRef(hoverDampness);
   const isVisibleRef = useRef(true);
-  const meshRef = useRef(null);
-  const triRef = useRef(null);
+  const meshRef = useRef<Mesh | null>(null);
+  const triRef = useRef<Triangle | null>(null);
 
   useEffect(() => {
     pausedRef.current = paused;
@@ -231,10 +253,13 @@ const PrismaticBurst = ({
   }, [hoverDampness]);
 
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
     const container = containerRef.current;
     if (!container) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const win = window as BrowserWindow;
+    const doc: Document = document;
+    const dpr = Math.min(win.devicePixelRatio || 1, 2);
     const renderer = new Renderer({ dpr, alpha: false, antialias: false });
     rendererRef.current = renderer;
 
@@ -295,16 +320,17 @@ const PrismaticBurst = ({
       program.uniforms.uResolution.value = [gl.drawingBufferWidth, gl.drawingBufferHeight];
     };
 
-    let ro = null;
-    if ('ResizeObserver' in window) {
-      ro = new ResizeObserver(resize);
+    let ro: ResizeObserver | null = null;
+    const ResizeObserverCtor = win.ResizeObserver;
+    if (ResizeObserverCtor) {
+      ro = new ResizeObserverCtor(resize);
       ro.observe(container);
     } else {
-      window.addEventListener('resize', resize);
+      win.addEventListener('resize', resize);
     }
     resize();
 
-    const onPointer = e => {
+    const onPointer = (e: PointerEvent) => {
       const rect = container.getBoundingClientRect();
       const x = (e.clientX - rect.left) / Math.max(rect.width, 1);
       const y = (e.clientY - rect.top) / Math.max(rect.height, 1);
@@ -312,9 +338,10 @@ const PrismaticBurst = ({
     };
     container.addEventListener('pointermove', onPointer, { passive: true });
 
-    let io = null;
-    if ('IntersectionObserver' in window) {
-      io = new IntersectionObserver(
+    let io: IntersectionObserver | null = null;
+    const IntersectionObserverCtor = win.IntersectionObserver;
+    if (IntersectionObserverCtor) {
+      io = new IntersectionObserverCtor(
         entries => {
           if (entries[0]) isVisibleRef.current = entries[0].isIntersecting;
         },
@@ -323,19 +350,19 @@ const PrismaticBurst = ({
       io.observe(container);
     }
     const onVis = () => {};
-    document.addEventListener('visibilitychange', onVis);
+    doc.addEventListener('visibilitychange', onVis);
 
     let raf = 0;
     let last = performance.now();
     let accumTime = 0;
 
-    const update = now => {
+    const update = (now: number) => {
       const dt = Math.max(0, now - last) * 0.001;
       last = now;
-      const visible = isVisibleRef.current && !document.hidden;
+      const visible = isVisibleRef.current && !doc.hidden;
       if (!pausedRef.current) accumTime += dt;
       if (!visible) {
-        raf = requestAnimationFrame(update);
+        raf = win.requestAnimationFrame(update);
         return;
       }
       const tau = 0.02 + Math.max(0, Math.min(1, hoverDampRef.current)) * 0.5;
@@ -347,17 +374,17 @@ const PrismaticBurst = ({
       program.uniforms.uMouse.value = sm;
       program.uniforms.uTime.value = accumTime;
       renderer.render({ scene: meshRef.current });
-      raf = requestAnimationFrame(update);
+      raf = win.requestAnimationFrame(update);
     };
-    raf = requestAnimationFrame(update);
+    raf = win.requestAnimationFrame(update);
 
     return () => {
-      cancelAnimationFrame(raf);
+      win.cancelAnimationFrame(raf);
       container.removeEventListener('pointermove', onPointer);
       ro?.disconnect();
-      if (!ro) window.removeEventListener('resize', resize);
+      if (!ro) win.removeEventListener('resize', resize);
       io?.disconnect();
-      document.removeEventListener('visibilitychange', onVis);
+      doc.removeEventListener('visibilitychange', onVis);
       try {
         container.removeChild(gl.canvas);
       } catch (e) {
@@ -455,7 +482,11 @@ const PrismaticBurst = ({
     program.uniforms.uColorCount.value = count;
   }, [intensity, speed, animationType, colors, distort, offset, rayCount]);
 
-  return <div className="w-full h-full relative overflow-hidden" ref={containerRef} />;
+  const combinedClassName = ['w-full h-full relative overflow-hidden', className]
+    .filter(Boolean)
+    .join(' ');
+
+  return <div className={combinedClassName} ref={containerRef} />;
 };
 
 export default PrismaticBurst;

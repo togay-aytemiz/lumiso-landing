@@ -3,8 +3,6 @@ import { useAppContext } from "../contexts/AppContext";
 import { CheckCircleIcon } from "./icons/CheckCircleIcon";
 import SectionBadge from "./ui/SectionBadge";
 import CTAButton from "./ui/CTAButton";
-import PrismaticBurst from "./PrismaticBurst";
-import { useIsMobile } from "../hooks/useIsMobile";
 
 const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
@@ -72,40 +70,45 @@ const HeroScreenshotPlaceholder: React.FC = () => (
   </div>
 );
 
-const HERO_IMAGE_WIDTHS = [768, 1200, 1600, 2000];
-const HERO_IMAGE_QUALITY = 70;
-
-const heroBackgroundImageUrls = [
-  "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1475274226786-e636f48a5645?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1623783356340-95375aac85ce?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1594296459195-8b2f3fbf1c86?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1699401984773-f6bf9a20b774?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+const heroVideos = [
+  {
+    id: "studio-light-trails",
+    poster: "/videos/v1-hero.jpg",
+    sources: [
+      { type: "video/webm", src: "/videos/v1-hero.webm" },
+      { type: "video/mp4", src: "/videos/v1-hero.mp4" },
+    ],
+  },
+  {
+    id: "dolly-panels",
+    poster: "/videos/v2-hero.jpg",
+    sources: [
+      { type: "video/webm", src: "/videos/v2-hero.webm" },
+      { type: "video/mp4", src: "/videos/v2-hero.mp4" },
+    ],
+  },
+  {
+    id: "city-rush",
+    poster: "/videos/v3-hero.jpg",
+    sources: [
+      { type: "video/webm", src: "/videos/v3-hero.webm" },
+      { type: "video/mp4", src: "/videos/v3-hero.mp4" },
+    ],
+  },
 ];
 
-const withImageParams = (url: string, width: number) => {
-  const separator = url.includes("?") ? "&" : "?";
-  return `${url}${separator}auto=format&fit=crop&q=${HERO_IMAGE_QUALITY}&w=${width}`;
-};
-
-const heroBackgroundImages = heroBackgroundImageUrls.map((url) => ({
-  original: url,
-  src: withImageParams(url, 1600),
-  srcSet: HERO_IMAGE_WIDTHS.map(
-    (width) => `${withImageParams(url, width)} ${width}w`
-  ).join(", "),
-}));
+const VIDEO_ROTATION_INTERVAL = 12000;
 
 const Hero: React.FC = () => {
   const { t } = useAppContext();
-  const isMobile = useIsMobile();
-  const [activeIndex, setActiveIndex] = useState(0);
-  const intervalRef = useRef<number | null>(null);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-  const [visibleIndex, setVisibleIndex] = useState(0);
-  const [loadedImages, setLoadedImages] = useState<boolean[]>(() =>
-    heroBackgroundImages.map((_, index) => index === 0)
-  );
+  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+  const rotationRef = useRef<number | null>(null);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const hasMultipleVideos = heroVideos.length > 1;
+  const activeVideo = heroVideos[activeVideoIndex] ?? heroVideos[0];
+  const fallbackPoster = activeVideo?.poster ?? heroVideos[0]?.poster ?? "";
+  const activeSources = activeVideo?.sources ?? [];
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -116,103 +119,74 @@ const Hero: React.FC = () => {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  const startTimer = useCallback(() => {
-    if (typeof window === "undefined") return;
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
+  const stopVideoRotation = useCallback(() => {
+    if (rotationRef.current) {
+      clearInterval(rotationRef.current);
+      rotationRef.current = null;
     }
-    intervalRef.current = window.setInterval(() => {
-      setActiveIndex(
-        (prevIndex) => (prevIndex + 1) % heroBackgroundImages.length
-      );
-    }, 5000);
   }, []);
 
+  const startVideoRotation = useCallback(() => {
+    if (typeof window === "undefined") return;
+    if (!hasMultipleVideos) return;
+    stopVideoRotation();
+    rotationRef.current = window.setInterval(() => {
+      setActiveVideoIndex((prevIndex) => (prevIndex + 1) % heroVideos.length);
+    }, VIDEO_ROTATION_INTERVAL);
+  }, [hasMultipleVideos, stopVideoRotation]);
+
   useEffect(() => {
-    if (prefersReducedMotion || isMobile) {
-      setActiveIndex(0);
-      setVisibleIndex(0);
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+    if (prefersReducedMotion || !hasMultipleVideos) {
+      setActiveVideoIndex(0);
+      stopVideoRotation();
       return;
     }
-    startTimer();
+    startVideoRotation();
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      stopVideoRotation();
     };
-  }, [prefersReducedMotion, startTimer, isMobile]);
-
-  const handleImageLoad = useCallback(
-    (index: number) => {
-      setLoadedImages((prev) => {
-        if (prev[index]) return prev;
-        const updated = [...prev];
-        updated[index] = true;
-        return updated;
-      });
-      if (index === activeIndex) {
-        setVisibleIndex(index);
-      }
-    },
-    [activeIndex]
-  );
+  }, [hasMultipleVideos, prefersReducedMotion, startVideoRotation, stopVideoRotation]);
 
   useEffect(() => {
-    if (isMobile) return;
-    if (loadedImages[activeIndex]) {
-      setVisibleIndex(activeIndex);
-    }
-  }, [activeIndex, loadedImages, isMobile]);
+    setIsVideoLoaded(false);
+  }, [activeVideoIndex]);
+
+  const handleVideoLoaded = useCallback(() => {
+    setIsVideoLoaded(true);
+  }, []);
 
   return (
     <section className="hero-critical relative bg-slate-950 text-white overflow-hidden pt-16 min-h-screen flex flex-col">
       <div className="hero-background absolute inset-0">
-        {isMobile ? (
-          <div style={{ width: "100%", height: "100%", position: "relative" }}>
-            <PrismaticBurst
-              animationType="rotate3d"
-              intensity={2}
-              speed={0.5}
-              distort={1}
-              paused={false}
-              offset={{ x: 0, y: 0 }}
-              hoverDampness={0.25}
-              rayCount={24}
-              mixBlendMode="lighten"
-              colors={["#ff007a", "#4d3dff", "#ffffff"]}
-              className="absolute inset-0"
-            />
-          </div>
-        ) : (
-          <>
-            {heroBackgroundImages.map(({ src, srcSet }, index) => (
-              <div
-                key={src}
-                className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${
-                  index === visibleIndex ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <img
-                  src={src}
-                  srcSet={srcSet}
-                  sizes="100vw"
-                  width={1600}
-                  height={900}
-                  alt={t("hero.imageAlt")}
-                  className="w-full h-full object-cover opacity-60 dark:opacity-50"
-                  loading={index === 0 ? "eager" : "lazy"}
-                  fetchPriority={index === 0 ? "high" : "auto"}
-                  decoding="async"
-                  onLoad={() => handleImageLoad(index)}
-                />
-              </div>
+        {!prefersReducedMotion && activeVideo ? (
+          <video
+            key={activeVideo.id}
+            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+              isVideoLoaded ? "opacity-60 dark:opacity-50" : "opacity-0"
+            }`}
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={fallbackPoster}
+            preload="auto"
+            onLoadedData={handleVideoLoaded}
+            aria-hidden="true"
+          >
+            {activeSources.map((source) => (
+              <source key={source.src} src={source.src} type={source.type} />
             ))}
-            <div className="hero-gradient absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/10"></div>
-          </>
+          </video>
+        ) : (
+          <img
+            src={fallbackPoster}
+            alt={t("hero.imageAlt")}
+            className="absolute inset-0 h-full w-full object-cover opacity-60 dark:opacity-50"
+            loading="eager"
+            decoding="async"
+          />
         )}
+        <div className="hero-gradient absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/60 to-slate-950/10"></div>
       </div>
 
       <div className="hero-inner container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col flex-grow">
@@ -272,6 +246,23 @@ const Hero: React.FC = () => {
                 <p>{t("hero.cta.subtext.line2")}</p>
               </div>
             </div>
+            {hasMultipleVideos && (
+              <div className="mt-8 flex items-center justify-center gap-2">
+                {heroVideos.map((video, index) => (
+                  <button
+                    key={video.id}
+                    type="button"
+                    onClick={() => setActiveVideoIndex(index)}
+                    className={`h-2.5 w-2.5 rounded-full border border-white/40 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${
+                      activeVideoIndex === index
+                        ? "bg-white"
+                        : "bg-transparent hover:border-white/70"
+                    }`}
+                    aria-label={`Show hero background ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
