@@ -231,7 +231,7 @@ export const translations = {
     "testimonials.person4.name": "David Lee",
     "testimonials.person4.title": "Real Estate Photographer",
     "testimonials.person5.quote":
-      "The client portal is my favorite feature. My clients love being able to see all their documents and photos in one place. It makes me look so professional.",
+      "Lumiso lets me build any package in minutes. I mix sessions, add-ons, and payment plans on the fly, so every client feels like the plan was designed just for them.",
     "testimonials.person5.name": "Emily Carter",
     "testimonials.person5.title": "Newborn Photographer",
     "testimonials.person6.quote":
@@ -328,7 +328,7 @@ export const translations = {
 
     // Footer
     "footer.tagline":
-      "The studio & client management platform for modern photographers.",
+      "A studio & client management platform lovingly built by photographers, for photographers. ❤️",
     "footer.product": "Product",
     "footer.features": "Features",
     "footer.pricing": "Pricing",
@@ -336,7 +336,7 @@ export const translations = {
     "footer.legal": "Legal",
     "footer.privacy": "Privacy Policy",
     "footer.terms": "Terms of Service",
-    "footer.copyright": "© {year} Lumiso, Inc. All rights reserved.",
+    "footer.copyright": "© {year} Lumiso. All rights reserved.",
   },
   tr: {
     // Header
@@ -559,7 +559,7 @@ export const translations = {
     "testimonials.person4.name": "Davut Işık",
     "testimonials.person4.title": "Emlak Fotoğrafçısı",
     "testimonials.person5.quote":
-      "Müşteri portalı favori özelliğim. Müşterilerim tüm belgelerini ve fotoğraflarını tek bir yerde görmeyi seviyor. Beni çok profesyonel gösteriyor.",
+      "Lumiso sayesinde paketlerimi dilediğim gibi kuruyorum. Hizmetleri, aksesuarları ve ödeme planlarını birkaç tıkla ekleyip her müşteriye özel kombinasyonlar çıkarıyorum.",
     "testimonials.person5.name": "Emel Kaya",
     "testimonials.person5.title": "Yenidoğan Fotoğrafçısı",
     "testimonials.person6.quote":
@@ -662,7 +662,7 @@ export const translations = {
 
     // Footer
     "footer.tagline":
-      "Modern fotoğrafçılar için stüdyo ve müşteri yönetimi platformu.",
+      "Fotoğrafçılar tarafından fotoğrafçılar için sevgiyle geliştirilen stüdyo ve müşteri yönetimi platformu. ❤️",
     "footer.product": "Ürün",
     "footer.features": "Özellikler",
     "footer.pricing": "Fiyatlandırma",
@@ -670,6 +670,6 @@ export const translations = {
     "footer.legal": "Yasal",
     "footer.privacy": "Gizlilik Politikası",
     "footer.terms": "Hizmet Şartları",
-    "footer.copyright": "© {year} Lumiso, Inc. Tüm hakları saklıdır.",
+    "footer.copyright": "© {year} Lumiso. Tüm hakları saklıdır.",
   },
 };

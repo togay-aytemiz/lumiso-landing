@@ -44,7 +44,6 @@ const Header: React.FC = () => {
   const navLinks = [
     { name: t('header.features'), href: '#features' },
     { name: t('header.results'), href: '#results' },
-    { name: t('header.pricing'), href: '#pricing' },
     { name: t('header.testimonials'), href: '#testimonials' },
     { name: t('header.faq'), href: '#faq' },
   ];

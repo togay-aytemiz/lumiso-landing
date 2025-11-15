@@ -39,7 +39,7 @@ const DotsHorizontalIcon: React.FC<{ className?: string }> = ({ className }) => 
 
 
 const HeroScreenshotPlaceholder: React.FC = () => (
-    <div className="w-full max-w-5xl mx-auto mt-16 rounded-[22px] border border-white/10 bg-white/5 dark:bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/30 overflow-hidden">
+    <div className="w-full max-w-5xl mx-auto mt-12 sm:mt-16 rounded-[22px] border border-white/10 bg-white/5 dark:bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/30 overflow-hidden">
         <div className="bg-slate-900/60 text-white px-6 py-3 flex items-center justify-between text-sm">
             <p className="font-semibold">App screenshot coming soon</p>
             <span className="text-slate-300">Drop your image into `public/hero-screenshot.png`</span>
@@ -177,8 +177,8 @@ const Hero: React.FC = () => {
               <p className="hero-subtitle mt-8 max-w-2xl mx-auto text-base sm:text-lg text-slate-300 animate-slide-in-fade" style={{ animationDelay: '500ms' }}>
                 {t('hero.subtitle')}
               </p>
-              <div className="hero-cta-group mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-in-fade" style={{ animationDelay: '700ms' }}>
-                  <CTAButton href="#pricing" variant="primary" fullWidth className="hero-primary-cta sm:w-auto">
+              <div className="hero-cta-group mt-6 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-in-fade" style={{ animationDelay: '700ms' }}>
+                  <CTAButton href="#contact" variant="primary" fullWidth className="hero-primary-cta sm:w-auto">
                     {t('hero.cta.primary')}
                   </CTAButton>
                   <CTAButton
@@ -192,7 +192,7 @@ const Hero: React.FC = () => {
                     {t('hero.cta.secondary')}
                   </CTAButton>
               </div>
-              <div className="hero-cta-subtext mt-6 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 text-base font-medium text-slate-200 animate-slide-in-fade" style={{ animationDelay: '800ms' }}>
+              <div className="hero-cta-subtext mt-4 sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-2 text-base font-medium text-slate-200 animate-slide-in-fade" style={{ animationDelay: '800ms' }}>
                 <div className="flex items-center gap-2">
                     <CheckCircleIcon className="w-5 h-5 text-brand-teal-400 flex-shrink-0" />
                     <p>{t('hero.cta.subtext.line1')}</p>

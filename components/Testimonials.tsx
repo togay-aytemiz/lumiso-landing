@@ -14,9 +14,9 @@ const Testimonials: React.FC = () => {
 
   // Fix: Explicitly type TestimonialCard as React.FC to correctly handle the 'key' prop.
   const TestimonialCard: React.FC<typeof testimonials[0]> = ({ quote, name, title, avatar }) => (
-    <div className="bg-white dark:bg-slate-800 p-8 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col shadow-lg mx-4 flex-shrink-0 w-80 md:w-96">
-      <p className="text-slate-600 dark:text-slate-300 flex-grow">"{quote}"</p>
-      <div className="mt-6 flex items-center">
+    <div className="bg-white dark:bg-slate-800 p-5 sm:p-8 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col shadow-lg mx-3 sm:mx-4 flex-shrink-0 w-72 sm:w-80 md:w-96">
+      <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 flex-grow">"{quote}"</p>
+      <div className="mt-5 sm:mt-6 flex items-center">
         <img
           className="h-12 w-12 rounded-full"
           src={avatar}
@@ -33,7 +33,7 @@ const Testimonials: React.FC = () => {
   );
   
   return (
-    <section id="testimonials" className="py-20 sm:py-32 bg-slate-100 dark:bg-slate-900/70">
+    <section id="testimonials" className="py-14 sm:py-32 bg-slate-100 dark:bg-slate-900/70">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           <SectionHeader
@@ -44,7 +44,7 @@ const Testimonials: React.FC = () => {
           />
         </div>
       </div>
-      <div className="mt-16 marquee-container py-8">
+      <div className="mt-10 sm:mt-16 marquee-container py-4 sm:py-8">
         <div className="marquee">
           {testimonials.map((testimonial, index) => (
             <TestimonialCard key={index} {...testimonial} />
