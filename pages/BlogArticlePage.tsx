@@ -157,11 +157,7 @@ const extractSliderItemsFromBlock = (block: ArticleBlock): SliderItem[] => {
           if (!entry || typeof entry !== "object") return undefined;
           const record = entry as Record<string, unknown>;
           const asset = extractMediaAsset(
-            record.media ??
-              record.image ??
-              record.asset ??
-              record.file ??
-              entry
+            record.media ?? record.image ?? record.asset ?? record.file ?? entry
           );
           if (!asset?.url) return undefined;
           return {
@@ -256,11 +252,7 @@ const MediaSliderBlock: React.FC<MediaSliderBlockProps> = ({
   };
 
   const renderCaption = () => {
-    if (
-      !activeItem.label &&
-      !activeItem.caption &&
-      !activeItem.description
-    ) {
+    if (!activeItem.label && !activeItem.caption && !activeItem.description) {
       return null;
     }
     return (
@@ -847,7 +839,7 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
 
         <section className="relative -mt-16 pb-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-3xl border border-slate-200/70 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-12 shadow-xl shadow-slate-900/10">
+            <div className="rounded-3xl border border-slate-200/70 dark:border-slate-800 bg-white dark:bg-slate-900 px-5 pt-6 pb-10 sm:px-10 sm:pt-8 sm:pb-12 shadow-xl shadow-slate-900/10">
               {loading && (
                 <div className="space-y-8 animate-pulse">
                   <div className="space-y-4">
