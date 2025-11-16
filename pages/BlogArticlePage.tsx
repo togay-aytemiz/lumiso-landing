@@ -4,6 +4,9 @@ import Footer from "../components/Footer";
 import CTA from "../components/CTA";
 import { useAppContext } from "../contexts/AppContext";
 import { BlogPost, fetchBlogPostBySlug } from "../lib/strapi";
+import { SITE_URL } from "../seo.config";
+
+const SITE_ORIGIN = SITE_URL.replace(/\/$/, "");
 
 interface BlogArticlePageProps {
   slug: string;
@@ -465,25 +468,54 @@ const renderRichTextBlock = (body: string, keyPrefix: string) => {
   });
 };
 
+const buildArticleDescription = (article?: BlogPost | null) => {
+  if (!article) return undefined;
+  const source =
+    article.seoDescription ||
+    article.description ||
+    article.excerpt ||
+    (article.content ? stripMarkdown(article.content) : undefined);
+  if (!source) return undefined;
+  const trimmed = source.trim();
+  if (!trimmed) return undefined;
+  if (trimmed.length > 320) {
+    return `${trimmed.slice(0, 317)}...`;
+  }
+  return trimmed;
+};
+
+const toIsoString = (value?: string | null) => {
+  if (!value) return undefined;
+  const date = new Date(value);
+  if (Number.isNaN(date.valueOf())) {
+    return value;
+  }
+  return date.toISOString();
+};
+
 const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
-  const { t } = useAppContext();
+  const { t, language, setSeoOverrides } = useAppContext();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [headerTone, setHeaderTone] = useState<"light" | "dark">("light");
+  const [reloadCount, setReloadCount] = useState(0);
 
   useEffect(() => {
+    const controller = new AbortController();
     let isMounted = true;
     setLoading(true);
     setError(null);
+    setPost((current) => (current?.slug === slug ? current : null));
 
-    fetchBlogPostBySlug(slug)
+    fetchBlogPostBySlug(slug, { locale: language, signal: controller.signal })
       .then((article) => {
         if (!isMounted) return;
         setPost(article);
       })
       .catch((err: Error) => {
         if (!isMounted) return;
+        if (err.name === "AbortError") return;
         setError(err.message || "Unable to load article");
       })
       .finally(() => {
@@ -493,13 +525,224 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
 
     return () => {
       isMounted = false;
+      controller.abort();
     };
-  }, [slug]);
+  }, [slug, reloadCount, language]);
+
+  const handleRetry = () => {
+    setReloadCount((count) => count + 1);
+  };
 
   const formattedDate = useMemo(
     () => formatDate(post?.publishedAt),
     [post?.publishedAt]
   );
+
+  const articleDescription = useMemo(() => buildArticleDescription(post), [post]);
+
+  const resolvedKeywords = useMemo(() => {
+    if (!post) return undefined;
+    const keywords = new Set<string>();
+    const pushTokens = (value?: string | null) => {
+      if (!value) return;
+      value
+        .split(/[,;/]/)
+        .map((token) => token.trim())
+        .filter(Boolean)
+        .forEach((token) => keywords.add(token));
+    };
+    pushTokens(post.seoKeywords);
+    if (post.category) {
+      keywords.add(post.category);
+    }
+    post.tags?.forEach((tag) => {
+      if (tag) {
+        keywords.add(tag);
+      }
+    });
+    return keywords.size ? Array.from(keywords).join(", ") : undefined;
+  }, [post]);
+
+  useEffect(() => {
+    const canonicalUrl = `${SITE_ORIGIN}/blog/${slug}`;
+
+    if (!post) {
+      if (!loading) {
+        const titleKey = error
+          ? "blog.article.errorTitle"
+          : "blog.article.notFoundTitle";
+        const descriptionKey = error
+          ? "blog.article.errorDescription"
+          : "blog.article.notFoundDescription";
+        const fallbackHeading = t(titleKey);
+        const fallbackDescription = t(descriptionKey);
+        const fallbackTitle = `${fallbackHeading} | Lumiso Blog`;
+        const breadcrumbGraph = {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Lumiso",
+              item: SITE_URL,
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: t("blog.title"),
+              item: `${SITE_ORIGIN}/blog`,
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: fallbackHeading,
+              item: canonicalUrl,
+            },
+          ],
+        };
+
+        setSeoOverrides({
+          title: fallbackTitle,
+          description: fallbackDescription,
+          ogTitle: fallbackTitle,
+          ogDescription: fallbackDescription,
+          canonicalUrl,
+          structuredDataGraph: [breadcrumbGraph],
+        });
+      } else {
+        setSeoOverrides(null);
+      }
+      return () => {
+        setSeoOverrides(null);
+      };
+    }
+
+    const articleTitle = post.seoTitle || post.title;
+    const ogImage = post.seoImageUrl || post.coverImageUrl;
+    const ogImageAlt = post.seoImageAlt || post.coverImageAlt || articleTitle;
+    const isoPublished = toIsoString(post.publishedAt);
+    const isoUpdated = toIsoString(post.updatedAt || post.publishedAt);
+    const structuredData = {
+      "@type": "BlogPosting",
+      headline: articleTitle,
+      description: articleDescription,
+      inLanguage: language,
+      mainEntityOfPage: canonicalUrl,
+      datePublished: isoPublished || post.publishedAt,
+      dateModified: isoUpdated || post.updatedAt || post.publishedAt,
+      articleSection: post.category,
+      keywords: resolvedKeywords,
+      ...(ogImage ? { image: [ogImage] } : {}),
+      ...(post.authorName
+        ? {
+            author: {
+              "@type": "Person",
+              name: post.authorName,
+              ...(post.authorTitle ? { jobTitle: post.authorTitle } : {}),
+            },
+          }
+        : {}),
+      publisher: {
+        "@type": "Organization",
+        name: "Lumiso",
+        url: SITE_URL,
+      },
+    };
+
+    const breadcrumbGraph = {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Lumiso",
+          item: SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: t("blog.title"),
+          item: `${SITE_ORIGIN}/blog`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: articleTitle,
+          item: canonicalUrl,
+        },
+      ],
+    };
+
+    const extraMeta: Array<{ attribute: "name" | "property"; key: string; content: string }> = [];
+    if (isoPublished) {
+      extraMeta.push({
+        attribute: "property",
+        key: "article:published_time",
+        content: isoPublished,
+      });
+    }
+    if (isoUpdated) {
+      extraMeta.push({
+        attribute: "property",
+        key: "article:modified_time",
+        content: isoUpdated,
+      });
+    }
+    if (post.category) {
+      extraMeta.push({
+        attribute: "property",
+        key: "article:section",
+        content: post.category,
+      });
+    }
+    if (post.authorName) {
+      extraMeta.push({
+        attribute: "property",
+        key: "article:author",
+        content: post.authorName,
+      });
+    }
+    post.tags?.forEach((tag) => {
+      if (!tag) return;
+      extraMeta.push({
+        attribute: "property",
+        key: "article:tag",
+        content: tag,
+      });
+    });
+
+    setSeoOverrides({
+      title: `${articleTitle} | Lumiso Blog`,
+      description: articleDescription,
+      keywords: resolvedKeywords || post.seoKeywords,
+      ogTitle: articleTitle,
+      ogDescription: articleDescription,
+      ogType: "article",
+      ogImage,
+      ogImageAlt,
+      twitterTitle: articleTitle,
+      twitterDescription: articleDescription,
+      twitterImage: ogImage,
+      twitterImageAlt: ogImageAlt,
+      canonicalUrl,
+      structuredDataGraph: [breadcrumbGraph, structuredData],
+      extraMeta: extraMeta.length ? extraMeta : undefined,
+    });
+
+    return () => {
+      setSeoOverrides(null);
+    };
+  }, [
+    post,
+    articleDescription,
+    language,
+    setSeoOverrides,
+    slug,
+    loading,
+    error,
+    t,
+    resolvedKeywords,
+  ]);
 
   useEffect(() => {
     if (!post?.coverImageUrl) {
@@ -672,10 +915,18 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
 
   const showHeroSkeleton = loading && !post;
   const hasPost = Boolean(post);
+  const showLoadErrorState = !loading && Boolean(error);
+  const showNotFoundState = !loading && !post && !error;
   const heroCategory = post?.category || (hasPost ? "Editorial" : undefined);
   const heroTitle = post?.title || (hasPost ? "Untitled article" : undefined);
   const heroDescription = post?.description;
   const heroReadTime = post?.readTime;
+  const heroFallbackTitle = showLoadErrorState
+    ? t("blog.article.errorTitle")
+    : t("blog.article.notFoundTitle");
+  const heroFallbackDescription = showLoadErrorState
+    ? t("blog.article.errorDescription")
+    : t("blog.article.notFoundDescription");
 
   const renderQuoteBlock = (block: ArticleBlock, index: number) => {
     const body = typeof block.body === "string" ? block.body : undefined;
@@ -820,16 +1071,35 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
                     </div>
                   </>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-5">
                     <p className="text-sm font-semibold uppercase tracking-wide text-white/70">
-                      Blog
+                      {t("blog.tag")}
                     </p>
-                    <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
-                      Article unavailable
-                    </h1>
-                    <p className="text-lg text-white/80">
-                      This story may be unpublished or no longer available.
-                    </p>
+                    <div className="space-y-3">
+                      <h1 className="text-4xl sm:text-5xl font-bold leading-tight">
+                        {heroFallbackTitle}
+                      </h1>
+                      <p className="text-lg text-white/80">
+                        {heroFallbackDescription}
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                      <a
+                        href="/blog"
+                        className="inline-flex items-center justify-center rounded-full bg-white/15 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/25"
+                      >
+                        {t("blog.article.backToBlog")}
+                      </a>
+                      {showLoadErrorState && (
+                        <button
+                          type="button"
+                          onClick={handleRetry}
+                          className="inline-flex items-center justify-center rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+                        >
+                          {t("blog.article.retry")}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
@@ -880,25 +1150,38 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
                 </div>
               )}
 
-              {!loading && error && (
-                <p className="text-center text-sm text-rose-500">{error}</p>
-              )}
-
-              {!loading && !post && !error && (
-                <div className="text-center">
-                  <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
-                    Article not found
-                  </h2>
-                  <p className="mt-4 text-slate-600 dark:text-slate-400">
-                    This link may be broken or the article is still being
-                    drafted.
-                  </p>
-                  <a
-                    href="/blog"
-                    className="mt-6 inline-flex items-center rounded-full bg-brand-teal-500 px-6 py-3 font-semibold text-white"
-                  >
-                    Back to all articles
-                  </a>
+              {!loading && (showLoadErrorState || showNotFoundState) && (
+                <div className="flex flex-col items-center gap-4 text-center py-12">
+                  <div>
+                    <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                      {heroFallbackTitle}
+                    </h2>
+                    <p className="mt-3 text-slate-600 dark:text-slate-400">
+                      {heroFallbackDescription}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <a
+                      href="/blog"
+                      className="inline-flex items-center justify-center rounded-full bg-brand-teal-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-teal-500/30 transition hover:bg-brand-teal-400"
+                    >
+                      {t("blog.article.backToBlog")}
+                    </a>
+                    {showLoadErrorState && (
+                      <button
+                        type="button"
+                        onClick={handleRetry}
+                        className="inline-flex items-center justify-center rounded-full border border-slate-300 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 dark:border-slate-700 dark:text-slate-200 dark:hover:border-slate-500"
+                      >
+                        {t("blog.article.retry")}
+                      </button>
+                    )}
+                  </div>
+                  {error && (
+                    <p className="text-xs text-rose-500">
+                      {error}
+                    </p>
+                  )}
                 </div>
               )}
 

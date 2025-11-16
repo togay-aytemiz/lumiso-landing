@@ -1,10 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import CTA from "../components/CTA";
 import { useAppContext } from "../contexts/AppContext";
 import { useBlogPosts } from "../hooks/useBlogPosts";
 import type { BlogPost as RemoteBlogPost } from "../lib/strapi";
+import { SITE_URL } from "../seo.config";
+
+const SITE_ORIGIN = SITE_URL.replace(/\/$/, "");
 
 interface DisplayPost {
   id: string;
@@ -70,7 +73,7 @@ const normalizeLocale = (languageCode?: string) => {
 };
 
 const BlogPage: React.FC = () => {
-  const { t, language } = useAppContext();
+  const { t, language, setSeoOverrides } = useAppContext();
   const {
     posts: remotePosts,
     loading,
@@ -148,6 +151,19 @@ const BlogPage: React.FC = () => {
     if (selectedCategory === "all") return displayPosts;
     return displayPosts.filter((post) => post.categoryKey === selectedCategory);
   }, [displayPosts, selectedCategory]);
+
+  const aggregatedKeywords = useMemo(() => {
+    const keywords = new Set<string>();
+    displayPosts.forEach((post) => {
+      if (post.category) {
+        keywords.add(post.category);
+      }
+      if (post.title) {
+        keywords.add(post.title);
+      }
+    });
+    return Array.from(keywords).join(", ");
+  }, [displayPosts]);
 
   const featuredPost = displayPosts[0];
   const showFeaturedPost = Boolean(featuredPost);
@@ -324,6 +340,61 @@ const BlogPage: React.FC = () => {
     return undefined;
   };
   const statusMessage = connectionStatus();
+
+  useEffect(() => {
+    const baseTitle = t("blog.title") || "Lumiso Blog";
+    const subtitle = t("blog.subtitle");
+    const canonicalUrl = `${SITE_ORIGIN}/blog`;
+    const pageTitle = `${baseTitle} | Lumiso`;
+    const breadcrumbGraph = {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Lumiso",
+          item: SITE_URL,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: baseTitle,
+          item: canonicalUrl,
+        },
+      ],
+    };
+    const blogGraph = {
+      "@type": "Blog",
+      name: baseTitle,
+      description: subtitle,
+      url: canonicalUrl,
+      inLanguage: language,
+    };
+
+    setSeoOverrides({
+      title: pageTitle,
+      description: subtitle,
+      keywords: aggregatedKeywords || undefined,
+      ogTitle: pageTitle,
+      ogDescription: subtitle,
+      canonicalUrl,
+      structuredDataGraph: [
+        breadcrumbGraph,
+        blogGraph,
+        {
+          "@type": "CollectionPage",
+          name: pageTitle,
+          description: subtitle,
+          url: canonicalUrl,
+          inLanguage: language,
+        },
+      ],
+    });
+
+    return () => {
+      setSeoOverrides(null);
+    };
+  }, [t, language, aggregatedKeywords, setSeoOverrides]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white">

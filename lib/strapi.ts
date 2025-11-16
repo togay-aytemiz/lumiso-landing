@@ -60,6 +60,8 @@ interface StrapiBlogPostAttributes {
   url?: string;
   seoTitle?: string;
   seoDescription?: string;
+  seoKeywords?: string;
+  seoImage?: StrapiMedia;
   blocks?: Array<Record<string, unknown>>;
   [key: string]: unknown;
 }
@@ -89,10 +91,15 @@ export interface BlogPost {
   blocks?: Array<Record<string, unknown>>;
   coverImageUrl?: string;
   coverImageAlt?: string;
+  seoImageUrl?: string;
+  seoImageAlt?: string;
   authorName?: string;
   authorTitle?: string;
   authorAvatarUrl?: string;
   url?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string;
 }
 
 export type FetchBlogPostsOptions = {
@@ -206,6 +213,7 @@ const extractRichTextFromBlocks = (blocks?: Array<Record<string, unknown>>): str
 const normalizeBlogPost = (entity: StrapiEntity<StrapiBlogPostAttributes>): BlogPost => {
   const attributes = getAttributesFromMaybeEntity(entity as MaybeStrapiEntityAttributes<StrapiBlogPostAttributes>) ?? {};
   const coverImage = resolveMediaUrl(attributes.coverImage || attributes.cover || attributes.heroImage || attributes.thumbnail);
+  const seoImage = resolveMediaUrl(attributes.seoImage || attributes.coverImage || attributes.cover || attributes.heroImage || attributes.thumbnail);
   const author = normalizeAuthor(attributes.author);
 
   const slug = attributes.slug || `post-${entity.id}`;
@@ -232,7 +240,12 @@ const normalizeBlogPost = (entity: StrapiEntity<StrapiBlogPostAttributes>): Blog
     blocks,
     coverImageUrl: coverImage.url,
     coverImageAlt: coverImage.alternativeText,
+    seoImageUrl: seoImage.url,
+    seoImageAlt: seoImage.alternativeText,
     url,
+    seoTitle: attributes.seoTitle,
+    seoDescription: attributes.seoDescription,
+    seoKeywords: typeof attributes.seoKeywords === 'string' ? attributes.seoKeywords : undefined,
     ...author,
   };
 };

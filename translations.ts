@@ -227,6 +227,12 @@ export const translations = {
     "blog.status.missingSource": "Add your Strapi API URL in .env to load live articles.",
     "blog.status.error": "Unable to reach Strapi right now. Please try again shortly.",
     "blog.noPostsInCategory": "No posts found for this category yet.",
+    "blog.article.errorTitle": "We couldn't load this article",
+    "blog.article.errorDescription": "Check your connection or return to the blog home while we resolve the issue.",
+    "blog.article.notFoundTitle": "This article isn't available",
+    "blog.article.notFoundDescription": "The link might be broken or the story hasn't been published yet.",
+    "blog.article.backToBlog": "Back to blog",
+    "blog.article.retry": "Try again",
     "blog.posts": [
       {
         id: "workflow-blueprint",
@@ -615,6 +621,12 @@ export const translations = {
     "blog.status.missingSource": "Canlı yazıları görmek için .env dosyanıza Strapi API adresinizi ekleyin.",
     "blog.status.error": "Strapi'ye şu anda ulaşılamıyor. Lütfen kısa süre sonra tekrar deneyin.",
     "blog.noPostsInCategory": "Bu kategoride henüz bir yazı bulunamadı.",
+    "blog.article.errorTitle": "Bu yazıyı yükleyemedik",
+    "blog.article.errorDescription": "Bağlantınızı kontrol edin veya sorunu çözerken blog sayfasına geri dönün.",
+    "blog.article.notFoundTitle": "Bu yazı mevcut değil",
+    "blog.article.notFoundDescription": "Bağlantı bozulmuş olabilir ya da içerik henüz yayımlanmadı.",
+    "blog.article.backToBlog": "Bloga dön",
+    "blog.article.retry": "Tekrar dene",
     "blog.posts": [
       {
         id: "workflow-blueprint",

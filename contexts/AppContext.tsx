@@ -5,6 +5,29 @@ import { SITE_URL, seoContent } from '../seo.config';
 type Language = 'en' | 'tr';
 type Theme = 'light' | 'dark';
 
+export type SeoOverrides = {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogLocale?: string;
+  ogType?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  twitterTitle?: string;
+  twitterDescription?: string;
+  twitterImage?: string;
+  twitterImageAlt?: string;
+  canonicalUrl?: string;
+  structuredDataGraph?: Array<Record<string, unknown>>;
+  extraMeta?: Array<{
+    attribute: 'name' | 'property';
+    key: string;
+    content: string;
+  }>;
+};
+
 const SUPPORTED_LANGUAGES: Language[] = ['en', 'tr'];
 
 interface AppContextType {
@@ -13,6 +36,7 @@ interface AppContextType {
   theme: Theme;
   toggleTheme: () => void;
   t: (key: string, replacements?: { [key: string]: string }) => string;
+  setSeoOverrides: (overrides: SeoOverrides | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -40,6 +64,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return 'en';
   });
   const [theme, setTheme] = useState<Theme>('light');
+  const [seoOverrides, setSeoOverrides] = useState<SeoOverrides | null>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -83,11 +108,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     if (typeof document === 'undefined' || typeof window === 'undefined') return;
     const meta = seoContent[language];
-    document.title = meta.title;
+    const mergedTitle = seoOverrides?.title || meta.title;
+    const mergedDescription = seoOverrides?.description || meta.description;
+    const mergedKeywords = seoOverrides?.keywords || meta.keywords;
+    const mergedOgTitle = seoOverrides?.ogTitle || seoOverrides?.title || meta.ogTitle;
+    const mergedOgDescription = seoOverrides?.ogDescription || mergedDescription || meta.ogDescription;
+    const mergedOgLocale = seoOverrides?.ogLocale || meta.ogLocale;
+    const mergedOgType = seoOverrides?.ogType || 'website';
+    const mergedTwitterTitle = seoOverrides?.twitterTitle || mergedOgTitle;
+    const mergedTwitterDescription = seoOverrides?.twitterDescription || mergedOgDescription;
+    const ogImage = seoOverrides?.ogImage;
+    const ogImageAlt = seoOverrides?.ogImageAlt;
+    const twitterImage = seoOverrides?.twitterImage || ogImage;
+    const twitterImageAlt = seoOverrides?.twitterImageAlt || ogImageAlt;
 
-    const upsertMeta = (attribute: 'name' | 'property', key: string, content: string) => {
+    document.title = mergedTitle;
+
+    const upsertMeta = (attribute: 'name' | 'property', key: string, content?: string) => {
       const selector = `meta[${attribute}="${key}"]`;
       let element = document.head.querySelector<HTMLMetaElement>(selector);
+      if (!content) {
+        if (element && element.parentElement) {
+          element.parentElement.removeChild(element);
+        }
+        return;
+      }
       if (!element) {
         element = document.createElement('meta');
         element.setAttribute(attribute, key);
@@ -96,7 +141,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       element.setAttribute('content', content);
     };
 
-    const upsertLink = (rel: string, attrs: Record<string, string>) => {
+    const upsertLink = (rel: string, attrs: Record<string, string | undefined>) => {
+      if (!attrs.href) return;
       const selector = attrs.hreflang
         ? `link[rel="${rel}"][hreflang="${attrs.hreflang}"]`
         : `link[rel="${rel}"]:not([hreflang])`;
@@ -122,73 +168,90 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     const currentPath = window.location.pathname + window.location.search;
-    const canonicalUrl = `${SITE_URL}${currentPath}`;
+    const canonicalUrl = seoOverrides?.canonicalUrl || `${SITE_URL}${currentPath}`;
 
-    upsertMeta('name', 'description', meta.description);
-    upsertMeta('name', 'keywords', meta.keywords);
-    upsertMeta('property', 'og:title', meta.ogTitle);
-    upsertMeta('property', 'og:description', meta.ogDescription);
-    upsertMeta('property', 'og:locale', meta.ogLocale);
-    upsertMeta('property', 'og:type', 'website');
+    upsertMeta('name', 'description', mergedDescription);
+    upsertMeta('name', 'keywords', mergedKeywords);
+    upsertMeta('property', 'og:title', mergedOgTitle);
+    upsertMeta('property', 'og:description', mergedOgDescription);
+    upsertMeta('property', 'og:locale', mergedOgLocale);
+    upsertMeta('property', 'og:type', mergedOgType);
     upsertMeta('property', 'og:url', canonicalUrl);
+    upsertMeta('property', 'og:image', ogImage);
+    upsertMeta('property', 'og:image:alt', ogImageAlt);
+    upsertMeta('property', 'og:site_name', 'Lumiso');
     upsertMeta('name', 'twitter:card', 'summary_large_image');
-    upsertMeta('name', 'twitter:title', meta.ogTitle);
-    upsertMeta('name', 'twitter:description', meta.ogDescription);
+    upsertMeta('name', 'twitter:title', mergedTwitterTitle);
+    upsertMeta('name', 'twitter:description', mergedTwitterDescription);
     upsertMeta('name', 'twitter:url', canonicalUrl);
+    upsertMeta('name', 'twitter:image', twitterImage);
+    upsertMeta('name', 'twitter:image:alt', twitterImageAlt);
 
     upsertLink('canonical', { href: canonicalUrl });
     SUPPORTED_LANGUAGES.forEach((lang) => {
-      const localizedUrl =
-        lang === 'en'
-          ? canonicalUrl
-          : `${SITE_URL}${window.location.pathname}?lang=${lang}`;
+      const localizedUrl = seoOverrides?.canonicalUrl
+        ? lang === 'en'
+          ? seoOverrides.canonicalUrl
+          : `${seoOverrides.canonicalUrl}?lang=${lang}`
+        : lang === 'en'
+        ? canonicalUrl
+        : `${SITE_URL}${window.location.pathname}?lang=${lang}`;
       upsertLink('alternate', { href: localizedUrl, hreflang: lang });
     });
     upsertLink('alternate', { href: canonicalUrl, hreflang: 'x-default' });
 
     const faqItems = (translations[language]['faq.items'] as Array<{ question: string; answer: string }>) || [];
     const faqTitle = `${translations[language]['faq.title.regular'] ?? ''} ${translations[language]['faq.title.bold'] ?? ''}`.trim();
-    const structuredData = {
-      '@context': 'https://schema.org',
-      '@graph': [
-        {
+    const structuredDataGraph = [
+      {
+        '@type': 'Organization',
+        name: 'Lumiso',
+        url: SITE_URL,
+        description: mergedDescription,
+      },
+      {
+        '@type': 'Product',
+        name: mergedTitle,
+        description: mergedDescription,
+        url: canonicalUrl,
+        brand: {
           '@type': 'Organization',
           name: 'Lumiso',
-          url: SITE_URL,
-          description: meta.description,
         },
-        {
-          '@type': 'Product',
-          name: meta.title,
-          description: meta.description,
-          url: canonicalUrl,
-          brand: {
-            '@type': 'Organization',
-            name: 'Lumiso',
+        offers: {
+          '@type': 'AggregateOffer',
+          priceCurrency: 'USD',
+          price: '0',
+          availability: 'https://schema.org/PreOrder',
+        },
+      },
+      {
+        '@type': 'FAQPage',
+        name: faqTitle || mergedTitle,
+        mainEntity: faqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
           },
-          offers: {
-            '@type': 'AggregateOffer',
-            priceCurrency: 'USD',
-            price: '0',
-            availability: 'https://schema.org/PreOrder',
-          },
-        },
-        {
-          '@type': 'FAQPage',
-          name: faqTitle || meta.title,
-          mainEntity: faqItems.map((item) => ({
-            '@type': 'Question',
-            name: item.question,
-            acceptedAnswer: {
-              '@type': 'Answer',
-              text: item.answer,
-            },
-          })),
-        },
-      ],
+        })),
+      },
+      ...(seoOverrides?.structuredDataGraph ?? []),
+    ].filter(Boolean);
+
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@graph': structuredDataGraph,
     };
     upsertJsonLd('lumiso-structured-data', structuredData);
-  }, [language]);
+
+    if (seoOverrides?.extraMeta?.length) {
+      seoOverrides.extraMeta.forEach(({ attribute, key, content }) => {
+        upsertMeta(attribute, key, content);
+      });
+    }
+  }, [language, seoOverrides]);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
@@ -203,7 +266,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [language]);
 
   return (
-    <AppContext.Provider value={{ language, setLanguage, theme, toggleTheme, t }}>
+    <AppContext.Provider value={{ language, setLanguage, theme, toggleTheme, t, setSeoOverrides }}>
       {children}
     </AppContext.Provider>
   );
