@@ -769,11 +769,42 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="rounded-3xl border border-slate-200/70 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-12 shadow-xl shadow-slate-900/10">
               {loading && (
-                <div className="space-y-4">
-                  <div className="h-6 w-1/3 rounded bg-slate-200 dark:bg-slate-800 animate-pulse" />
-                  <div className="h-4 w-full rounded bg-slate-200 dark:bg-slate-800 animate-pulse" />
-                  <div className="h-4 w-5/6 rounded bg-slate-200 dark:bg-slate-800 animate-pulse" />
-                  <div className="h-64 w-full rounded-3xl bg-slate-200 dark:bg-slate-800 animate-pulse" />
+                <div className="space-y-8 animate-pulse">
+                  <div className="space-y-4">
+                    <div className="h-4 w-24 rounded-full bg-slate-200 dark:bg-slate-800" />
+                    <div className="h-8 w-3/5 rounded bg-slate-200 dark:bg-slate-800" />
+                    <div className="h-6 w-2/3 rounded bg-slate-200 dark:bg-slate-800" />
+                    <div className="flex gap-4">
+                      <div className="h-4 w-20 rounded bg-slate-200 dark:bg-slate-800" />
+                      <div className="h-4 w-32 rounded bg-slate-200 dark:bg-slate-800" />
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    {Array.from({ length: 5 }).map((_, paragraphIndex) => (
+                      <div
+                        key={`paragraph-skeleton-${paragraphIndex}`}
+                        className={`h-4 rounded bg-slate-200 dark:bg-slate-800 ${
+                          paragraphIndex === 4 ? "w-2/3" : "w-full"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <div className="h-72 w-full rounded-3xl bg-slate-200 dark:bg-slate-800" />
+                  <div className="space-y-3">
+                    {Array.from({ length: 4 }).map((_, blockIndex) => (
+                      <div
+                        key={`block-skeleton-${blockIndex}`}
+                        className="flex flex-col gap-3 rounded-2xl border border-slate-100 bg-slate-100/70 p-4 dark:border-slate-800 dark:bg-slate-800/60"
+                      >
+                        <div className="h-4 w-1/4 rounded bg-slate-200 dark:bg-slate-700" />
+                        <div className="space-y-2">
+                          <div className="h-3 w-full rounded bg-slate-200 dark:bg-slate-700" />
+                          <div className="h-3 w-11/12 rounded bg-slate-200 dark:bg-slate-700" />
+                          <div className="h-3 w-4/5 rounded bg-slate-200 dark:bg-slate-700" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 

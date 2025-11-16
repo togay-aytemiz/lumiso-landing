@@ -36,10 +36,10 @@ interface TranslationPost {
   author: TranslationPostAuthor;
 }
 
-const formatDate = (dateString?: string) => {
+const formatDate = (dateString?: string, locale: string = "en-US") => {
   if (!dateString) return undefined;
   try {
-    return new Intl.DateTimeFormat("en-US", {
+    return new Intl.DateTimeFormat(locale, {
       month: "short",
       day: "numeric",
       year: "numeric",
@@ -61,8 +61,16 @@ const estimateReadTime = (post: RemoteBlogPost) => {
   return undefined;
 };
 
+const normalizeLocale = (languageCode?: string) => {
+  if (!languageCode) return "en-US";
+  const normalized = languageCode.toLowerCase();
+  if (normalized.startsWith("tr")) return "tr-TR";
+  if (normalized.startsWith("en")) return "en-US";
+  return languageCode;
+};
+
 const BlogPage: React.FC = () => {
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
   const {
     posts: remotePosts,
     loading,
@@ -75,13 +83,15 @@ const BlogPage: React.FC = () => {
     : [];
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
+  const dateLocale = useMemo(() => normalizeLocale(language), [language]);
+
   const remoteDisplayPosts = useMemo<DisplayPost[]>(() => {
     if (!remotePosts.length) return [];
     return remotePosts.map((post) => ({
       id: post.slug,
       title: post.title,
       excerpt: post.excerpt || post.content?.slice(0, 220),
-      publishedAt: formatDate(post.publishedAt),
+      publishedAt: formatDate(post.publishedAt, dateLocale),
       readTime: estimateReadTime(post),
       category: post.category || "Editorial",
       categoryKey: (post.category || "Editorial").trim().toLowerCase(),
@@ -91,7 +101,7 @@ const BlogPage: React.FC = () => {
       authorTitle: post.authorTitle || "Editorial Team",
       url: post.url,
     }));
-  }, [remotePosts]);
+  }, [remotePosts, dateLocale]);
 
   const sampleDisplayPosts = useMemo<DisplayPost[]>(() => {
     if (!fallbackPosts.length) return [];
@@ -177,7 +187,7 @@ const BlogPage: React.FC = () => {
         <div className="flex flex-col justify-between rounded-2xl bg-white p-6 dark:bg-slate-900">
           <div>
             <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wide text-brand-teal-600 dark:text-brand-teal-400">
-              <span className="rounded-full bg-brand-teal-50 px-3 py-1 text-brand-teal-700 dark:bg-brand-teal-500/10 dark:text-brand-teal-300">
+              <span className="inline-flex items-center justify-center rounded-full bg-brand-teal-50 px-3 py-1 text-brand-teal-700 leading-none dark:bg-brand-teal-500/10 dark:text-brand-teal-300">
                 {featuredPost.category || "Editorial"}
               </span>
               {featuredPost.publishedAt && (
