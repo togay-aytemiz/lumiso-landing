@@ -243,8 +243,10 @@ const isValidPublicationState = (state?: string | null): state is 'live' | 'prev
   return state === 'live' || state === 'preview';
 };
 
-const shouldRetryWithWildcardPopulate = (error: unknown, currentPopulate: string) => {
-  if (currentPopulate !== 'deep') return false;
+const shouldRetryWithWildcardPopulate = (error: unknown, currentPopulate?: string) => {
+  if (!currentPopulate) return false;
+  const normalized = currentPopulate.trim().toLowerCase();
+  if (!normalized.startsWith('deep')) return false;
   const err = error as StrapiRequestError | undefined;
   if (!err || err.status !== 400) return false;
   const body = err.body || err.message || '';
@@ -258,14 +260,22 @@ export const fetchBlogPosts = async (
     throw new Error('Strapi base URL is not configured (VITE_STRAPI_URL)');
   }
 
-  const { limit, locale, populate = 'deep', signal } = options;
+  const { limit, locale, populate, signal } = options;
   const collection = BLOG_COLLECTION.replace(/^\/+|\/+$/g, '');
   const endpoint = `${STRAPI_BASE_URL}/api/${collection}`;
 
   const buildParams = (overridePopulate?: string) => {
     const params = new URLSearchParams();
     params.set('sort', 'publishedAt:desc');
-    params.set('populate', overridePopulate ?? populate);
+    const populateValue = overridePopulate ?? populate;
+    if (populateValue) {
+      params.set('populate', populateValue);
+    } else {
+      params.set('populate[blocks][populate]', '*');
+      params.set('populate[cover][populate]', '*');
+      params.set('populate[author][populate]', 'avatar');
+      params.set('populate[category][populate]', '*');
+    }
     if (limit) {
       params.set('pagination[pageSize]', String(limit));
     }
@@ -328,7 +338,7 @@ export const fetchBlogPostBySlug = async (
   if (!slug) return null;
   const posts = await fetchBlogPosts({
     ...options,
-    populate: options.populate ?? 'deep',
+    populate: options.populate,
     limit: 1,
     filters: {
       ...options.filters,

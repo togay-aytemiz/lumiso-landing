@@ -168,9 +168,68 @@ const BlogPage: React.FC = () => {
       ? "group-hover:scale-105"
       : "hover:scale-105";
 
-    const content = (
+    const mobileCard = (
       <article
-        className={`grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-xl transition-shadow duration-300 dark:border-slate-800 dark:bg-slate-900 lg:grid-cols-2 lg:gap-10 transform ${cardHoverClass} hover:shadow-2xl group-hover:shadow-2xl`}
+        className={`flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md transition-transform duration-300 dark:border-slate-800 dark:bg-slate-900 transform ${cardHoverClass} hover:shadow-lg group-hover:shadow-lg lg:hidden`}
+      >
+        <div
+          className="relative w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800"
+          style={{ paddingBottom: "62%" }}
+        >
+          {featuredPost.coverImageUrl ? (
+            <img
+              src={featuredPost.coverImageUrl}
+              alt={featuredPost.coverImageAlt || featuredPost.title}
+              className={`absolute inset-0 h-full w-full object-cover transition-transform duration-500 ${imageHoverClass}`}
+              loading="lazy"
+            />
+          ) : (
+            <div className="absolute inset-0 h-full w-full bg-gradient-to-br from-brand-teal-200 via-brand-teal-50 to-white dark:from-brand-teal-900/70 dark:via-slate-900 dark:to-slate-900" />
+          )}
+        </div>
+        <div className="flex flex-1 flex-col p-6">
+          <div className="text-xs font-semibold uppercase tracking-wider text-brand-teal-500">
+            {featuredPost.category || "Editorial"}
+          </div>
+          <h3 className="mt-3 text-xl font-semibold text-slate-900 dark:text-white">
+            {featuredPost.title}
+          </h3>
+          {featuredPost.excerpt && (
+            <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
+              {featuredPost.excerpt}
+            </p>
+          )}
+          {featuredPost.publishedAt && (
+            <div className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+              {featuredPost.publishedAt}
+            </div>
+          )}
+          {featuredPostUrl && (
+            <span className="mt-6 inline-flex items-center gap-2 text-brand-teal-600 dark:text-brand-teal-400 font-semibold">
+              {t("blog.readMore")}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H7"
+                />
+              </svg>
+            </span>
+          )}
+        </div>
+      </article>
+    );
+
+    const desktopCard = (
+      <article
+        className={`hidden overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-xl transition-shadow duration-300 dark:border-slate-800 dark:bg-slate-900 lg:grid lg:grid-cols-2 lg:gap-10 transform ${cardHoverClass} hover:shadow-2xl group-hover:shadow-2xl`}
       >
         <div className="relative min-h-[260px] overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800">
           {featuredPost.coverImageUrl ? (
@@ -229,6 +288,13 @@ const BlogPage: React.FC = () => {
       </article>
     );
 
+    const content = (
+      <>
+        {mobileCard}
+        {desktopCard}
+      </>
+    );
+
     if (!isLink) {
       return content;
     }
@@ -265,6 +331,18 @@ const BlogPage: React.FC = () => {
       <main className="mt-16 flex-1 bg-slate-50 dark:bg-slate-950">
         <section className="pt-32 pb-16 lg:pb-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <div className="space-y-3 max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-teal-600 dark:text-brand-teal-400">
+                {t("blog.tag")}
+              </p>
+              <h1 className="text-xl font-medium text-slate-900 dark:text-white">
+                {t("blog.pageIntro.title")}
+              </h1>
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                {t("blog.pageIntro.subtitle")}
+              </p>
+            </div>
+
             {loading && (
               <div className="grid gap-6 lg:grid-cols-2 lg:gap-10">
                 <div className="h-72 rounded-3xl bg-slate-200/70 dark:bg-slate-800/70 animate-pulse" />
@@ -272,7 +350,11 @@ const BlogPage: React.FC = () => {
               </div>
             )}
 
-            {!loading && renderFeaturedCard()}
+            {!loading && (
+              <div className="mt-8 sm:mt-10 lg:mt-12">
+                {renderFeaturedCard()}
+              </div>
+            )}
 
             {(categories.length > 0 || statusMessage) && (
               <div className="space-y-4 pt-20 mt-12 mb-4">

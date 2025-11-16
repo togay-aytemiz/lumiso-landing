@@ -218,6 +218,9 @@ export const translations = {
     "blog.categorySection.title": "Our recent posts",
     "blog.categorySection.subtitle":
       "Insights and stories from the Lumiso team to keep you inspired.",
+    "blog.pageIntro.title": "Studio stories to fuel your next project",
+    "blog.pageIntro.subtitle":
+      "Fresh takes from the Lumiso community on creativity, systems, and building a calmer business.",
     "blog.allTopics": "All topics",
     "blog.viewAll": "Explore all articles",
     "blog.readMore": "Read article",
@@ -603,6 +606,9 @@ export const translations = {
     "blog.categorySection.title": "Son yazılarımız",
     "blog.categorySection.subtitle":
       "Lumiso ekibinden ilham veren içgörüler ve hikâyelerle güncel kalın.",
+    "blog.pageIntro.title": "Yeni projelerinize ilham verecek stüdyo hikâyeleri",
+    "blog.pageIntro.subtitle":
+      "Lumiso topluluğundan yaratıcılık, düzen ve daha sakin bir iş kurma üzerine taze bakış açıları.",
     "blog.allTopics": "Tümü",
     "blog.viewAll": "Tüm yazıları keşfet",
     "blog.readMore": "Yazıyı oku",

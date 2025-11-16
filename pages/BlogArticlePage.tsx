@@ -230,15 +230,58 @@ const MediaSliderBlock: React.FC<MediaSliderBlockProps> = ({
 
   if (!items.length) return null;
 
-  const activeItem =
-    items[Math.max(0, Math.min(activeIndex, items.length - 1))];
+  const wrapIndex = (index: number) => {
+    const total = items.length;
+    if (!total) return 0;
+    return (index + total) % total;
+  };
 
-  const goTo = (direction: number) => {
-    setActiveIndex((current) => {
-      const total = items.length;
-      if (!total) return 0;
-      return (current + direction + total) % total;
-    });
+  const safeIndex = wrapIndex(activeIndex);
+  const activeItem = items[safeIndex];
+  const hasMultiple = items.length > 1;
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!hasMultiple) return;
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      setActiveIndex((current) => wrapIndex(current - 1));
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      setActiveIndex((current) => wrapIndex(current + 1));
+    }
+  };
+
+  const selectSlide = (index: number) => {
+    setActiveIndex(wrapIndex(index));
+  };
+
+  const renderCaption = () => {
+    if (
+      !activeItem.label &&
+      !activeItem.caption &&
+      !activeItem.description
+    ) {
+      return null;
+    }
+    return (
+      <div className="space-y-1 text-center" aria-live="polite">
+        {activeItem.label && (
+          <p className="text-base font-semibold text-slate-900 dark:text-white">
+            {activeItem.label}
+          </p>
+        )}
+        {activeItem.caption && (
+          <p className="text-sm text-slate-600 dark:text-slate-300">
+            {activeItem.caption}
+          </p>
+        )}
+        {activeItem.description && (
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            {activeItem.description}
+          </p>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -255,81 +298,85 @@ const MediaSliderBlock: React.FC<MediaSliderBlockProps> = ({
           )}
         </div>
       )}
-      <div>
-        <div className="aspect-[16/9] w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800">
-          {isVideoAsset(activeItem) ? (
-            <video
-              key={activeItem.url}
-              src={activeItem.url}
-              controls
-              playsInline
-              preload="metadata"
-              className="h-full w-full object-cover"
-            >
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <img
-              src={activeItem.url}
-              alt={
-                activeItem.alt || activeItem.caption || title || "Gallery slide"
-              }
-              className="h-full w-full object-cover"
-              loading="lazy"
-              decoding="async"
-            />
-          )}
-        </div>
-        {(activeItem.label || activeItem.caption || activeItem.description) && (
-          <div className="mt-4 space-y-1 text-center">
-            {activeItem.label && (
-              <p className="text-base font-semibold text-slate-900 dark:text-white">
-                {activeItem.label}
-              </p>
+      <div className="space-y-4">
+        <div
+          className="relative focus:outline-none"
+          tabIndex={hasMultiple ? 0 : -1}
+          onKeyDown={handleKeyDown}
+          aria-roledescription="carousel"
+          aria-live="polite"
+          aria-label={title ? `${title} gallery` : "Article media slider"}
+        >
+          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800">
+            {isVideoAsset(activeItem) ? (
+              <video
+                key={activeItem.url}
+                src={activeItem.url}
+                controls
+                playsInline
+                preload="metadata"
+                className="h-full w-full object-cover"
+              >
+                Your browser does not support the video tag.
+              </video>
+            ) : (
+              <img
+                src={activeItem.url}
+                alt={
+                  activeItem.alt ||
+                  activeItem.caption ||
+                  title ||
+                  "Gallery slide"
+                }
+                className="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
             )}
-            {activeItem.caption && (
-              <p className="text-sm text-slate-600 dark:text-slate-300">
-                {activeItem.caption}
-              </p>
-            )}
-            {activeItem.description && (
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                {activeItem.description}
-              </p>
+            {hasMultiple && (
+              <span className="absolute top-4 right-4 rounded-full bg-slate-900/70 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+                {safeIndex + 1} / {items.length}
+              </span>
             )}
           </div>
-        )}
-        {items.length > 1 && (
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-            <button
-              type="button"
-              onClick={() => goTo(-1)}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-            >
-              ← Prev
-            </button>
-            <div className="flex items-center gap-2">
-              {items.map((_, dotIndex) => (
+        </div>
+        {renderCaption()}
+        {hasMultiple && (
+          <div
+            className="mt-2 flex gap-3 overflow-x-auto pb-2"
+            aria-label="Select slide"
+          >
+            {items.map((item, thumbIndex) => {
+              const isActive = thumbIndex === safeIndex;
+              return (
                 <button
-                  key={`slider-dot-${dotIndex}`}
+                  key={`slider-thumb-${thumbIndex}`}
                   type="button"
-                  onClick={() => setActiveIndex(dotIndex)}
-                  className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                    dotIndex === activeIndex
-                      ? "bg-brand-teal-500"
-                      : "bg-slate-300 dark:bg-slate-600"
+                  onClick={() => selectSlide(thumbIndex)}
+                  className={`relative flex-shrink-0 rounded-2xl border-2 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal-500 ${
+                    isActive
+                      ? "border-brand-teal-500"
+                      : "border-transparent hover:border-slate-200 dark:hover:border-slate-700"
                   }`}
-                  aria-label={`Go to slide ${dotIndex + 1}`}
-                />
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={() => goTo(1)}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-            >
-              Next →
-            </button>
+                  aria-label={`Go to slide ${thumbIndex + 1}`}
+                >
+                  <img
+                    src={item.url}
+                    alt={item.alt || item.caption || `Slide ${thumbIndex + 1}`}
+                    className={`h-16 w-24 rounded-xl object-cover ${
+                      isActive ? "opacity-100" : "opacity-70"
+                    }`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {isVideoAsset(item) && (
+                    <span className="absolute bottom-1 left-1 rounded-md bg-black/70 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white">
+                      Video
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -438,7 +485,7 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
     setLoading(true);
     setError(null);
 
-    fetchBlogPostBySlug(slug, { populate: "deep" })
+    fetchBlogPostBySlug(slug)
       .then((article) => {
         if (!isMounted) return;
         setPost(article);
