@@ -4,26 +4,35 @@ interface IntersectionObserverOptions {
   root?: Element | null;
   rootMargin?: string;
   threshold?: number | number[];
+  /**
+   * Whether the observer should stop updating after the element has
+   * intersected once. Defaults to true to preserve the one-shot animation
+   * behaviour most sections expect.
+   */
+  freezeOnceVisible?: boolean;
 }
 
 const useIntersectionObserver = (
   elementRef: RefObject<Element>,
-  options: IntersectionObserverOptions = { threshold: 0.1 }
+  {
+    threshold = 0.1,
+    root = null,
+    rootMargin = '0px',
+    freezeOnceVisible = true,
+  }: IntersectionObserverOptions = {}
 ): boolean => {
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const frozen = freezeOnceVisible && isIntersecting;
 
   useEffect(() => {
     const element = elementRef.current;
-    if (!element) return;
+    if (!element || frozen) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsIntersecting(true);
-          observer.unobserve(element); // Disconnect after it becomes visible
-        }
+        setIsIntersecting(entry.isIntersecting);
       },
-      options
+      { threshold, root, rootMargin }
     );
 
     observer.observe(element);
@@ -31,8 +40,7 @@ const useIntersectionObserver = (
     return () => {
       observer.disconnect();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [elementRef, JSON.stringify(options)]); // Stringify to ensure dependency check works for object
+  }, [elementRef, threshold, root, rootMargin, frozen]);
 
   return isIntersecting;
 };
