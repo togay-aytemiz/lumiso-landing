@@ -1,6 +1,7 @@
 import React from "react";
 import { CheckCircleIcon } from "./icons/CheckCircleIcon";
 import { useAppContext } from "../contexts/AppContext";
+import { SIGN_UP_URL } from "../lib/urls";
 import CTAButton from "./ui/CTAButton";
 import PrismBackground from "./ui/PrismBackground";
 import { useIsMobile } from "../hooks/useIsMobile";
@@ -60,7 +61,7 @@ const CTA: React.FC = () => {
             </p>
             <div className="mt-4 flex flex-col items-center gap-3">
               <CTAButton
-                href="#"
+                href={SIGN_UP_URL}
                 variant="contrast"
                 className="rounded-full px-8 py-3 text-base sm:px-10 sm:py-4 sm:text-lg whitespace-nowrap"
               >

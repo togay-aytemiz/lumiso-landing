@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, Fragment } from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import { SIGN_IN_URL, SIGN_UP_URL } from '../lib/urls';
 import Logo from './Logo';
 
 const Header: React.FC = () => {
@@ -116,8 +117,8 @@ const Header: React.FC = () => {
           </nav>
           <div className="flex flex-1 items-center justify-end">
             <div className="hidden md:flex items-center space-x-4">
-                <a href="#" className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${isScrolled ? 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' : 'text-white'}`}>{t('header.login')}</a>
-                <a href="#" className="bg-brand-teal-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-brand-teal-600 dark:bg-brand-teal-500 dark:hover:bg-brand-teal-400 transition-colors duration-200 shadow-lg shadow-brand-teal-500/30">
+                <a href={SIGN_IN_URL} className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${isScrolled ? 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' : 'text-white'}`}>{t('header.login')}</a>
+                <a href={SIGN_UP_URL} className="bg-brand-teal-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-brand-teal-600 dark:bg-brand-teal-500 dark:hover:bg-brand-teal-400 transition-colors duration-200 shadow-lg shadow-brand-teal-500/30">
                   {t('header.signup')}
                 </a>
             </div>
@@ -233,8 +234,8 @@ const Header: React.FC = () => {
 
               <div className="p-4 sm:p-6 border-t border-slate-800">
                 <div className="flex flex-col space-y-4">
-                  <a href="#" className="w-full text-center py-3 px-4 rounded-lg text-slate-300 bg-slate-800 hover:bg-slate-700 font-medium transition-colors duration-200">{t('header.login')}</a>
-                  <a href="#" className="w-full text-center py-3 px-4 rounded-lg bg-brand-teal-500 text-white font-semibold hover:bg-brand-teal-600 dark:hover:bg-brand-teal-400 transition-colors duration-200">
+                  <a href={SIGN_IN_URL} className="w-full text-center py-3 px-4 rounded-lg text-slate-300 bg-slate-800 hover:bg-slate-700 font-medium transition-colors duration-200">{t('header.login')}</a>
+                  <a href={SIGN_UP_URL} className="w-full text-center py-3 px-4 rounded-lg bg-brand-teal-500 text-white font-semibold hover:bg-brand-teal-600 dark:hover:bg-brand-teal-400 transition-colors duration-200">
                     {t('header.signup')}
                   </a>
                 </div>

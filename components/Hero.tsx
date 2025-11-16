@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useAppContext } from "../contexts/AppContext";
+import { SIGN_UP_URL } from "../lib/urls";
 import { CheckCircleIcon } from "./icons/CheckCircleIcon";
 import SectionBadge from "./ui/SectionBadge";
 import CTAButton from "./ui/CTAButton";
@@ -215,7 +216,7 @@ const Hero: React.FC = () => {
               style={{ animationDelay: "700ms" }}
             >
               <CTAButton
-                href="#contact"
+                href={SIGN_UP_URL}
                 variant="primary"
                 fullWidth
                 className="hero-primary-cta sm:w-auto"

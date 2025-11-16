@@ -1,6 +1,7 @@
 
 import React, { useRef } from 'react';
 import { useAppContext } from '../contexts/AppContext';
+import { SIGN_UP_URL } from '../lib/urls';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { XCircleIcon } from './icons/XCircleIcon';
 import { CheckCircleIcon } from './icons/CheckCircleIcon';
@@ -81,7 +82,7 @@ const WhyLumiso: React.FC = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <CTAButton href="#" variant="gradient">
+          <CTAButton href={SIGN_UP_URL} variant="gradient">
             {t('cta.button')}
           </CTAButton>
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-x-6 gap-y-3 text-base font-medium text-slate-600 dark:text-slate-300">
