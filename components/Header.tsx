@@ -4,12 +4,25 @@ import { useAppContext } from '../contexts/AppContext';
 import { SIGN_IN_URL, SIGN_UP_URL } from '../lib/urls';
 import Logo from './Logo';
 
-const Header: React.FC = () => {
+type HeaderMode = 'landing' | 'blog';
+
+type NavLink = {
+  name: string;
+  href: string;
+  isSection?: boolean;
+};
+
+interface HeaderProps {
+  mode?: HeaderMode;
+}
+
+const Header: React.FC<HeaderProps> = ({ mode = 'landing' }) => {
   const { t } = useAppContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasMenuBeenOpened, setHasMenuBeenOpened] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const isLanding = mode === 'landing';
   
   useEffect(() => {
     const handleScroll = () => {
@@ -42,28 +55,45 @@ const Header: React.FC = () => {
     return () => clearTimeout(timeout);
   }, [isMenuOpen, hasMenuBeenOpened]);
 
-  const navLinks = [
-    { name: t('header.features'), href: '#features' },
-    { name: t('header.results'), href: '#results' },
-    { name: t('header.testimonials'), href: '#testimonials' },
-    { name: t('header.faq'), href: '#faq' },
+  const baseNavLinks: NavLink[] = [
+    { name: t('header.features'), href: '#features', isSection: true },
+    { name: t('header.results'), href: '#results', isSection: true },
+    { name: t('header.blog'), href: '#blog', isSection: true },
+    { name: t('header.testimonials'), href: '#testimonials', isSection: true },
+    { name: t('header.faq'), href: '#faq', isSection: true },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const href = e.currentTarget.getAttribute('href');
-    if (!href) return;
-    const targetElement = document.querySelector(href);
-    
-    if (targetElement) {
-      const headerOffset = 64; // Corresponds to h-16
-      const elementPosition = targetElement.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  const navLinks: NavLink[] = baseNavLinks.map((link) => {
+    if (isLanding) return link;
+    if (link.href === '#blog') {
+      return { ...link, href: '/blog', isSection: false };
+    }
+    if (link.isSection) {
+      return {
+        ...link,
+        href: `/${link.href.replace(/^#/, '#')}`,
+        isSection: false,
+      };
+    }
+    return link;
+  });
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+  const handleNavClick = (href: string, isSection = false) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isLanding && isSection) {
+      e.preventDefault();
+      if (!href) return;
+      const targetElement = document.querySelector(href);
+
+      if (targetElement) {
+        const headerOffset = 64; // Corresponds to h-16
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
     }
 
     if (isMenuOpen) {
@@ -72,12 +102,14 @@ const Header: React.FC = () => {
   };
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-     if (isMenuOpen) {
+    if (isLanding) {
+      e.preventDefault();
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+    if (isMenuOpen) {
       setIsMenuOpen(false);
     }
   };
@@ -110,7 +142,7 @@ const Header: React.FC = () => {
           </div>
           <nav className="hidden md:flex flex-1 items-center justify-center space-x-8">
             {navLinks.map((link) => (
-                <a key={link.name} href={link.href} onClick={handleNavClick} className={`font-medium ${isScrolled ? 'text-slate-700 dark:text-slate-300' : 'text-white'} hover:text-brand-teal-500 dark:hover:text-brand-teal-400 transition-colors duration-200 cursor-pointer`}>
+                <a key={link.name} href={link.href} onClick={handleNavClick(link.href, link.isSection)} className={`font-medium ${isScrolled ? 'text-slate-700 dark:text-slate-300' : 'text-white'} hover:text-brand-teal-500 dark:hover:text-brand-teal-400 transition-colors duration-200 cursor-pointer`}>
                   {link.name}
                 </a>
             ))}
@@ -222,7 +254,7 @@ const Header: React.FC = () => {
                     <li key={link.name}>
                       <a
                         href={link.href}
-                        onClick={handleNavClick}
+                        onClick={handleNavClick(link.href, link.isSection)}
                         className="text-2xl font-semibold text-slate-300 hover:text-brand-teal-400 transition-all duration-300 hover:tracking-wider"
                       >
                         {link.name}

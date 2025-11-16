@@ -5,6 +5,7 @@ export const translations = {
     "header.results": "Results",
     "header.pricing": "Pricing",
     "header.testimonials": "Testimonials",
+    "header.blog": "Blog",
     "header.faq": "FAQ",
     "header.login": "Sign In",
     "header.signup": "Start free trial",
@@ -209,6 +210,55 @@ export const translations = {
     "results.clientExp.project2.status": "Editing Phase",
     "results.clientExp.moreOptionsAria": "Open actions for {name}",
 
+    // Blog
+    "blog.tag": "From the Studio",
+    "blog.title": "Fresh insights to grow a modern photography studio",
+    "blog.subtitle":
+      "Stories, playbooks, and lessons from the Lumiso community to help you design a calmer, more profitable workflow.",
+    "blog.viewAll": "Explore all articles",
+    "blog.readMore": "Read article",
+    "blog.posts": [
+      {
+        id: "workflow-blueprint",
+        title: "The workflow blueprint top studios rely on",
+        description:
+          "Break down your week into four focus blocks so production, editing, and client updates all move forward without bottlenecks.",
+        date: "Apr 16, 2024",
+        readTime: "6 min read",
+        category: "Operations",
+        author: {
+          name: "Maya Collins",
+          title: "Head of Product Education",
+        },
+      },
+      {
+        id: "client-journey",
+        title: "From inquiry to rave review: mapping your client journey",
+        description:
+          "Turn every touchpoint into a branded moment with the intake templates, approvals, and reminder cadences our team uses.",
+        date: "Mar 28, 2024",
+        readTime: "8 min read",
+        category: "Client Experience",
+        author: {
+          name: "Leo Martinez",
+          title: "Customer Success Lead",
+        },
+      },
+      {
+        id: "automation-playbook",
+        title: "Automations photographers actually use every week",
+        description:
+          "Seven ready-to-launch automations that collect feedback, send prep guides, and keep payments on schedule.",
+        date: "Mar 10, 2024",
+        readTime: "5 min read",
+        category: "Productivity",
+        author: {
+          name: "Sienna Hart",
+          title: "Workflow Strategist",
+        },
+      },
+    ],
+
     // Testimonials
     "testimonials.tag": "From Our Community",
     "testimonials.title": "What Photographers Are Saying",
@@ -344,6 +394,7 @@ export const translations = {
     "header.results": "Sonuçlar",
     "header.pricing": "Fiyatlandırma",
     "header.testimonials": "Referanslar",
+    "header.blog": "Blog",
     "header.faq": "SSS",
     "header.login": "Giriş Yap",
     "header.signup": "Ücretsiz Denemeye Başla",
@@ -536,6 +587,55 @@ export const translations = {
     "results.clientExp.project2.name": "Can Aile Portreleri",
     "results.clientExp.project2.status": "Düzenleme Aşamasında",
     "results.clientExp.moreOptionsAria": "{name} kartı seçeneklerini aç",
+
+    // Blog
+    "blog.tag": "Stüdyo Notları",
+    "blog.title": "Modern fotoğraf stüdyoları için taze içgörüler",
+    "blog.subtitle":
+      "Lumiso topluluğundan hikâyeler, oyun planları ve daha verimli bir iş akışı kurmanıza yardım edecek dersler.",
+    "blog.viewAll": "Tüm yazıları keşfet",
+    "blog.readMore": "Yazıyı oku",
+    "blog.posts": [
+      {
+        id: "workflow-blueprint",
+        title: "En başarılı stüdyoların kullandığı iş akışı planı",
+        description:
+          "Haftanızı dört odak bloğuna bölerek prodüksiyon, retouch ve müşteri güncellemelerini tıkanmadan ilerletin.",
+        date: "16 Nis 2024",
+        readTime: "6 dakikalık okuma",
+        category: "Operasyon",
+        author: {
+          name: "Maya Collins",
+          title: "Ürün Eğitim Lideri",
+        },
+      },
+      {
+        id: "client-journey",
+        title: "İlk mesajdan övgü dolu yoruma: müşteri yolculuğu haritası",
+        description:
+          "Ekibimizin kullandığı form şablonları, onay akışları ve hatırlatma ritimleriyle her temas noktasını markalı bir ana dönüştürün.",
+        date: "28 Mar 2024",
+        readTime: "8 dakikalık okuma",
+        category: "Müşteri Deneyimi",
+        author: {
+          name: "Leo Martinez",
+          title: "Müşteri Başarı Lideri",
+        },
+      },
+      {
+        id: "automation-playbook",
+        title: "Fotoğrafçıların her hafta kullandığı otomasyonlar",
+        description:
+          "Geri bildirim toplayan, çekim öncesi rehber gönderen ve ödemeleri rayında tutan yedi hazır otomasyon.",
+        date: "10 Mar 2024",
+        readTime: "5 dakikalık okuma",
+        category: "Verimlilik",
+        author: {
+          name: "Sienna Hart",
+          title: "Workflow Stratejisti",
+        },
+      },
+    ],
 
     // Testimonials
     "testimonials.tag": "Topluluğumuzdan",
