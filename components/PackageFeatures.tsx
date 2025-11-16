@@ -22,7 +22,7 @@ const PackageFeatures: React.FC = () => {
     const [isInteracting, setIsInteracting] = useState(false);
     
     const sectionRef = useRef<HTMLDivElement>(null);
-    const isSectionVisible = useIntersectionObserver(sectionRef, { threshold: 0.2 });
+    const isSectionVisible = useIntersectionObserver(sectionRef, { threshold: 0.2, freezeOnceVisible: false });
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
     const intervalRef = useRef<number | null>(null);
     const interactionTimeoutRef = useRef<number | null>(null);
