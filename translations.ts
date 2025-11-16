@@ -215,8 +215,12 @@ export const translations = {
     "blog.title": "Fresh insights to grow a modern photography studio",
     "blog.subtitle":
       "Stories, playbooks, and lessons from the Lumiso community to help you design a calmer, more profitable workflow.",
+    "blog.allTopics": "All topics",
     "blog.viewAll": "Explore all articles",
     "blog.readMore": "Read article",
+    "blog.status.missingSource": "Add your Strapi API URL in .env to load live articles.",
+    "blog.status.error": "Unable to reach Strapi right now. Please try again shortly.",
+    "blog.noPostsInCategory": "No posts found for this category yet.",
     "blog.posts": [
       {
         id: "workflow-blueprint",
@@ -593,8 +597,12 @@ export const translations = {
     "blog.title": "Modern fotoğraf stüdyoları için taze içgörüler",
     "blog.subtitle":
       "Lumiso topluluğundan hikâyeler, oyun planları ve daha verimli bir iş akışı kurmanıza yardım edecek dersler.",
+    "blog.allTopics": "Tüm konular",
     "blog.viewAll": "Tüm yazıları keşfet",
     "blog.readMore": "Yazıyı oku",
+    "blog.status.missingSource": "Canlı yazıları görmek için .env dosyanıza Strapi API adresinizi ekleyin.",
+    "blog.status.error": "Strapi'ye şu anda ulaşılamıyor. Lütfen kısa süre sonra tekrar deneyin.",
+    "blog.noPostsInCategory": "Bu kategoride henüz bir yazı bulunamadı.",
     "blog.posts": [
       {
         id: "workflow-blueprint",

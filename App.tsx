@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import WhyLumiso from './components/WhyLumiso';
@@ -11,10 +11,11 @@ import ScrollToTopButton from './components/ScrollToTopButton';
 
 const AIFeatures = lazy(() => import('./components/AIFeatures'));
 const Results = lazy(() => import('./components/Results'));
-const Blog = lazy(() => import('./components/Blog'));
 const Testimonials = lazy(() => import('./components/Testimonials'));
 const CTA = lazy(() => import('./components/CTA'));
 const FAQ = lazy(() => import('./components/FAQ'));
+const BlogPage = lazy(() => import('./pages/BlogPage'));
+const BlogArticlePage = lazy(() => import('./pages/BlogArticlePage'));
 
 const SectionFallback: React.FC = () => (
   <div className="py-20 text-center text-slate-400 dark:text-slate-500">
@@ -23,10 +24,41 @@ const SectionFallback: React.FC = () => (
 );
 
 const App: React.FC = () => {
+  const [pathname, setPathname] = useState<string>(() => {
+    if (typeof window === 'undefined') return '/';
+    return window.location.pathname;
+  });
+
   useEffect(() => {
     document.documentElement.classList.remove('preload');
     document.documentElement.classList.add('app-ready');
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handlePopState = () => {
+      setPathname(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  const normalizedPath = pathname === '/' ? '/' : pathname.replace(/\/+$/, '') || '/';
+  const pathSegments = normalizedPath.split('/').filter(Boolean);
+  const isBlogRoute = pathSegments[0] === 'blog';
+  const blogSlug = pathSegments.length > 1 ? pathSegments[1] : null;
+
+  if (isBlogRoute) {
+    return (
+      <Suspense fallback={<SectionFallback />}>
+        {blogSlug ? <BlogArticlePage slug={blogSlug} /> : <BlogPage />}
+      </Suspense>
+    );
+  }
 
   return (
     <div className="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-200 font-sans antialiased transition-colors duration-300">
@@ -43,9 +75,6 @@ const App: React.FC = () => {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Results />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <Blog />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Testimonials />

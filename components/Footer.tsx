@@ -15,6 +15,7 @@ const ChevronDownIcon: React.FC = () => (
 const Footer: React.FC = () => {
   const { t, theme, toggleTheme, language, setLanguage } = useAppContext();
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [isLandingPage, setIsLandingPage] = useState(true);
   const langMenuRef = useRef<HTMLDivElement>(null);
 
   const languages = {
@@ -35,6 +36,11 @@ const Footer: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setIsLandingPage(!window.location.pathname.startsWith('/blog'));
+  }, []);
+
 
   const footerLinks = {
     product: [
@@ -49,13 +55,21 @@ const Footer: React.FC = () => {
   };
 
   const handleLinkClick = (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (href.startsWith('#')) {
-      event.preventDefault();
-      const target = document.querySelector(href);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    if (!isLandingPage || !href.startsWith('#')) {
+      return;
     }
+    event.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const resolveHref = (href: string) => {
+    if (!href.startsWith('#') || isLandingPage) {
+      return href;
+    }
+    return `/${href}`;
   };
 
   return (
@@ -75,7 +89,7 @@ const Footer: React.FC = () => {
                 {footerLinks.product.map((link) => (
                   <li key={link.name}>
                     <a
-                      href={link.href}
+                      href={resolveHref(link.href)}
                       onClick={handleLinkClick(link.href)}
                       className="text-slate-500 dark:text-slate-400 hover:text-brand-teal-500 dark:hover:text-brand-teal-400"
                     >
@@ -91,7 +105,7 @@ const Footer: React.FC = () => {
                 {footerLinks.legal.map((link) => (
                   <li key={link.name}>
                     <a
-                      href={link.href}
+                      href={resolveHref(link.href)}
                       onClick={handleLinkClick(link.href)}
                       className="text-slate-500 dark:text-slate-400 hover:text-brand-teal-500 dark:hover:text-brand-teal-400"
                     >

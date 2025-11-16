@@ -7,6 +7,7 @@ export default {
     './components/**/*.{ts,tsx}',
     './contexts/**/*.{ts,tsx}',
     './hooks/**/*.{ts,tsx}',
+    './pages/**/*.{ts,tsx}',
     './translations.ts'
   ],
   darkMode: 'class',

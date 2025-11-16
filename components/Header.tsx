@@ -14,15 +14,27 @@ type NavLink = {
 
 interface HeaderProps {
   mode?: HeaderMode;
+  initialContentTone?: 'light' | 'dark';
 }
 
-const Header: React.FC<HeaderProps> = ({ mode = 'landing' }) => {
+const Header: React.FC<HeaderProps> = ({ mode = 'landing', initialContentTone }) => {
   const { t } = useAppContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasMenuBeenOpened, setHasMenuBeenOpened] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const isLanding = mode === 'landing';
+  const defaultTone = isLanding ? 'light' : 'dark';
+  const resolvedInitialTone = initialContentTone || defaultTone;
+  const shouldUseLightContent = !isScrolled && resolvedInitialTone === 'light';
+  const navTextColor = shouldUseLightContent ? 'text-white' : 'text-slate-700 dark:text-slate-300';
+  const loginLinkClass = shouldUseLightContent
+    ? 'text-white'
+    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800';
+  const mobileToggleClasses = shouldUseLightContent
+    ? 'text-white hover:bg-white/10'
+    : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800';
+  const logoTheme = isScrolled ? undefined : (shouldUseLightContent ? 'dark' : 'light');
   
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +70,6 @@ const Header: React.FC<HeaderProps> = ({ mode = 'landing' }) => {
   const baseNavLinks: NavLink[] = [
     { name: t('header.features'), href: '#features', isSection: true },
     { name: t('header.results'), href: '#results', isSection: true },
-    { name: t('header.blog'), href: '#blog', isSection: true },
     { name: t('header.testimonials'), href: '#testimonials', isSection: true },
     { name: t('header.faq'), href: '#faq', isSection: true },
   ];
@@ -136,20 +147,20 @@ const Header: React.FC<HeaderProps> = ({ mode = 'landing' }) => {
             >
               <Logo
                 className="transition-opacity duration-300"
-                forceTheme={isScrolled ? undefined : 'dark'}
+                forceTheme={logoTheme}
               />
             </a>
           </div>
           <nav className="hidden md:flex flex-1 items-center justify-center space-x-8">
             {navLinks.map((link) => (
-                <a key={link.name} href={link.href} onClick={handleNavClick(link.href, link.isSection)} className={`font-medium ${isScrolled ? 'text-slate-700 dark:text-slate-300' : 'text-white'} hover:text-brand-teal-500 dark:hover:text-brand-teal-400 transition-colors duration-200 cursor-pointer`}>
+                <a key={link.name} href={link.href} onClick={handleNavClick(link.href, link.isSection)} className={`font-medium ${navTextColor} hover:text-brand-teal-500 dark:hover:text-brand-teal-400 transition-colors duration-200 cursor-pointer`}>
                   {link.name}
                 </a>
             ))}
           </nav>
           <div className="flex flex-1 items-center justify-end">
             <div className="hidden md:flex items-center space-x-4">
-                <a href={SIGN_IN_URL} className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${isScrolled ? 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' : 'text-white'}`}>{t('header.login')}</a>
+                <a href={SIGN_IN_URL} className={`px-4 py-2 rounded-lg transition-colors duration-200 font-medium ${loginLinkClass}`}>{t('header.login')}</a>
                 <a href={SIGN_UP_URL} className="bg-brand-teal-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-brand-teal-600 dark:bg-brand-teal-500 dark:hover:bg-brand-teal-400 transition-colors duration-200 shadow-lg shadow-brand-teal-500/30">
                   {t('header.signup')}
                 </a>
@@ -160,9 +171,7 @@ const Header: React.FC<HeaderProps> = ({ mode = 'landing' }) => {
                   setHasMenuBeenOpened(true);
                   setIsMenuOpen(prev => !prev);
                 }}
-                className={`inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-teal-500 transition-colors ${
-                  isScrolled ? 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800' : 'text-white hover:bg-white/10'
-                }`}
+                className={`inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-teal-500 transition-colors ${mobileToggleClasses}`}
               >
                 <span className="sr-only">Open main menu</span>
                 {isMenuOpen ? (
