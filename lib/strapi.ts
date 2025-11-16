@@ -328,7 +328,7 @@ export const fetchBlogPostBySlug = async (
   if (!slug) return null;
   const posts = await fetchBlogPosts({
     ...options,
-    populate: options.populate ?? '*',
+    populate: options.populate ?? 'deep',
     limit: 1,
     filters: {
       ...options.filters,

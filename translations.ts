@@ -215,6 +215,9 @@ export const translations = {
     "blog.title": "Fresh insights to grow a modern photography studio",
     "blog.subtitle":
       "Stories, playbooks, and lessons from the Lumiso community to help you design a calmer, more profitable workflow.",
+    "blog.categorySection.title": "Our recent posts",
+    "blog.categorySection.subtitle":
+      "Insights and stories from the Lumiso team to keep you inspired.",
     "blog.allTopics": "All topics",
     "blog.viewAll": "Explore all articles",
     "blog.readMore": "Read article",
@@ -597,7 +600,10 @@ export const translations = {
     "blog.title": "Modern fotoğraf stüdyoları için taze içgörüler",
     "blog.subtitle":
       "Lumiso topluluğundan hikâyeler, oyun planları ve daha verimli bir iş akışı kurmanıza yardım edecek dersler.",
-    "blog.allTopics": "Tüm konular",
+    "blog.categorySection.title": "Son yazılarımız",
+    "blog.categorySection.subtitle":
+      "Lumiso ekibinden ilham veren içgörüler ve hikâyelerle güncel kalın.",
+    "blog.allTopics": "Tümü",
     "blog.viewAll": "Tüm yazıları keşfet",
     "blog.readMore": "Yazıyı oku",
     "blog.status.missingSource": "Canlı yazıları görmek için .env dosyanıza Strapi API adresinizi ekleyin.",

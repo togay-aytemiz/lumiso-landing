@@ -58,36 +58,54 @@ const pickMediaAttributes = (
 };
 
 const extractMediaAssets = (input?: unknown): MediaAsset[] => {
-  if (!input) return [];
-  if (Array.isArray(input)) {
-    return input
-      .map((entry) => extractMediaAssets(entry))
-      .flat()
-      .filter((asset): asset is MediaAsset => Boolean(asset?.url));
-  }
-  if (typeof input === "object" && input !== null) {
-    const candidate = input as Record<string, unknown>;
-    if ("data" in candidate && candidate.data) {
-      const data = candidate.data as unknown;
-      if (Array.isArray(data)) {
-        return data
-          .map((entry) => {
-            if (!entry || typeof entry !== "object") return undefined;
-            const record = entry as { attributes?: Record<string, unknown> };
-            return pickMediaAttributes(
-              record.attributes ?? (entry as Record<string, unknown>)
-            );
-          })
-          .filter((asset): asset is MediaAsset => Boolean(asset?.url));
+  const visited = new WeakSet<object>();
+
+  const walk = (value?: unknown): MediaAsset[] => {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+      if (visited.has(value as object)) {
+        return [];
       }
-      if (typeof data === "object") {
-        return extractMediaAssets(data);
-      }
+      visited.add(value as object);
+      return value
+        .map((entry) => walk(entry))
+        .flat()
+        .filter((asset): asset is MediaAsset => Boolean(asset?.url));
     }
-    const direct = pickMediaAttributes(candidate);
-    return direct ? [direct] : [];
-  }
-  return [];
+    if (typeof value === "object" && value !== null) {
+      if (visited.has(value as object)) {
+        return [];
+      }
+      visited.add(value as object);
+      const candidate = value as Record<string, unknown>;
+
+      if ("data" in candidate && candidate.data) {
+        const data = candidate.data as unknown;
+        if (Array.isArray(data)) {
+          return data
+            .map((entry) => walk(entry))
+            .flat()
+            .filter((asset): asset is MediaAsset => Boolean(asset?.url));
+        }
+        if (typeof data === "object" && data !== null) {
+          return walk(data);
+        }
+      }
+
+      const direct = pickMediaAttributes(candidate);
+      if (direct?.url) {
+        return [direct];
+      }
+
+      return Object.values(candidate)
+        .map((entry) => walk(entry))
+        .flat()
+        .filter((asset): asset is MediaAsset => Boolean(asset?.url));
+    }
+    return [];
+  };
+
+  return walk(input);
 };
 
 const extractMediaAsset = (input?: unknown): MediaAsset | undefined => {
@@ -103,6 +121,7 @@ const isVideoAsset = (asset: MediaAsset) => {
 };
 
 const sliderCollectionKeys = [
+  "files",
   "items",
   "slides",
   "mediaItems",
@@ -138,7 +157,11 @@ const extractSliderItemsFromBlock = (block: ArticleBlock): SliderItem[] => {
           if (!entry || typeof entry !== "object") return undefined;
           const record = entry as Record<string, unknown>;
           const asset = extractMediaAsset(
-            record.media ?? record.image ?? record.asset ?? entry
+            record.media ??
+              record.image ??
+              record.asset ??
+              record.file ??
+              entry
           );
           if (!asset?.url) return undefined;
           return {
@@ -170,9 +193,19 @@ const extractSliderItemsFromBlock = (block: ArticleBlock): SliderItem[] => {
     }
   }
 
+  const groupedFiles = extractMediaAssets(block.files);
+  if (groupedFiles.length) {
+    return groupedFiles;
+  }
+
   const groupedMedia = extractMediaAssets(block.media);
   if (groupedMedia.length) {
     return groupedMedia;
+  }
+
+  const nestedAssets = extractMediaAssets(block);
+  if (nestedAssets.length > 1) {
+    return nestedAssets;
   }
 
   return [];
@@ -405,7 +438,7 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
     setLoading(true);
     setError(null);
 
-    fetchBlogPostBySlug(slug, { populate: "*" })
+    fetchBlogPostBySlug(slug, { populate: "deep" })
       .then((article) => {
         if (!isMounted) return;
         setPost(article);
@@ -513,7 +546,7 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
         return asset;
       }
     }
-    return undefined;
+    return extractMediaAsset(block);
   };
 
   const renderMediaElementBlock = (

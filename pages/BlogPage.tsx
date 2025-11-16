@@ -170,7 +170,7 @@ const BlogPage: React.FC = () => {
 
     const content = (
       <article
-        className={`grid gap-6 overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-xl transition-shadow duration-300 dark:border-slate-800 dark:bg-slate-900 lg:grid-cols-2 lg:gap-10 transform ${cardHoverClass} hover:shadow-2xl group-hover:shadow-2xl`}
+        className={`grid grid-cols-1 gap-6 overflow-hidden rounded-3xl border border-slate-200 bg-white p-4 shadow-xl transition-shadow duration-300 dark:border-slate-800 dark:bg-slate-900 lg:grid-cols-2 lg:gap-10 transform ${cardHoverClass} hover:shadow-2xl group-hover:shadow-2xl`}
       >
         <div className="relative min-h-[260px] overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800">
           {featuredPost.coverImageUrl ? (
@@ -277,33 +277,43 @@ const BlogPage: React.FC = () => {
             {(categories.length > 0 || statusMessage) && (
               <div className="space-y-4 pt-20 mt-12 mb-4">
                 {categories.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-3 py-2">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedCategory("all")}
-                      className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
-                        selectedCategory === "all"
-                          ? "border-brand-teal-500 bg-brand-teal-500 text-white shadow-md shadow-brand-teal-500/30"
-                          : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
-                      }`}
-                    >
-                      {t("blog.allTopics")}
-                    </button>
-                    {categories.map(({ value, label }) => (
+                  <>
+                    <div className="max-w-2xl">
+                      <h2 className="text-xl font-medium text-slate-900 dark:text-white">
+                        {t("blog.categorySection.title")}
+                      </h2>
+                      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                        {t("blog.categorySection.subtitle")}
+                      </p>
+                    </div>
+                    <div className="flex w-full flex-nowrap items-center gap-3 py-2 overflow-x-auto hide-scrollbar">
                       <button
-                        key={value}
                         type="button"
-                        onClick={() => setSelectedCategory(value)}
-                        className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
-                          selectedCategory === value
+                        onClick={() => setSelectedCategory("all")}
+                        className={`shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+                          selectedCategory === "all"
                             ? "border-brand-teal-500 bg-brand-teal-500 text-white shadow-md shadow-brand-teal-500/30"
                             : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
                         }`}
                       >
-                        {label}
+                        {t("blog.allTopics")}
                       </button>
-                    ))}
-                  </div>
+                      {categories.map(({ value, label }) => (
+                        <button
+                          key={value}
+                          type="button"
+                          onClick={() => setSelectedCategory(value)}
+                          className={`shrink-0 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+                            selectedCategory === value
+                              ? "border-brand-teal-500 bg-brand-teal-500 text-white shadow-md shadow-brand-teal-500/30"
+                              : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
                 )}
                 {statusMessage && (
                   <p className="text-sm text-slate-500 dark:text-slate-400">
