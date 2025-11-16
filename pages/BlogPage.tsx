@@ -187,7 +187,7 @@ const BlogPage: React.FC = () => {
         <div className="flex flex-col justify-between rounded-2xl bg-white p-6 dark:bg-slate-900">
           <div>
             <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wide text-brand-teal-600 dark:text-brand-teal-400">
-              <span className="inline-flex items-center justify-center rounded-full bg-brand-teal-50 px-3 py-1 text-brand-teal-700 leading-none dark:bg-brand-teal-500/10 dark:text-brand-teal-300">
+              <span className="inline-flex items-center justify-center rounded-full bg-brand-teal-50  py-1 text-brand-teal-700 leading-none dark:bg-brand-teal-500/10 dark:text-brand-teal-300">
                 {featuredPost.category || "Editorial"}
               </span>
               {featuredPost.publishedAt && (
