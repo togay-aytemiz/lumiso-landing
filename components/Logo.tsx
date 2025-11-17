@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAppContext } from '../contexts/AppContext';
 
 const LIGHT_LOGO_SRC = '/logo-light.svg';
 const DARK_LOGO_SRC = '/logo-dark.svg';
@@ -15,6 +16,10 @@ export interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ className = '', forceTheme }) => {
+  const { theme } = useAppContext();
+  const resolvedTheme = forceTheme || theme || 'light';
+  const isDarkActive = resolvedTheme === 'dark';
+
   const lightClasses = forceTheme
     ? forceTheme === 'light'
       ? 'block'
@@ -37,6 +42,9 @@ const Logo: React.FC<LogoProps> = ({ className = '', forceTheme }) => {
         width={LOGO_BASE_WIDTH}
         height={LOGO_BASE_HEIGHT}
         decoding="async"
+        loading={isDarkActive ? 'lazy' : 'eager'}
+        fetchPriority={isDarkActive ? 'auto' : 'high'}
+        aria-hidden={isDarkActive}
         className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${lightClasses}`}
       />
       <img
@@ -45,6 +53,9 @@ const Logo: React.FC<LogoProps> = ({ className = '', forceTheme }) => {
         width={LOGO_BASE_WIDTH}
         height={LOGO_BASE_HEIGHT}
         decoding="async"
+        loading={isDarkActive ? 'eager' : 'lazy'}
+        fetchPriority={isDarkActive ? 'high' : 'auto'}
+        aria-hidden={!isDarkActive}
         className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-300 ${darkClasses}`}
       />
     </div>
