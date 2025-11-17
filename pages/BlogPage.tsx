@@ -72,6 +72,8 @@ const normalizeLocale = (languageCode?: string) => {
   return languageCode;
 };
 
+const GRID_PAGE_SIZE = 6;
+
 const BlogPage: React.FC = () => {
   const { t, language, setSeoOverrides } = useAppContext();
   const {
@@ -165,6 +167,14 @@ const BlogPage: React.FC = () => {
     return Array.from(keywords).join(", ");
   }, [displayPosts]);
 
+  const loadMoreText = useMemo(() => {
+    const label = t("blog.loadMore");
+    if (!label || label === "blog.loadMore") {
+      return language === "tr" ? "Daha fazla yükle" : "Load more";
+    }
+    return label;
+  }, [language, t]);
+
   const featuredPost = displayPosts[0];
   const showFeaturedPost = Boolean(featuredPost);
   const gridPosts = useMemo(() => {
@@ -173,6 +183,19 @@ const BlogPage: React.FC = () => {
     }
     return filteredPosts.filter((post) => post.id !== featuredPost?.id);
   }, [displayPosts, filteredPosts, featuredPost?.id, selectedCategory]);
+
+  const [visibleCount, setVisibleCount] = useState(GRID_PAGE_SIZE);
+
+  useEffect(() => {
+    setVisibleCount(GRID_PAGE_SIZE);
+  }, [selectedCategory, gridPosts.length]);
+
+  const visibleGridPosts = useMemo(
+    () => gridPosts.slice(0, visibleCount),
+    [gridPosts, visibleCount]
+  );
+
+  const canLoadMore = visibleCount < gridPosts.length;
 
   const renderFeaturedCard = () => {
     if (!showFeaturedPost || !featuredPost) return null;
@@ -488,8 +511,9 @@ const BlogPage: React.FC = () => {
             )}
 
             {!loading && gridPosts.length > 0 && (
-              <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {gridPosts.map((post) => {
+              <>
+                <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                  {visibleGridPosts.map((post) => {
                   const postUrl = resolvePostUrl(post);
                   const isLink = Boolean(postUrl);
                   const cardHoverClass = isLink
@@ -562,7 +586,7 @@ const BlogPage: React.FC = () => {
                     return React.cloneElement(card, { key: post.id });
                   }
 
-                  return (
+                    return (
                     <a
                       key={post.id}
                       href={postUrl}
@@ -571,8 +595,24 @@ const BlogPage: React.FC = () => {
                       {card}
                     </a>
                   );
-                })}
-              </div>
+                  })}
+                </div>
+                {canLoadMore && (
+                  <div className="mt-10 flex justify-center">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setVisibleCount((count) =>
+                          Math.min(count + GRID_PAGE_SIZE, gridPosts.length)
+                        )
+                      }
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-slate-600"
+                    >
+                      {loadMoreText}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
 
             {!loading &&

@@ -95,13 +95,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (typeof window === 'undefined') return;
     localStorage.setItem('language', language);
     const url = new URL(window.location.href);
-    if (language === 'en') {
+    if (url.searchParams.has('lang')) {
       url.searchParams.delete('lang');
-    } else {
-      url.searchParams.set('lang', language);
-    }
-    if (url.href !== window.location.href) {
-      window.history.replaceState({}, '', url.href);
+      if (url.href !== window.location.href) {
+        window.history.replaceState({}, '', url.href);
+      }
     }
   }, [language]);
 
