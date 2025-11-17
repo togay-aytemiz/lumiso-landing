@@ -18,7 +18,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ mode = 'landing', initialContentTone }) => {
-  const { t } = useAppContext();
+  const { t, theme } = useAppContext();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasMenuBeenOpened, setHasMenuBeenOpened] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -34,7 +34,14 @@ const Header: React.FC<HeaderProps> = ({ mode = 'landing', initialContentTone })
   const mobileToggleClasses = shouldUseLightContent
     ? 'text-white hover:bg-white/10'
     : 'text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800';
-  const logoTheme = isScrolled ? undefined : (shouldUseLightContent ? 'dark' : 'light');
+  const shouldForceDarkLogo = !isScrolled && mode === 'blog' && theme === 'dark';
+  const logoTheme = isScrolled
+    ? undefined
+    : shouldForceDarkLogo
+    ? 'dark'
+    : shouldUseLightContent
+    ? 'dark'
+    : 'light';
   
   useEffect(() => {
     const handleScroll = () => {

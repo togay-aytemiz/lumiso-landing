@@ -1012,10 +1012,10 @@ const BlogArticlePage: React.FC<BlogArticlePageProps> = ({ slug }) => {
               <img
                 src={post.coverImageUrl}
                 alt={post.coverImageAlt || post.title}
-                className="h-full w-full object-cover opacity-40"
+                className="h-full w-full object-cover opacity-70 filter brightness-110 saturate-150"
               />
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/80 to-slate-900/95" />
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/55 to-slate-900/85" />
           </div>
           <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-32 min-h-[480px] sm:min-h-[560px] lg:min-h-[640px] flex items-end">
             <div className="max-w-3xl flex h-full min-h-[320px] flex-col gap-6 mt-20 sm:mt-24 lg:mt-32 pb-16">

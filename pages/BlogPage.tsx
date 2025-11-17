@@ -399,8 +399,8 @@ const BlogPage: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white">
       <Header mode="blog" />
-      <main className="mt-16 flex-1 bg-slate-50 dark:bg-slate-950">
-        <section className="pt-32 pb-16 lg:pb-20">
+      <main className="mt-2 sm:mt-0 flex-1 bg-slate-50 dark:bg-slate-950">
+        <section className="pt-16 sm:pt-20 lg:pt-24 pb-16 lg:pb-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
             <div className="space-y-3 max-w-3xl">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-teal-600 dark:text-brand-teal-400">
