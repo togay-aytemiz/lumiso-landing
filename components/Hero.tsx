@@ -53,15 +53,17 @@ const HeroScreenshot: React.FC<{ alt: string }> = ({ alt }) => (
   <div className="w-full mx-auto mt-4 sm:mt-16 max-w-[1400px] lg:max-w-[1500px]">
     <div className="relative w-full rounded-[22px] border border-white/10 bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/30 overflow-hidden aspect-[726/1266] sm:aspect-[2240/1086]">
       <picture className="absolute inset-0 block">
-        <source srcSet="/Dashboard-mobile.png" media="(max-width: 639px)" />
-        <source srcSet="/Dashboard.png" media="(min-width: 640px)" />
+        <source srcSet="/hero/Dashboard-mobile.webp" media="(max-width: 639px)" type="image/webp" />
+        <source srcSet="/hero/Dashboard.webp" media="(min-width: 640px)" type="image/webp" />
+        <source srcSet="/hero/Dashboard-mobile.png" media="(max-width: 639px)" />
         <img
-          src="/Dashboard.png"
+          src="/hero/Dashboard.png"
           alt={alt}
           className="w-full h-full object-contain"
           loading="eager"
           decoding="async"
-          sizes="(max-width: 639px) 100vw, 1400px"
+          sizes="(max-width: 639px) 100vw, (max-width: 1023px) 90vw, 1400px"
+          fetchPriority="high"
         />
       </picture>
       <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/50 via-transparent to-transparent pointer-events-none" />

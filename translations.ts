@@ -80,6 +80,7 @@ export const translations = {
     "keyFeatures.card1.title": "Unified Client Workspace",
     "keyFeatures.card1.description":
       "Organize all client communication, files, contracts, and invoices in one intuitive space. Stay on top of every detail.",
+    "keyFeatures.card1.imageAlt": "Lumiso contact card timeline showing client notes, invoices, and reminders.",
     "keyFeatures.card2.title": "Smart Automation",
     "keyFeatures.card2.description":
       "Automate repetitive tasks like sending reminders, follow-ups, and thank-you notes. Free up your time for creative work.",
@@ -474,6 +475,7 @@ export const translations = {
     "keyFeatures.card1.title": "Kişi kartından bütün ilişkiyi yönetin",
     "keyFeatures.card1.description":
       "Her kişi için çekimler, notlar, hatırlatmalar ve ödemeler aynı yerde tutulur. Kiminle ne konuşuldu, hangi çekimler yapıldı, ne kadar ödendi hepsi tek bakışta görünür.",
+    "keyFeatures.card1.imageAlt": "Lumiso kişi kartı zaman çizelgesinde notlar, faturalar ve hatırlatmalar.",
     "keyFeatures.card2.title": "Takvim ve hatırlatmalarla günü kontrol edin",
     "keyFeatures.card2.description":
       "Çekimleriniz takvimde. Yaklaşan çekimler, teslim tarihleriniz ve günlük özet e postaları ile hiçbir şeyi kaçırmazsınız.",

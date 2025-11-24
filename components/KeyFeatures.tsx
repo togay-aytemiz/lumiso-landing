@@ -6,11 +6,27 @@ import SectionHeader from './ui/SectionHeader';
 import SpotlightCard from './ui/SpotlightCard';
 
 const FeatureIllustrationPlaceholder: React.FC<{ label: string; note?: string }> = ({ label, note }) => (
-  <div className="mt-8 border border-dashed border-slate-300/80 dark:border-slate-600/80 rounded-2xl bg-white/60 dark:bg-black/30 px-6 py-8 text-center text-slate-500 dark:text-slate-300">
+  <div className="border border-dashed border-slate-300/80 dark:border-slate-600/80 rounded-2xl bg-white/60 dark:bg-black/30 px-6 py-8 text-center text-slate-500 dark:text-slate-300">
     <p className="text-lg font-semibold">{label}</p>
     {note && <p className="mt-2 text-sm text-slate-500/80 dark:text-slate-300/80">{note}</p>}
     <div className="mt-6 text-xs uppercase tracking-wide text-slate-400">Drop UI screenshot here</div>
   </div>
+);
+
+const FeatureIllustrationImage: React.FC<{ alt: string }> = ({ alt }) => (
+  <picture className="block">
+    <source srcSet="/temel/kisiler-mobile.webp" media="(max-width: 639px)" type="image/webp" />
+    <source srcSet="/temel/kisiler-desktop-2.webp" media="(min-width: 640px)" type="image/webp" />
+    <source srcSet="/temel/kisiler-mobile.png" media="(max-width: 639px)" />
+    <img
+      src="/temel/kisiler-desktop-2.png"
+      alt={alt}
+      className="w-full h-auto"
+      loading="lazy"
+      decoding="async"
+      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 90vw, 480px"
+    />
+  </picture>
 );
 
 const KeyFeatures: React.FC = () => {
@@ -38,7 +54,7 @@ const KeyFeatures: React.FC = () => {
       bgColor: 'bg-amber-50 dark:bg-amber-900/20',
       borderColor: 'border-amber-200 dark:border-amber-800/30',
       spotlightColor: 'rgba(245, 158, 11, 0.25)',
-      illustration: <FeatureIllustrationPlaceholder label="Screenshot slot: Contact timeline" note="Show the full client card with notes, invoices, reminders." />
+      illustration: <FeatureIllustrationImage alt={t('keyFeatures.card1.imageAlt')} />
     },
     {
       titleKey: 'keyFeatures.card2.title',
@@ -83,12 +99,14 @@ const KeyFeatures: React.FC = () => {
               key={index}
               ref={cardRefs[index]}
               spotlightColor={feature.spotlightColor}
-              className={`p-8 shadow-lg border ${feature.bgColor} ${feature.borderColor} ${cardAnimationClasses(cardVisibility[index], cardDelays[index])}`}
+              className={`flex flex-col p-8 shadow-lg border ${feature.bgColor} ${feature.borderColor} ${cardAnimationClasses(cardVisibility[index], cardDelays[index])}`}
             >
               <div className="text-3xl font-bold text-slate-300 dark:text-slate-600">0{index + 1}</div>
               <h3 className="mt-4 text-xl font-bold text-slate-900 dark:text-white">{t(feature.titleKey)}</h3>
               <p className="mt-2 text-slate-600 dark:text-slate-300">{t(feature.descriptionKey)}</p>
-              {feature.illustration}
+              <div className="mt-auto w-full">
+                <div className="mt-8">{feature.illustration}</div>
+              </div>
             </SpotlightCard>
           ))}
         </div>
