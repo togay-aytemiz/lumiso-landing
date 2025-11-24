@@ -21,6 +21,7 @@ export const translations = {
     "hero.cta.subtext.line2": "No credit card required.",
     "hero.imageAlt":
       "Lumiso dashboard showcasing revenue trends, bookings, calendar, and client tasks.",
+    "common.close": "Close",
 
     // Why Lumiso
     "whyLumiso.tag": "Stop the Chaos",
@@ -427,6 +428,7 @@ export const translations = {
     "hero.cta.subtext.line2": "Kredi kartı gerekmez.",
     "hero.imageAlt":
       "Gelir trendlerini, rezervasyonları, takvimi ve müşteri görevlerini gösteren Lumiso kontrol paneli.",
+    "common.close": "Kapat",
 
     // Why Lumiso
     "whyLumiso.tag": "Kaosu Bırakın",

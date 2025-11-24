@@ -49,9 +49,20 @@ const DotsHorizontalIcon: React.FC<{ className?: string }> = ({
   </svg>
 );
 
-const HeroScreenshot: React.FC<{ alt: string }> = ({ alt }) => (
+const HeroScreenshot: React.FC<{ alt: string; onEnlarge?: () => void; isDesktop: boolean }> = ({
+  alt,
+  onEnlarge,
+  isDesktop,
+}) => (
   <div className="w-full mx-auto mt-4 sm:mt-16 max-w-[1400px] lg:max-w-[1500px]">
-    <div className="relative w-full rounded-[22px] border border-white/10 bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/30 overflow-hidden aspect-[726/1266] sm:aspect-[2240/1086]">
+    <button
+      type="button"
+      className={`relative w-full rounded-[22px] border border-white/10 bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/30 overflow-hidden aspect-[726/1266] sm:aspect-[2240/1086] transition ring-0 ${
+        isDesktop ? "cursor-zoom-in hover:border-white/20" : "cursor-default"
+      }`}
+      onClick={isDesktop ? onEnlarge : undefined}
+      aria-label={isDesktop ? "Enlarge hero screenshot" : undefined}
+    >
       <picture className="absolute inset-0 block">
         <source srcSet="/hero/Dashboard-mobile.webp" media="(max-width: 639px)" type="image/webp" />
         <source srcSet="/hero/Dashboard.webp" media="(min-width: 640px)" type="image/webp" />
@@ -68,7 +79,7 @@ const HeroScreenshot: React.FC<{ alt: string }> = ({ alt }) => (
       </picture>
       <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/50 via-transparent to-transparent pointer-events-none" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/70 via-slate-950/30 to-transparent pointer-events-none" />
-    </div>
+    </button>
   </div>
 );
 
@@ -107,6 +118,8 @@ const Hero: React.FC = () => {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
   const rotationRef = useRef<number | null>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [isHeroLightboxOpen, setIsHeroLightboxOpen] = useState(false);
   const hasMultipleVideos = heroVideos.length > 1;
   const activeVideo = heroVideos[activeVideoIndex] ?? heroVideos[0];
   const fallbackPoster = activeVideo?.poster ?? heroVideos[0]?.poster ?? "";
@@ -115,10 +128,17 @@ const Hero: React.FC = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const desktopQuery = window.matchMedia("(min-width: 1024px)");
     const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
+    const handleDesktopChange = () => setIsDesktop(desktopQuery.matches);
     handleChange();
+    handleDesktopChange();
     mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
+    desktopQuery.addEventListener("change", handleDesktopChange);
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+      desktopQuery.removeEventListener("change", handleDesktopChange);
+    };
   }, []);
 
   const stopVideoRotation = useCallback(() => {
@@ -155,6 +175,14 @@ const Hero: React.FC = () => {
 
   const handleVideoLoaded = useCallback(() => {
     setIsVideoLoaded(true);
+  }, []);
+
+  const openHeroLightbox = useCallback(() => {
+    if (isDesktop) setIsHeroLightboxOpen(true);
+  }, [isDesktop]);
+
+  const closeHeroLightbox = useCallback(() => {
+    setIsHeroLightboxOpen(false);
   }, []);
 
   return (
@@ -255,7 +283,43 @@ const Hero: React.FC = () => {
           className="hero-dashboard mt-12 sm:mt-16 animate-slide-in-fade"
           style={{ animationDelay: "900ms" }}
         >
-          <HeroScreenshot alt={t("hero.imageAlt")} />
+          <HeroScreenshot alt={t("hero.imageAlt")} onEnlarge={openHeroLightbox} isDesktop={isDesktop} />
+        </div>
+      </div>
+      <div
+        className={`fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-6 transition-opacity duration-200 ${
+          isDesktop && isHeroLightboxOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        role="dialog"
+        aria-label="Hero screenshot full view"
+        aria-hidden={!(isDesktop && isHeroLightboxOpen)}
+        onClick={closeHeroLightbox}
+      >
+        <div
+          className={`relative w-full max-w-[95vw] md:max-w-[90vw] lg:max-w-6xl xl:max-w-7xl transition-all duration-200 ${
+            isHeroLightboxOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            type="button"
+            className="absolute -top-3 -right-3 bg-white text-slate-900 rounded-full shadow-md px-3 py-1 text-sm font-semibold hover:bg-slate-100"
+            onClick={closeHeroLightbox}
+          >
+            {t("common.close")}
+          </button>
+          <div className="rounded-[22px] overflow-hidden bg-slate-900 shadow-2xl">
+            <picture className="block">
+              <source srcSet="/hero/Dashboard.webp" type="image/webp" />
+              <img
+                src="/hero/Dashboard.png"
+                alt={t("hero.imageAlt")}
+                className="w-full h-auto"
+                loading="eager"
+                decoding="async"
+              />
+            </picture>
+          </div>
         </div>
       </div>
     </section>

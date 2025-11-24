@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import SectionHeader from './ui/SectionHeader';
@@ -13,30 +13,44 @@ const FeatureIllustrationPlaceholder: React.FC<{ label: string; note?: string }>
   </div>
 );
 
-const FeatureIllustrationImage: React.FC<{ alt: string }> = ({ alt }) => (
-  <picture className="block">
-    <source srcSet="/temel/kisiler-mobile.webp" media="(max-width: 639px)" type="image/webp" />
-    <source srcSet="/temel/kisiler-desktop-2.webp" media="(min-width: 640px)" type="image/webp" />
-    <source srcSet="/temel/kisiler-mobile.png" media="(max-width: 639px)" />
-    <img
-      src="/temel/kisiler-desktop-2.png"
-      alt={alt}
-      className="w-full h-auto"
-      loading="lazy"
-      decoding="async"
-      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 90vw, 480px"
-    />
-  </picture>
+const FeatureIllustrationImage: React.FC<{ alt: string; onEnlarge?: () => void; isDesktop: boolean }> = ({
+  alt,
+  onEnlarge,
+  isDesktop,
+}) => (
+  <button
+    type="button"
+    className={`block w-full text-left ${isDesktop ? 'cursor-zoom-in' : 'cursor-default'}`}
+    onClick={isDesktop ? onEnlarge : undefined}
+    aria-label={isDesktop ? 'Enlarge screenshot' : undefined}
+  >
+    <picture className="block">
+      <source srcSet="/temel/kisiler-mobile.webp" media="(max-width: 639px)" type="image/webp" />
+      <source srcSet="/temel/kisiler-desktop-2.webp" media="(min-width: 640px)" type="image/webp" />
+      <source srcSet="/temel/kisiler-mobile.png" media="(max-width: 639px)" />
+      <img
+        src="/temel/kisiler-desktop-2.png"
+        alt={alt}
+        className="w-full h-auto"
+        loading="lazy"
+        decoding="async"
+        sizes="(max-width: 639px) 100vw, (max-width: 1023px) 90vw, 480px"
+      />
+    </picture>
+  </button>
 );
 
 const KeyFeatures: React.FC = () => {
   const { t } = useAppContext();
+  const [isDesktop, setIsDesktop] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const headerRef = useRef<HTMLDivElement>(null);
   const card1Ref = useRef<HTMLDivElement>(null);
   const card2Ref = useRef<HTMLDivElement>(null);
   const card3Ref = useRef<HTMLDivElement>(null);
   const cardRefs = [card1Ref, card2Ref, card3Ref];
+  const [lightboxAlt, setLightboxAlt] = useState("");
 
   const isHeaderVisible = useIntersectionObserver(headerRef, { threshold: 0.2 });
   const cardVisibility = [
@@ -47,6 +61,23 @@ const KeyFeatures: React.FC = () => {
   
   const cardDelays = ['delay-0', 'delay-150', 'delay-300'];
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const desktopQuery = window.matchMedia('(min-width: 1024px)');
+    const handleDesktopChange = () => setIsDesktop(desktopQuery.matches);
+    handleDesktopChange();
+    desktopQuery.addEventListener('change', handleDesktopChange);
+    return () => desktopQuery.removeEventListener('change', handleDesktopChange);
+  }, []);
+
+  const openLightbox = () => {
+    if (!isDesktop) return;
+    setLightboxAlt(t('keyFeatures.card1.imageAlt'));
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setLightboxOpen(false);
+
   const features = [
     {
       titleKey: 'keyFeatures.card1.title',
@@ -54,7 +85,7 @@ const KeyFeatures: React.FC = () => {
       bgColor: 'bg-amber-50 dark:bg-amber-900/20',
       borderColor: 'border-amber-200 dark:border-amber-800/30',
       spotlightColor: 'rgba(245, 158, 11, 0.25)',
-      illustration: <FeatureIllustrationImage alt={t('keyFeatures.card1.imageAlt')} />
+      illustration: <FeatureIllustrationImage alt={t('keyFeatures.card1.imageAlt')} onEnlarge={openLightbox} isDesktop={isDesktop} />
     },
     {
       titleKey: 'keyFeatures.card2.title',
@@ -109,6 +140,42 @@ const KeyFeatures: React.FC = () => {
               </div>
             </SpotlightCard>
           ))}
+        </div>
+      </div>
+      <div
+        className={`fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-6 transition-opacity duration-200 ${
+          isDesktop && lightboxOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        role="dialog"
+        aria-label="Screenshot full view"
+        aria-hidden={!(isDesktop && lightboxOpen)}
+        onClick={closeLightbox}
+      >
+        <div
+          className={`relative w-full max-w-[95vw] md:max-w-[90vw] lg:max-w-6xl xl:max-w-7xl transition-all duration-200 ${
+            lightboxOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            type="button"
+            className="absolute -top-3 -right-3 bg-white text-slate-900 rounded-full shadow-md px-3 py-1 text-sm font-semibold hover:bg-slate-100"
+            onClick={closeLightbox}
+          >
+            {t('common.close')}
+          </button>
+          <div className="rounded-[22px] overflow-hidden bg-white shadow-2xl">
+            <picture className="block">
+              <source srcSet="/temel/kisiler-desktop-2.webp" type="image/webp" />
+              <img
+                src="/temel/kisiler-desktop-2.png"
+                alt={lightboxAlt}
+                className="w-full h-auto"
+                loading="eager"
+                decoding="async"
+              />
+            </picture>
+          </div>
         </div>
       </div>
     </section>
