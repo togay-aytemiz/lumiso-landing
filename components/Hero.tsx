@@ -49,24 +49,23 @@ const DotsHorizontalIcon: React.FC<{ className?: string }> = ({
   </svg>
 );
 
-const HeroScreenshotPlaceholder: React.FC = () => (
-  <div className="w-full max-w-5xl mx-auto mt-4 sm:mt-16 rounded-[22px] border border-white/10 bg-white/5 dark:bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/30 overflow-hidden">
-    <div className="bg-slate-900/60 text-white px-6 py-3 flex items-center justify-between text-sm">
-      <p className="font-semibold">App screenshot coming soon</p>
-      <span className="text-slate-300">
-        Drop your image into `public/hero-screenshot.png`
-      </span>
-    </div>
-    <div className="relative aspect-[16/9] flex items-center justify-center bg-slate-900/40">
-      <div className="w-3/4 text-center space-y-3">
-        <p className="text-slate-300 text-lg font-semibold">
-          Reserved for product preview
-        </p>
-        <p className="text-slate-400 text-base">
-          Replace this placeholder with your hero screenshot to immediately show
-          the UI. Suggested size: 1600×900 PNG with transparent corners.
-        </p>
-      </div>
+const HeroScreenshot: React.FC<{ alt: string }> = ({ alt }) => (
+  <div className="w-full mx-auto mt-4 sm:mt-16 max-w-[1400px] lg:max-w-[1500px]">
+    <div className="relative w-full rounded-[22px] border border-white/10 bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/30 overflow-hidden aspect-[726/1266] sm:aspect-[2240/1086]">
+      <picture className="absolute inset-0 block">
+        <source srcSet="/Dashboard-mobile.png" media="(max-width: 639px)" />
+        <source srcSet="/Dashboard.png" media="(min-width: 640px)" />
+        <img
+          src="/Dashboard.png"
+          alt={alt}
+          className="w-full h-full object-contain"
+          loading="eager"
+          decoding="async"
+          sizes="(max-width: 639px) 100vw, 1400px"
+        />
+      </picture>
+      <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/50 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/70 via-slate-950/30 to-transparent pointer-events-none" />
     </div>
   </div>
 );
@@ -247,31 +246,14 @@ const Hero: React.FC = () => {
                 <p>{t("hero.cta.subtext.line2")}</p>
               </div>
             </div>
-            {hasMultipleVideos && (
-              <div className="mt-8 flex items-center justify-center gap-2">
-                {heroVideos.map((video, index) => (
-                  <button
-                    key={video.id}
-                    type="button"
-                    onClick={() => setActiveVideoIndex(index)}
-                    className={`h-2.5 w-2.5 rounded-full border border-white/40 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 ${
-                      activeVideoIndex === index
-                        ? "bg-white"
-                        : "bg-transparent hover:border-white/70"
-                    }`}
-                    aria-label={`Show hero background ${index + 1}`}
-                  />
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
         <div
-          className="hero-dashboard mt-20 animate-slide-in-fade"
+          className="hero-dashboard mt-12 sm:mt-16 animate-slide-in-fade"
           style={{ animationDelay: "900ms" }}
         >
-          <HeroScreenshotPlaceholder />
+          <HeroScreenshot alt={t("hero.imageAlt")} />
         </div>
       </div>
     </section>
