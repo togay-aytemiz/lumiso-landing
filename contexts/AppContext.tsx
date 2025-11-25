@@ -116,15 +116,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const mergedOgType = seoOverrides?.ogType || 'website';
     const mergedTwitterTitle = seoOverrides?.twitterTitle || mergedOgTitle;
     const mergedTwitterDescription = seoOverrides?.twitterDescription || mergedOgDescription;
-    const defaultSocialImage = `${siteOrigin}/og-image.jpg`;
+    const defaultOgImage = `${siteOrigin}/og-image.jpg`;
+    const defaultTwitterImage = `${siteOrigin}/social.png`;
     const defaultSocialAlt =
       translations[language]?.['hero.imageAlt'] ||
       translations.en['hero.imageAlt'] ||
       'Lumiso dashboard showcasing revenue trends, bookings, calendar, and client tasks.';
-    const ogImage = seoOverrides?.ogImage || defaultSocialImage;
+    const ogImage = seoOverrides?.ogImage || defaultOgImage;
     const ogImageAlt = seoOverrides?.ogImageAlt || defaultSocialAlt;
-    const twitterImage = seoOverrides?.twitterImage || ogImage;
-    const twitterImageAlt = seoOverrides?.twitterImageAlt || ogImageAlt;
+    const twitterImage = seoOverrides?.twitterImage || defaultTwitterImage;
+    const twitterImageAlt = seoOverrides?.twitterImageAlt || defaultSocialAlt;
 
     document.title = mergedTitle;
 
@@ -228,6 +229,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           price: '0',
           availability: 'https://schema.org/PreOrder',
         },
+      },
+      {
+        '@type': 'WebSite',
+        name: 'Lumiso',
+        url: siteOrigin,
+        description: mergedDescription,
+        inLanguage: language,
       },
       {
         '@type': 'FAQPage',
