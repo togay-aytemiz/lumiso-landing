@@ -35,7 +35,7 @@ const FAQ: React.FC = () => {
               subtitle={t('faq.subtitle')}
               titleClassName="text-4xl sm:text-5xl"
             />
-            <CTAButton href="#contact" className="mt-8">
+            <CTAButton href="mailto:support@lumiso.app" className="mt-8">
               {t('faq.button')}
             </CTAButton>
           </div>

@@ -6,16 +6,11 @@ const root = path.resolve(process.cwd());
 
 const heroDir = path.join(root, "public", "hero");
 const temelDir = path.join(root, "public", "temel");
+const gunlukKontrolDir = path.join(root, "public", "gunluk-kontrol");
 
-[heroDir, temelDir].forEach((dir) => fs.mkdirSync(dir, { recursive: true }));
+[heroDir, temelDir, gunlukKontrolDir].forEach((dir) => fs.mkdirSync(dir, { recursive: true }));
 
 const images = [
-  {
-    label: "hero-desktop",
-    input: path.join(heroDir, "Dashboard.png"),
-    baseDir: heroDir,
-    outputs: [{ filename: "Dashboard.webp", format: "webp", width: 1920, quality: 86 }],
-  },
   {
     label: "hero-mobile",
     input: path.join(heroDir, "Dashboard-mobile.png"),
@@ -73,7 +68,7 @@ const images = [
 ];
 
 const formatOptions = {
-  webp: (quality) => ({ quality, effort: 5 }),
+  webp: (quality) => ({ quality, effort: 6, alphaQuality: 100, nearLossless: true }),
 };
 
 async function optimizeImage({ input, outputs, label, baseDir }) {

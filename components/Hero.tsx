@@ -57,8 +57,8 @@ const HeroScreenshot: React.FC<{ alt: string; onEnlarge?: () => void; isDesktop:
   <div className="w-full mx-auto mt-4 sm:mt-16 max-w-[1400px] lg:max-w-[1500px]">
     <button
       type="button"
-      className={`relative w-full rounded-[22px] border border-white/10 bg-slate-900/40 backdrop-blur-xl shadow-2xl shadow-black/30 overflow-hidden aspect-[726/1266] sm:aspect-[2240/1086] transition ring-0 ${
-        isDesktop ? "cursor-zoom-in hover:border-white/20" : "cursor-default"
+      className={`relative w-full rounded-[22px] border border-white/5 bg-transparent shadow-lg shadow-black/10 overflow-hidden aspect-[726/1266] sm:aspect-[2240/1086] transition ring-0 ${
+        isDesktop ? "cursor-zoom-in hover:border-white/15" : "cursor-default"
       }`}
       onClick={isDesktop ? onEnlarge : undefined}
       aria-label={isDesktop ? "Enlarge hero screenshot" : undefined}
@@ -77,8 +77,6 @@ const HeroScreenshot: React.FC<{ alt: string; onEnlarge?: () => void; isDesktop:
           fetchPriority="high"
         />
       </picture>
-      <div className="absolute inset-0 bg-gradient-to-tr from-slate-900/50 via-transparent to-transparent pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-950/70 via-slate-950/30 to-transparent pointer-events-none" />
     </button>
   </div>
 );
@@ -120,6 +118,9 @@ const Hero: React.FC = () => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isHeroLightboxOpen, setIsHeroLightboxOpen] = useState(false);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [demoForm, setDemoForm] = useState({ name: "", phone: "", note: "" });
+  const [demoError, setDemoError] = useState("");
   const hasMultipleVideos = heroVideos.length > 1;
   const activeVideo = heroVideos[activeVideoIndex] ?? heroVideos[0];
   const fallbackPoster = activeVideo?.poster ?? heroVideos[0]?.poster ?? "";
@@ -184,6 +185,40 @@ const Hero: React.FC = () => {
   const closeHeroLightbox = useCallback(() => {
     setIsHeroLightboxOpen(false);
   }, []);
+
+  const openDemoModal = useCallback((event?: React.MouseEvent) => {
+    if (event) {
+      event.preventDefault();
+    }
+    setIsDemoModalOpen(true);
+  }, []);
+
+  const closeDemoModal = useCallback(() => {
+    setIsDemoModalOpen(false);
+    setDemoError("");
+    setDemoForm({ name: "", phone: "", note: "" });
+  }, []);
+
+  const handleDemoSubmit = useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
+      if (!demoForm.name.trim() || !demoForm.phone.trim()) {
+        setDemoError(t("hero.demoModal.validation"));
+        return;
+      }
+
+      const subject = encodeURIComponent(t("hero.demoModal.subject"));
+      const bodyLines = [
+        `${t("hero.demoModal.body.name")}: ${demoForm.name.trim()}`,
+        `${t("hero.demoModal.body.phone")}: ${demoForm.phone.trim()}`,
+        `${t("hero.demoModal.body.note")}: ${demoForm.note.trim() || t("hero.demoModal.body.notProvided")}`,
+      ];
+      const mailtoUrl = `mailto:support@lumiso.app?subject=${subject}&body=${encodeURIComponent(bodyLines.join("\n"))}`;
+      window.location.href = mailtoUrl;
+      closeDemoModal();
+    },
+    [closeDemoModal, demoForm.name, demoForm.phone, demoForm.note, t]
+  );
 
   return (
     <section className="hero-critical relative bg-slate-950 text-white overflow-hidden pt-16 min-h-screen flex flex-col">
@@ -253,12 +288,11 @@ const Hero: React.FC = () => {
                 {t("hero.cta.primary")}
               </CTAButton>
               <CTAButton
-                href="https://calendly.com/photoflow/demo"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#"
                 variant="ghost"
                 fullWidth
                 className="hero-secondary-cta sm:w-auto"
+                onClick={(e) => openDemoModal(e)}
               >
                 {t("hero.cta.secondary")}
               </CTAButton>
@@ -286,6 +320,96 @@ const Hero: React.FC = () => {
           <HeroScreenshot alt={t("hero.imageAlt")} onEnlarge={openHeroLightbox} isDesktop={isDesktop} />
         </div>
       </div>
+
+      {isDemoModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t("hero.demoModal.title")}
+          onClick={closeDemoModal}
+        >
+          <div
+            className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200/80 dark:border-slate-800/80 p-6 sm:p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{t("hero.demoModal.title")}</h3>
+                <p className="mt-2 text-slate-600 dark:text-slate-300">{t("hero.demoModal.description")}</p>
+              </div>
+              <button
+                type="button"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                onClick={closeDemoModal}
+                aria-label={t("common.close")}
+              >
+                ×
+              </button>
+            </div>
+
+            <form className="mt-6 space-y-4" onSubmit={handleDemoSubmit}>
+              <div>
+                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-100">
+                  {t("hero.demoModal.nameLabel")}
+                </label>
+                <input
+                  type="text"
+                  className="mt-1 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-teal-500"
+                  value={demoForm.name}
+                  onChange={(e) => setDemoForm((prev) => ({ ...prev, name: e.target.value }))}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-100">
+                  {t("hero.demoModal.phoneLabel")}
+                </label>
+                <input
+                  type="tel"
+                  className="mt-1 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-teal-500"
+                  value={demoForm.phone}
+                  onChange={(e) => setDemoForm((prev) => ({ ...prev, phone: e.target.value }))}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-800 dark:text-slate-100">
+                  {t("hero.demoModal.noteLabel")}
+                </label>
+                <textarea
+                  className="mt-1 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-teal-500"
+                  rows={3}
+                  placeholder={t("hero.demoModal.notePlaceholder")}
+                  value={demoForm.note}
+                  onChange={(e) => setDemoForm((prev) => ({ ...prev, note: e.target.value }))}
+                />
+              </div>
+
+              {demoError && <p className="text-sm text-red-600 dark:text-red-400">{demoError}</p>}
+
+              <div className="flex flex-col sm:flex-row justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  className="px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                  onClick={closeDemoModal}
+                >
+                  {t("hero.demoModal.cancel")}
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-brand-teal-500 text-white font-semibold hover:bg-brand-teal-600 shadow-lg shadow-brand-teal-500/30 transition"
+                >
+                  {t("hero.demoModal.submit")}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       <div
         className={`fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-6 transition-opacity duration-200 ${
           isDesktop && isHeroLightboxOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"

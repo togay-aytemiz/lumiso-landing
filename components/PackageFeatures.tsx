@@ -6,16 +6,6 @@ import { ServiceIcon } from './icons/ServiceIcon';
 import { SessionIcon } from './icons/SessionIcon';
 import { ProposalIcon } from './icons/ProposalIcon';
 
-const ScreenshotPlaceholder: React.FC<{ label: string; description?: string }> = ({ label, description }) => (
-    <div className="flex flex-col items-center justify-center w-full h-full text-center px-6 py-10 gap-4 text-slate-500 dark:text-slate-300">
-        <p className="text-xl font-semibold">{label}</p>
-        {description && <p className="text-sm text-slate-500/80 dark:text-slate-300/80 max-w-sm">{description}</p>}
-        <div className="rounded-xl border border-dashed border-slate-400/70 dark:border-slate-600/70 px-4 py-2 text-sm">
-            Add a 1600×1600 PNG here
-        </div>
-    </div>
-);
-
 const PackageFeatures: React.FC = () => {
     const { t } = useAppContext();
     const [activeIndex, setActiveIndex] = useState(0);
@@ -27,50 +17,68 @@ const PackageFeatures: React.FC = () => {
     const intervalRef = useRef<number | null>(null);
     const interactionTimeoutRef = useRef<number | null>(null);
 
+    const featureVisuals = [
+        {
+            desktop: '/modern-studyo-askisi/msa1%20-%20desktop.webp',
+            mobile: '/modern-studyo-askisi/msa1%20-%20mobile.webp',
+            altKey: 'packageFeatures.tab1.imageAlt',
+        },
+        {
+            desktop: '/modern-studyo-askisi/msa2%20-%20desktop.webp',
+            mobile: '/modern-studyo-askisi/msa2%20-%20mobile.webp',
+            altKey: 'packageFeatures.tab2.imageAlt',
+        },
+        {
+            desktop: '/modern-studyo-askisi/msa3%20-%20desktop.webp',
+            mobile: '/modern-studyo-askisi/msa3%20-%20mobile.webp',
+            altKey: 'packageFeatures.tab3.imageAlt',
+        },
+        {
+            desktop: '/modern-studyo-askisi/msa4-desktop.webp',
+            mobile: '/modern-studyo-askisi/msa4-mobile.webp',
+            altKey: 'packageFeatures.tab4.imageAlt',
+        },
+    ];
+
+    const FeatureVisual: React.FC<{ sources: { desktop: string; mobile: string; altKey: string } }> = ({ sources }) => (
+        <picture className="block w-full">
+            <source srcSet={sources.mobile} media="(max-width: 1023px)" type="image/webp" />
+            <source srcSet={sources.desktop} media="(min-width: 1024px)" type="image/webp" />
+            <img
+                src={sources.desktop}
+                alt={t(sources.altKey)}
+                className="w-full h-auto"
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 1023px) 100vw, (max-width: 1535px) 70vw, 960px"
+            />
+        </picture>
+    );
+
     const features = [
         { 
             titleKey: 'packageFeatures.tab1.title', 
             descriptionKey: 'packageFeatures.tab1.description', 
             icon: <PackageIcon />,
-            visual: (
-                <ScreenshotPlaceholder
-                    label="Package Builder Screenshot"
-                    description="Drop your package creation UI here to show how photographers assemble offers."
-                />
-            )
+            visual: <FeatureVisual sources={featureVisuals[0]} />
         },
         { 
             titleKey: 'packageFeatures.tab2.title', 
             descriptionKey: 'packageFeatures.tab2.description', 
             icon: <ServiceIcon />,
-            visual: (
-                <ScreenshotPlaceholder
-                    label="Service Catalog Screenshot"
-                    description="Show the list of services with prices and availability."
-                />
-            )
+            visual: <FeatureVisual sources={featureVisuals[1]} />
         },
         { 
             titleKey: 'packageFeatures.tab3.title', 
             descriptionKey: 'packageFeatures.tab3.description', 
             icon: <SessionIcon />,
-            visual: (
-                <ScreenshotPlaceholder
-                    label="Session Types Screenshot"
-                    description="Illustrate how session pipelines look inside the product."
-                />
-            )
+            visual: <FeatureVisual sources={featureVisuals[2]} />
         },
         { 
             titleKey: 'packageFeatures.tab4.title', 
             descriptionKey: 'packageFeatures.tab4.description', 
             icon: <ProposalIcon />,
-            visual: (
-                <ScreenshotPlaceholder
-                    label="Proposal / Pricing Screenshot"
-                    description="Show case your interactive proposals or payment planner."
-                />
-            )
+            visual: <FeatureVisual sources={featureVisuals[3]} />
         },
     ];
 

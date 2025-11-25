@@ -22,6 +22,20 @@ export const translations = {
     "hero.imageAlt":
       "Lumiso dashboard showcasing revenue trends, bookings, calendar, and client tasks.",
     "common.close": "Close",
+    "hero.demoModal.title": "Schedule a demo",
+    "hero.demoModal.description": "Share your details and we'll reach out to find a time that works.",
+    "hero.demoModal.nameLabel": "Name",
+    "hero.demoModal.phoneLabel": "Phone number",
+    "hero.demoModal.noteLabel": "Availability / notes",
+    "hero.demoModal.notePlaceholder": "Tell us when you're free or what you'd like to see.",
+    "hero.demoModal.submit": "Send request",
+    "hero.demoModal.cancel": "Cancel",
+    "hero.demoModal.validation": "Please enter your name and phone number.",
+    "hero.demoModal.subject": "Demo request",
+    "hero.demoModal.body.name": "Name",
+    "hero.demoModal.body.phone": "Phone",
+    "hero.demoModal.body.note": "Availability/Notes",
+    "hero.demoModal.body.notProvided": "Not provided",
 
     // Why Lumiso
     "whyLumiso.tag": "Stop the Chaos",
@@ -96,6 +110,8 @@ export const translations = {
     "features.reports.title": "Turn data into insights",
     "features.reports.subtitle":
       "Unlock powerful insights with customizable reports tailored for your photography business. Analyze performance and track progress with ease and precision.",
+    "features.reports.imageAlt":
+      "Lumiso daily control dashboard showing the daily summary email and calendar overview.",
     "features.reports.feature1.title": "Customizable Reports",
     "features.reports.feature1.description":
       "Generate and customize reports with benchmarks, templates, and branding.",
@@ -106,6 +122,8 @@ export const translations = {
     "features.alerts.title": "Stay on top of your workflow",
     "features.alerts.subtitle":
       "Monitor projects, tasks, and communications. Get instant alerts on desktop, email, or mobile.",
+    "features.alerts.imageAlt":
+      "Lumiso planning view showing workflow scheduling with calendar and reminder details.",
     "features.alerts.feature1.title": "Custom Alerts",
     "features.alerts.feature1.description":
       "Set alerts with custom thresholds for project milestones, client messages, or upcoming deadlines.",
@@ -130,6 +148,10 @@ export const translations = {
     "packageFeatures.tab4.title": "Client Proposals",
     "packageFeatures.tab4.description":
       "Combine packages and services into stunning, interactive proposals. Allow clients to review options, sign contracts, and pay deposits all in one seamless experience.",
+    "packageFeatures.tab1.imageAlt": "Lumiso package flexibility screen showing combined services and items.",
+    "packageFeatures.tab2.imageAlt": "Lumiso service management view with prices, durations, and descriptions.",
+    "packageFeatures.tab3.imageAlt": "Lumiso session types view illustrating different session pipelines.",
+    "packageFeatures.tab4.imageAlt": "Lumiso proposal builder with pricing summary and payment options.",
 
     // Workflow
     "workflow.tag": "Visualize Your Process",
@@ -431,6 +453,20 @@ export const translations = {
     "hero.imageAlt":
       "Gelir trendlerini, rezervasyonları, takvimi ve müşteri görevlerini gösteren Lumiso kontrol paneli.",
     "common.close": "Kapat",
+    "hero.demoModal.title": "Demo ayarla",
+    "hero.demoModal.description": "Bilgilerinizi bırakın, size uygun zamanı birlikte belirleyelim.",
+    "hero.demoModal.nameLabel": "Adınız",
+    "hero.demoModal.phoneLabel": "Telefon numarası",
+    "hero.demoModal.noteLabel": "Müsaitlik / not",
+    "hero.demoModal.notePlaceholder": "Ne zaman uygun olduğunuzu veya görmek istediklerinizi yazın.",
+    "hero.demoModal.submit": "Gönder",
+    "hero.demoModal.cancel": "Vazgeç",
+    "hero.demoModal.validation": "Lütfen adınızı ve telefon numaranızı girin.",
+    "hero.demoModal.subject": "Demo talebi",
+    "hero.demoModal.body.name": "Ad",
+    "hero.demoModal.body.phone": "Telefon",
+    "hero.demoModal.body.note": "Müsaitlik/Not",
+    "hero.demoModal.body.notProvided": "Belirtilmedi",
 
     // Why Lumiso
     "whyLumiso.tag": "Kaosu Bırakın",
@@ -494,6 +530,8 @@ export const translations = {
     "features.reports.title": "Günlük İşinizi Net Görün",
     "features.reports.subtitle":
       "Yaklaşan çekimleri, teslim tarihlerini ve o günkü görevlerinizi tek bakışta görün. Lumiso, gününüzü planlamayı kolaylaştırır ve iş akışınızı hafifletir.",
+    "features.reports.imageAlt":
+      "Lumiso günlük kontrol ekranı; günlük özet maili ve takvim görünümü birlikte yer alıyor.",
     "features.reports.feature1.title": "Günlük Özet Maili",
     "features.reports.feature1.description":
       "Her sabah otomatik olarak gelen özetle güne hazırlıklı başlayın. Bugünün çekimleri, önemli hatırlatmalar ve teslim tarihleri tek mailde toplanır.",
@@ -504,6 +542,8 @@ export const translations = {
     "features.alerts.title": "Çekimlerinizi kolayca planlayın",
     "features.alerts.subtitle":
       "Yeni bir çekim eklerken kişi seçimi, tarih belirleme, seans tipi ve notlar tek pencerede toplanır. Planlama hızlanır, karışıklık azalır.",
+    "features.alerts.imageAlt":
+      "Lumiso planlama ekranı; çekim planlama kartları ve hatırlatmalar takvim üzerinde gösteriliyor.",
     "features.alerts.feature1.title": "Esnek Oturum Planlama",
     "features.alerts.feature1.description":
       "Bir projeye birden fazla çekim ekleyin. Saat, lokasyon ve notları tek seferde girin.",
@@ -528,6 +568,10 @@ export const translations = {
     "packageFeatures.tab4.title": "Kapora Yapılandırması",
     "packageFeatures.tab4.description":
       "Her paket için sabit ya da yüzdesel bir kapora belirleyin. Gelen kaporaları ayrı ayrı takip edin, nakit akışınızı netleştirin.",
+    "packageFeatures.tab1.imageAlt": "Lumiso paket esnekliği ekranı; hizmetlerin ve ürünlerin birleştirildiği yapı.",
+    "packageFeatures.tab2.imageAlt": "Lumiso hizmet yönetimi görünümü; fiyat, süre ve açıklamalar listelenmiş.",
+    "packageFeatures.tab3.imageAlt": "Lumiso seans türleri görünümü; farklı seans akışları gösteriliyor.",
+    "packageFeatures.tab4.imageAlt": "Lumiso teklif oluşturma ekranı; fiyat özeti ve ödeme seçenekleri ile.",
 
     // Workflow
     "workflow.tag": "Sürecinizi Görselleştirin",
@@ -749,7 +793,7 @@ export const translations = {
       {
         question: "Lumiso kimler için uygun?",
         answer:
-          "Yeni doğan, aile, düğün, marka ve konsept fotoğrafçıları başta olmak üzere, tek başına çalışan tüm fotoğrafçılar için tasarlandı. Kişi yönetimi, çekim planlama, ödeme takibi ve otomatik mesajlar gibi günlük işlerin tamamını sadeleştirir.",
+          "Yeni doğan, aile, düğün, marka ve konsept fotoğrafçıları başta olmak üzere, tüm fotoğrafçılar için tasarlandı. Kişi yönetimi, çekim planlama, ödeme takibi ve otomatik mesajlar gibi günlük işlerin tamamını sadeleştirir.",
       },
       {
         question: "Lumiso’da kişi (müşteri) bilgilerini nasıl takip ediyorum?",
