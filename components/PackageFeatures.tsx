@@ -10,6 +10,8 @@ const PackageFeatures: React.FC = () => {
     const { t } = useAppContext();
     const [activeIndex, setActiveIndex] = useState(0);
     const [isInteracting, setIsInteracting] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(false);
+    const [lightboxImage, setLightboxImage] = useState<{ src: string; alt: string } | null>(null);
     
     const sectionRef = useRef<HTMLDivElement>(null);
     const isSectionVisible = useIntersectionObserver(sectionRef, { threshold: 0.2, freezeOnceVisible: false });
@@ -40,45 +42,72 @@ const PackageFeatures: React.FC = () => {
         },
     ];
 
-    const FeatureVisual: React.FC<{ sources: { desktop: string; mobile: string; altKey: string } }> = ({ sources }) => (
-        <picture className="block w-full">
-            <source srcSet={sources.mobile} media="(max-width: 1023px)" type="image/webp" />
-            <source srcSet={sources.desktop} media="(min-width: 1024px)" type="image/webp" />
-            <img
-                src={sources.desktop}
-                alt={t(sources.altKey)}
-                className="w-full h-auto"
-                loading="lazy"
-                decoding="async"
-                sizes="(max-width: 1023px) 100vw, (max-width: 1535px) 70vw, 960px"
-            />
-        </picture>
+    const FeatureVisual: React.FC<{
+        sources: { desktop: string; mobile: string; altKey: string };
+        onEnlarge?: () => void;
+        isDesktop: boolean;
+    }> = ({ sources, onEnlarge, isDesktop }) => (
+        <button
+            type="button"
+            className={`block w-full text-left ${isDesktop ? 'cursor-zoom-in' : 'cursor-default'}`}
+            onClick={isDesktop ? onEnlarge : undefined}
+            aria-label={isDesktop ? t(sources.altKey) : undefined}
+        >
+            <picture className="block w-full">
+                <source srcSet={sources.mobile} media="(max-width: 1023px)" type="image/webp" />
+                <source srcSet={sources.desktop} media="(min-width: 1024px)" type="image/webp" />
+                <img
+                    src={sources.desktop}
+                    alt={t(sources.altKey)}
+                    className="w-full h-auto"
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 1023px) 100vw, (max-width: 1535px) 70vw, 960px"
+                />
+            </picture>
+        </button>
     );
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const desktopQuery = window.matchMedia('(min-width: 1024px)');
+        const handleDesktopChange = () => setIsDesktop(desktopQuery.matches);
+        handleDesktopChange();
+        desktopQuery.addEventListener('change', handleDesktopChange);
+        return () => desktopQuery.removeEventListener('change', handleDesktopChange);
+    }, []);
+
+    const openLightbox = (sources: { desktop: string; altKey: string }) => {
+        if (!isDesktop) return;
+        setLightboxImage({ src: sources.desktop, alt: t(sources.altKey) });
+    };
+
+    const closeLightbox = () => setLightboxImage(null);
 
     const features = [
         { 
             titleKey: 'packageFeatures.tab1.title', 
             descriptionKey: 'packageFeatures.tab1.description', 
             icon: <PackageIcon />,
-            visual: <FeatureVisual sources={featureVisuals[0]} />
+            visual: <FeatureVisual sources={featureVisuals[0]} onEnlarge={() => openLightbox(featureVisuals[0])} isDesktop={isDesktop} />
         },
         { 
             titleKey: 'packageFeatures.tab2.title', 
             descriptionKey: 'packageFeatures.tab2.description', 
             icon: <ServiceIcon />,
-            visual: <FeatureVisual sources={featureVisuals[1]} />
+            visual: <FeatureVisual sources={featureVisuals[1]} onEnlarge={() => openLightbox(featureVisuals[1])} isDesktop={isDesktop} />
         },
         { 
             titleKey: 'packageFeatures.tab3.title', 
             descriptionKey: 'packageFeatures.tab3.description', 
             icon: <SessionIcon />,
-            visual: <FeatureVisual sources={featureVisuals[2]} />
+            visual: <FeatureVisual sources={featureVisuals[2]} onEnlarge={() => openLightbox(featureVisuals[2])} isDesktop={isDesktop} />
         },
         { 
             titleKey: 'packageFeatures.tab4.title', 
             descriptionKey: 'packageFeatures.tab4.description', 
             icon: <ProposalIcon />,
-            visual: <FeatureVisual sources={featureVisuals[3]} />
+            visual: <FeatureVisual sources={featureVisuals[3]} onEnlarge={() => openLightbox(featureVisuals[3])} isDesktop={isDesktop} />
         },
     ];
 
@@ -221,7 +250,14 @@ const PackageFeatures: React.FC = () => {
                     
                     <div className="lg:col-span-2 relative aspect-square lg:aspect-[4/3] -mt-4 lg:mt-0">
                         {features.map((feature, index) => (
-                            <div key={index} className={`absolute inset-0 transition-all duration-500 ease-in-out ${activeIndex === index ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+                            <div
+                                key={index}
+                                className={`absolute inset-0 transition-all duration-500 ease-in-out ${
+                                    activeIndex === index
+                                        ? 'opacity-100 scale-100 pointer-events-auto'
+                                        : 'opacity-0 scale-95 pointer-events-none'
+                                }`}
+                            >
                                 <div className="w-full h-full bg-white dark:bg-slate-800/50 rounded-2xl shadow-2xl border border-slate-200/80 dark:border-slate-700/50 overflow-hidden">
                                     {feature.visual}
                                 </div>
@@ -266,6 +302,37 @@ const PackageFeatures: React.FC = () => {
                     ))}
                 </div>
             </div>
+        {isDesktop && lightboxImage && (
+            <div
+                className="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-6"
+                role="dialog"
+                aria-modal="true"
+                aria-label={lightboxImage.alt}
+                onClick={closeLightbox}
+            >
+                <div
+                    className="relative w-full max-w-[95vw] lg:max-w-6xl xl:max-w-7xl transition-all duration-200 opacity-100 scale-100"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <button
+                        type="button"
+                        className="absolute -top-3 -right-3 bg-white text-slate-900 rounded-full shadow-md px-3 py-1 text-sm font-semibold hover:bg-slate-100"
+                        onClick={closeLightbox}
+                    >
+                        {t('common.close')}
+                    </button>
+                    <div className="rounded-[22px] overflow-hidden bg-white dark:bg-slate-900 shadow-2xl">
+                        <img
+                            src={lightboxImage.src}
+                            alt={lightboxImage.alt}
+                            className="w-full h-auto"
+                            loading="eager"
+                            decoding="async"
+                        />
+                    </div>
+                </div>
+            </div>
+        )}
         </section>
     );
 };

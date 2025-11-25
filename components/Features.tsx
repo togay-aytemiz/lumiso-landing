@@ -7,6 +7,7 @@ const Features: React.FC = () => {
   const { t } = useAppContext();
   const [isDesktop, setIsDesktop] = useState(false);
   const [isReportsLightboxOpen, setIsReportsLightboxOpen] = useState(false);
+  const [isAlertsLightboxOpen, setIsAlertsLightboxOpen] = useState(false);
   const reportsScreenshotSources = {
     desktop: { webp: '/gunluk-kontrol/gk-desktop.webp', fallback: '/gunluk-kontrol/gk-desktop.png' },
     mobile: { webp: '/gunluk-kontrol/gk-mobile.webp', fallback: '/gunluk-kontrol/gk-mobile.png' },
@@ -139,19 +140,26 @@ const Features: React.FC = () => {
                 'delay-200'
               )}`}
             >
-              <picture className="block w-full">
-                <source srcSet={alertsScreenshotSources.mobile.webp} media="(max-width: 1023px)" type="image/webp" />
-                <source srcSet={alertsScreenshotSources.desktop.webp} media="(min-width: 1024px)" type="image/webp" />
-                <source srcSet={alertsScreenshotSources.mobile.fallback} media="(max-width: 1023px)" />
-                <img
-                  src={alertsScreenshotSources.desktop.fallback}
-                  alt={t('features.alerts.imageAlt')}
-                  className="w-full h-auto"
-                  loading="lazy"
-                  decoding="async"
-                  sizes="(max-width: 1023px) 100vw, (max-width: 1279px) 80vw, (max-width: 1535px) 68vw, 1100px"
-                />
-              </picture>
+              <button
+                type="button"
+                className={`block w-full text-left ${isDesktop ? 'cursor-zoom-in' : 'cursor-default'}`}
+                onClick={isDesktop ? () => setIsAlertsLightboxOpen(true) : undefined}
+                aria-label={isDesktop ? t('features.alerts.imageAlt') : undefined}
+              >
+                <picture className="block w-full">
+                  <source srcSet={alertsScreenshotSources.mobile.webp} media="(max-width: 1023px)" type="image/webp" />
+                  <source srcSet={alertsScreenshotSources.desktop.webp} media="(min-width: 1024px)" type="image/webp" />
+                  <source srcSet={alertsScreenshotSources.mobile.fallback} media="(max-width: 1023px)" />
+                  <img
+                    src={alertsScreenshotSources.desktop.fallback}
+                    alt={t('features.alerts.imageAlt')}
+                    className="w-full h-auto"
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 1023px) 100vw, (max-width: 1279px) 80vw, (max-width: 1535px) 68vw, 1100px"
+                  />
+                </picture>
+              </button>
             </div>
 
             {/* Detailed Text */}
@@ -201,6 +209,44 @@ const Features: React.FC = () => {
                 <img
                   src={reportsScreenshotSources.desktop.fallback}
                   alt={t('features.reports.imageAlt')}
+                  className="w-full h-auto"
+                  loading="eager"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+          </div>
+        </div>
+      )}
+      {isDesktop && (
+        <div
+          className={`fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-6 transition-opacity duration-200 ${
+            isAlertsLightboxOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+          role="dialog"
+          aria-label={t('features.alerts.imageAlt')}
+          aria-hidden={!isAlertsLightboxOpen}
+          onClick={() => setIsAlertsLightboxOpen(false)}
+        >
+          <div
+            className={`relative w-full max-w-[95vw] lg:max-w-6xl xl:max-w-7xl transition-all duration-200 ${
+              isAlertsLightboxOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="absolute -top-3 -right-3 bg-white text-slate-900 rounded-full shadow-md px-3 py-1 text-sm font-semibold hover:bg-slate-100"
+              onClick={() => setIsAlertsLightboxOpen(false)}
+            >
+              {t('common.close')}
+            </button>
+            <div className="shadow-2xl shadow-black/20 bg-transparent">
+              <picture className="block w-full">
+                <source srcSet={alertsScreenshotSources.desktop.webp} type="image/webp" />
+                <img
+                  src={alertsScreenshotSources.desktop.fallback}
+                  alt={t('features.alerts.imageAlt')}
                   className="w-full h-auto"
                   loading="eager"
                   decoding="async"

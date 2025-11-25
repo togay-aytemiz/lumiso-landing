@@ -105,6 +105,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     if (typeof document === 'undefined' || typeof window === 'undefined') return;
+    const siteOrigin = SITE_URL.replace(/\/$/, '');
     const meta = seoContent[language];
     const mergedTitle = seoOverrides?.title || meta.title;
     const mergedDescription = seoOverrides?.description || meta.description;
@@ -115,8 +116,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const mergedOgType = seoOverrides?.ogType || 'website';
     const mergedTwitterTitle = seoOverrides?.twitterTitle || mergedOgTitle;
     const mergedTwitterDescription = seoOverrides?.twitterDescription || mergedOgDescription;
-    const ogImage = seoOverrides?.ogImage;
-    const ogImageAlt = seoOverrides?.ogImageAlt;
+    const defaultSocialImage = `${siteOrigin}/og-image.jpg`;
+    const defaultSocialAlt =
+      translations[language]?.['hero.imageAlt'] ||
+      translations.en['hero.imageAlt'] ||
+      'Lumiso dashboard showcasing revenue trends, bookings, calendar, and client tasks.';
+    const ogImage = seoOverrides?.ogImage || defaultSocialImage;
+    const ogImageAlt = seoOverrides?.ogImageAlt || defaultSocialAlt;
     const twitterImage = seoOverrides?.twitterImage || ogImage;
     const twitterImageAlt = seoOverrides?.twitterImageAlt || ogImageAlt;
 
@@ -166,7 +172,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
 
     const currentPath = window.location.pathname + window.location.search;
-    const canonicalUrl = seoOverrides?.canonicalUrl || `${SITE_URL}${currentPath}`;
+    const canonicalUrl = seoOverrides?.canonicalUrl || `${siteOrigin}${currentPath}`;
 
     upsertMeta('name', 'description', mergedDescription);
     upsertMeta('name', 'keywords', mergedKeywords);
@@ -193,7 +199,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           : `${seoOverrides.canonicalUrl}?lang=${lang}`
         : lang === 'en'
         ? canonicalUrl
-        : `${SITE_URL}${window.location.pathname}?lang=${lang}`;
+        : `${siteOrigin}${window.location.pathname}?lang=${lang}`;
       upsertLink('alternate', { href: localizedUrl, hreflang: lang });
     });
     upsertLink('alternate', { href: canonicalUrl, hreflang: 'x-default' });
