@@ -34,6 +34,42 @@ const images = [
     baseDir: temelDir,
     outputs: [{ filename: "kisiler-mobile.webp", format: "webp", width: 1000, quality: 86 }],
   },
+  {
+    label: "temel-card1-desktop",
+    input: path.join(temelDir, "Card1 - Desktop.png"),
+    baseDir: temelDir,
+    outputs: [{ filename: "card1-desktop.webp", format: "webp", width: 1920, quality: 86 }],
+  },
+  {
+    label: "temel-card1-mobile",
+    input: path.join(temelDir, "Card1 - Mobile.png"),
+    baseDir: temelDir,
+    outputs: [{ filename: "card1-mobile.webp", format: "webp", width: 1200, quality: 86 }],
+  },
+  {
+    label: "temel-card2-desktop",
+    input: path.join(temelDir, "Card2 - Desktop.png"),
+    baseDir: temelDir,
+    outputs: [{ filename: "card2-desktop.webp", format: "webp", width: 1920, quality: 86 }],
+  },
+  {
+    label: "temel-card2-mobile",
+    input: path.join(temelDir, "Card2 - Mobile.png"),
+    baseDir: temelDir,
+    outputs: [{ filename: "card2-mobile.webp", format: "webp", width: 1200, quality: 86 }],
+  },
+  {
+    label: "temel-card3-desktop",
+    input: path.join(temelDir, "Card3 - Desktop.png"),
+    baseDir: temelDir,
+    outputs: [{ filename: "card3-desktop.webp", format: "webp", width: 1920, quality: 86 }],
+  },
+  {
+    label: "temel-card3-mobile",
+    input: path.join(temelDir, "Card3 - Mobile.png"),
+    baseDir: temelDir,
+    outputs: [{ filename: "card3-mobile.webp", format: "webp", width: 1200, quality: 86 }],
+  },
 ];
 
 const formatOptions = {

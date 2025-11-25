@@ -85,9 +85,11 @@ export const translations = {
     "keyFeatures.card2.title": "Smart Automation",
     "keyFeatures.card2.description":
       "Automate repetitive tasks like sending reminders, follow-ups, and thank-you notes. Free up your time for creative work.",
+    "keyFeatures.card2.imageAlt": "Lumiso calendar weekly view with reminders and session events.",
     "keyFeatures.card3.title": "Interactive Galleries",
     "keyFeatures.card3.description":
       "Deliver stunning client galleries with integrated proofing and ordering. Create a seamless and professional client experience.",
+    "keyFeatures.card3.imageAlt": "Lumiso payments dashboard summarizing balances, deposits, and refunds.",
 
     // Features
     "features.reports.tag": "Reports",
@@ -481,9 +483,11 @@ export const translations = {
     "keyFeatures.card2.title": "Takvim ve hatırlatmalarla günü kontrol edin",
     "keyFeatures.card2.description":
       "Çekimleriniz takvimde. Yaklaşan çekimler, teslim tarihleriniz ve günlük özet e postaları ile hiçbir şeyi kaçırmazsınız.",
+    "keyFeatures.card2.imageAlt": "Lumiso takvim haftalık görünümü; seanslar, hatırlatmalar ve günlük özet kartları.",
     "keyFeatures.card3.title": "Ödemeleri ve paketleri net takip edin",
     "keyFeatures.card3.description":
       "Kapora, kalan bakiye, ek hizmetler ve iadeler. Her proje için tüm ödeme geçmişini renkli ve anlaşılır rozetlerle takip edin, hiçbir detayı atlamayın.",
+    "keyFeatures.card3.imageAlt": "Lumiso ödeme paneli; tahsilatlar, bekleyen bakiyeler ve ödeme kayıtları özetlenmiş.",
 
     // Features
     "features.reports.tag": "Günlük Kontrol",
