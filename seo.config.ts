@@ -1,4 +1,4 @@
-export const SITE_URL = 'https://photoflowcrm.com';
+export const SITE_URL = 'https://www.lumiso.app';
 
 export type SupportedLanguage = 'en' | 'tr';
 

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://photoflowcrm.com/sitemap.xml
+Sitemap: https://www.lumiso.app/sitemap.xml
