@@ -322,7 +322,8 @@
 }
 
 .progress-bar-animate {
-  animation: progress-bar-fill 5s linear forwards;
+  animation: progress-bar-fill 7.5s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  will-change: width;
 }
 
 .hide-scrollbar::-webkit-scrollbar {

@@ -18,6 +18,8 @@ const PackageFeatures: React.FC = () => {
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
     const intervalRef = useRef<number | null>(null);
     const interactionTimeoutRef = useRef<number | null>(null);
+    const touchStartX = useRef<number | null>(null);
+    const touchStartY = useRef<number | null>(null);
 
     const featureVisuals = [
         {
@@ -159,6 +161,43 @@ const PackageFeatures: React.FC = () => {
         }, 8000);
     };
 
+    const goToPrev = () => handleTabClick((activeIndex - 1 + features.length) % features.length);
+    const goToNext = () => handleTabClick((activeIndex + 1) % features.length);
+
+    const handleTouchStart = (e: React.TouchEvent) => {
+        const touch = e.touches[0];
+        touchStartX.current = touch.clientX;
+        touchStartY.current = touch.clientY;
+    };
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (touchStartX.current === null || touchStartY.current === null) return;
+        const touch = e.touches[0];
+        const dx = touch.clientX - touchStartX.current;
+        const dy = touch.clientY - touchStartY.current;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+            e.preventDefault();
+        }
+    };
+
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (touchStartX.current === null || touchStartY.current === null) return;
+        const touch = e.changedTouches[0];
+        const dx = touch.clientX - touchStartX.current;
+        const dy = touch.clientY - touchStartY.current;
+        const isHorizontal = Math.abs(dx) > Math.abs(dy);
+        const threshold = 40;
+        if (isHorizontal && Math.abs(dx) > threshold) {
+            if (dx > 0) {
+                goToPrev();
+            } else {
+                goToNext();
+            }
+        }
+        touchStartX.current = null;
+        touchStartY.current = null;
+    };
+
     const handleDesktopMouseEnter = () => {
         setIsInteracting(true);
         if (interactionTimeoutRef.current) {
@@ -254,6 +293,9 @@ const PackageFeatures: React.FC = () => {
                             <div
                                 className="flex transition-transform duration-500 ease-out"
                                 style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+                                onTouchStart={handleTouchStart}
+                                onTouchMove={handleTouchMove}
+                                onTouchEnd={handleTouchEnd}
                             >
                                 {features.map((feature, index) => (
                                     <div
@@ -281,8 +323,28 @@ const PackageFeatures: React.FC = () => {
                                             {t(feature.descriptionKey)}
                                         </div>
                                         <div className="px-4 pb-6">
-                                            <div className="rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-900 aspect-[2/3]">
+                                            <div className="relative rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-900 aspect-[2/3]">
                                                 {feature.visual}
+                                                <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-2">
+                                                    <button
+                                                        aria-label="Previous feature"
+                                                        className="pointer-events-auto h-10 w-10 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
+                                                        onClick={goToPrev}
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                                                        </svg>
+                                                    </button>
+                                                    <button
+                                                        aria-label="Next feature"
+                                                        className="pointer-events-auto h-10 w-10 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
+                                                        onClick={goToNext}
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -290,51 +352,29 @@ const PackageFeatures: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="pb-3 pt-2 px-3 flex items-center justify-between gap-4">
-                            <button
-                                aria-label="Previous feature"
-                                className="h-11 w-11 flex-shrink-0 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
-                                onClick={() => handleTabClick((activeIndex - 1 + features.length) % features.length)}
-                            >
-                                <span className="sr-only">Previous</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-                                </svg>
-                            </button>
-                            <div className="flex items-center justify-center gap-2">
-                                {features.map((_, index) => {
-                                    const isActive = activeIndex === index;
-                                    return (
-                                        <div key={index} className="w-5 flex justify-center">
-                                            <button
-                                                onClick={() => handleTabClick(index)}
-                                                className={`relative h-2 overflow-hidden transition-[width,background-color] duration-400 ease-out ${
-                                                    isActive ? 'w-6 bg-brand-teal-100/60 dark:bg-brand-teal-900/40' : 'w-2 bg-slate-300 dark:bg-slate-700'
-                                                } rounded-full`}
-                                                aria-label={`Go to ${t(features[index].titleKey)}`}
-                                                aria-pressed={isActive}
-                                            >
-                                                {isActive && !isInteracting && (
-                                                    <span
-                                                        key={`${activeIndex}-${isInteracting}`}
-                                                        className="block h-full w-0 bg-brand-teal-500 dark:bg-brand-teal-400 progress-bar-animate"
-                                                    />
-                                                )}
-                                            </button>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                            <button
-                                aria-label="Next feature"
-                                className="h-11 w-11 flex-shrink-0 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
-                                onClick={() => handleTabClick((activeIndex + 1) % features.length)}
-                            >
-                                <span className="sr-only">Next</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
+                        <div className="pb-3 pt-2 px-3 flex items-center justify-center gap-2">
+                            {features.map((_, index) => {
+                                const isActive = activeIndex === index;
+                                return (
+                                    <div key={index} className="w-5 flex justify-center">
+                                        <button
+                                            onClick={() => handleTabClick(index)}
+                                            className={`relative h-2 overflow-hidden transition-[width,background-color] duration-400 ease-out ${
+                                                isActive ? 'w-6 bg-brand-teal-100/60 dark:bg-brand-teal-900/40' : 'w-2 bg-slate-300 dark:bg-slate-700'
+                                            } rounded-full`}
+                                            aria-label={`Go to ${t(features[index].titleKey)}`}
+                                            aria-pressed={isActive}
+                                        >
+                                            {isActive && !isInteracting && (
+                                                <span
+                                                    key={`${activeIndex}-${isInteracting}`}
+                                                    className="block h-full w-0 bg-brand-teal-500 dark:bg-brand-teal-400 progress-bar-animate"
+                                                />
+                                            )}
+                                        </button>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>

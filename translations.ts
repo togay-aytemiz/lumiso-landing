@@ -138,16 +138,16 @@ export const translations = {
       "Design, bundle, and present your photography services with unparalleled flexibility. Create custom packages and beautiful proposals that win clients.",
     "packageFeatures.tab1.title": "Package Flexibility",
     "packageFeatures.tab1.description":
-      "Bundle any combination of services, products, and sessions to create the perfect package for every client. From mini-sessions to all-day wedding coverage, your offerings are limitless.",
+      "Mix services, products, and sessions into any package. From minis to full weddings, shape offers quickly.",
     "packageFeatures.tab2.title": "Service Management",
     "packageFeatures.tab2.description":
-      "Define every service you offer, from a single headshot to a full branding session. Set prices, durations, and descriptions for a clear and organized service catalog.",
+      "Define each service with price, duration, and notes so your catalog stays clear and consistent.",
     "packageFeatures.tab3.title": "Session Types",
     "packageFeatures.tab3.description":
-      "Organize your work with custom session types. Tailor workflows, communications, and galleries for weddings, portraits, commercial shoots, and more.",
+      "Use session types for weddings, portraits, and commercial work; tailor workflows and comms per type.",
     "packageFeatures.tab4.title": "Client Proposals",
     "packageFeatures.tab4.description":
-      "Combine packages and services into stunning, interactive proposals. Allow clients to review options, sign contracts, and pay deposits all in one seamless experience.",
+      "Share proposals clients review, sign, and pay in one flow—clear pricing and deposits included.",
     "packageFeatures.tab1.imageAlt": "Lumiso package flexibility screen showing combined services and items.",
     "packageFeatures.tab2.imageAlt": "Lumiso service management view with prices, durations, and descriptions.",
     "packageFeatures.tab3.imageAlt": "Lumiso session types view illustrating different session pipelines.",
@@ -558,16 +558,16 @@ export const translations = {
       "Çekim hizmetlerinizi, seans türlerinizi ve paketlerinizi tek merkezden düzenleyin. Her müşteriye özel tekliflerinizi kolayca oluşturun, fiyatlandırmayı standartlaştırın ve operasyonunuzu hafifletin.",
     "packageFeatures.tab1.title": "Paket Esnekliği",
     "packageFeatures.tab1.description":
-      "Her müşteri için mükemmel paketi oluşturmak üzere hizmetlerin, ürünlerin ve seansların herhangi bir kombinasyonunu birleştirin. Mini seanslardan tüm gün düğün çekimlerine kadar teklifleriniz sınırsızdır.",
+      "Hizmet, ürün ve seansları istediğiniz pakette birleştirin. Mini çekimden tam düğüne kadar teklifleri hızla hazırlayın.",
     "packageFeatures.tab2.title": "Hizmet Yönetimi",
     "packageFeatures.tab2.description":
-      "Tek bir vesikalık çekimden tam bir marka oturumuna kadar sunduğunuz her hizmeti tanımlayın. Açık ve düzenli bir hizmet kataloğu için fiyatları, süreleri ve açıklamaları ayarlayın.",
+      "Her hizmetin fiyat, süre ve notlarını tanımlayın; katalog düzenli ve tutarlı kalsın.",
     "packageFeatures.tab3.title": "Seans Türleri",
     "packageFeatures.tab3.description":
-      "Çalışmalarınızı özel seans türleriyle düzenleyin. Düğünler, portreler, ticari çekimler ve daha fazlası için iş akışlarını, iletişimleri ve galerileri özelleştirin.",
+      "Düğün, portre, ticari gibi seans türleriyle iş akışı ve iletişimi türlere göre özelleştirin.",
     "packageFeatures.tab4.title": "Kapora Yapılandırması",
     "packageFeatures.tab4.description":
-      "Her paket için sabit ya da yüzdesel bir kapora belirleyin. Gelen kaporaları ayrı ayrı takip edin, nakit akışınızı netleştirin.",
+      "Kapora tutarlarını özgürce belirleyin, tahsilatları izleyin ve nakit akışını net takip edin.",
     "packageFeatures.tab1.imageAlt": "Lumiso paket esnekliği ekranı; hizmetlerin ve ürünlerin birleştirildiği yapı.",
     "packageFeatures.tab2.imageAlt": "Lumiso hizmet yönetimi görünümü; fiyat, süre ve açıklamalar listelenmiş.",
     "packageFeatures.tab3.imageAlt": "Lumiso seans türleri görünümü; farklı seans akışları gösteriliyor.",
