@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "optimize:hero": "node scripts/optimize-hero-images.mjs",
     "legal:generate": "node scripts/generate-legal-assets.mjs",
-    "prebuild": "npm run legal:generate"
+    "sitemap:generate": "node scripts/generate-sitemap.mjs",
+    "prebuild": "npm run legal:generate && npm run sitemap:generate"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
