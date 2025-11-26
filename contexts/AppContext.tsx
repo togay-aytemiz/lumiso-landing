@@ -116,8 +116,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const mergedOgType = seoOverrides?.ogType || 'website';
     const mergedTwitterTitle = seoOverrides?.twitterTitle || mergedOgTitle;
     const mergedTwitterDescription = seoOverrides?.twitterDescription || mergedOgDescription;
-    const defaultOgImage = `${siteOrigin}/og-image.jpg`;
-    const defaultTwitterImage = `${siteOrigin}/social.png`;
+    const defaultOgImage = `${siteOrigin}/social.webp`;
+    const defaultTwitterImage = `${siteOrigin}/social.webp`;
     const defaultSocialAlt =
       translations[language]?.['hero.imageAlt'] ||
       translations.en['hero.imageAlt'] ||
@@ -126,6 +126,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const ogImageAlt = seoOverrides?.ogImageAlt || defaultSocialAlt;
     const twitterImage = seoOverrides?.twitterImage || defaultTwitterImage;
     const twitterImageAlt = seoOverrides?.twitterImageAlt || defaultSocialAlt;
+    const themeColor = theme === 'light' ? '#f8fafc' : '#020617';
 
     document.title = mergedTitle;
 
@@ -191,6 +192,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     upsertMeta('name', 'twitter:url', canonicalUrl);
     upsertMeta('name', 'twitter:image', twitterImage);
     upsertMeta('name', 'twitter:image:alt', twitterImageAlt);
+    upsertMeta('name', 'theme-color', themeColor);
 
     upsertLink('canonical', { href: canonicalUrl });
     SUPPORTED_LANGUAGES.forEach((lang) => {
@@ -263,7 +265,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         upsertMeta(attribute, key, content);
       });
     }
-  }, [language, seoOverrides]);
+  }, [language, seoOverrides, theme]);
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));

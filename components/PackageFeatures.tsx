@@ -157,25 +157,6 @@ const PackageFeatures: React.FC = () => {
         interactionTimeoutRef.current = window.setTimeout(() => {
             setIsInteracting(false);
         }, 8000);
-
-
-        // Smart scroll for mobile
-        if (window.innerWidth < 1024) {
-            // Wait for the accordion animation to finish before calculating scroll position
-            setTimeout(() => {
-                const element = itemRefs.current[index];
-                if (element) {
-                    const headerOffset = 96; // 64px header (h-16) + 32px margin
-                    const elementPosition = element.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            }, 500); // Must be >= accordion transition duration (duration-500)
-        }
     };
 
     const handleDesktopMouseEnter = () => {
@@ -267,39 +248,87 @@ const PackageFeatures: React.FC = () => {
                 </div>
 
                 {/* Mobile Accordion View */}
-                <div className={`mt-12 block lg:hidden space-y-4 ${animationClasses(isSectionVisible, 'delay-200')}`}>
-                    {features.map((feature, index) => (
-                        <div key={index} ref={el => { itemRefs.current[index] = el; }} className="bg-white dark:bg-slate-800/50 rounded-xl shadow-lg border border-slate-200/80 dark:border-slate-700/50 overflow-hidden">
-                            <button
-                                onClick={() => handleTabClick(index)}
-                                className="w-full p-6 text-left relative overflow-hidden"
-                                aria-expanded={activeIndex === index}
+                <div className={`mt-12 block lg:hidden ${animationClasses(isSectionVisible, 'delay-200')}`}>
+                    <div className="relative bg-white dark:bg-slate-800/50 rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-700/50 overflow-hidden">
+                        <div className="overflow-hidden">
+                            <div
+                                className="flex transition-transform duration-500 ease-out"
+                                style={{ transform: `translateX(-${activeIndex * 100}%)` }}
                             >
-                                <div className="flex items-center">
-                                    <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-300 ${activeIndex === index ? 'bg-brand-teal-500 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}`}>
-                                        {feature.icon}
-                                    </div>
-                                    <h3 className="ml-4 text-lg font-bold text-slate-900 dark:text-white">
-                                        {t(feature.titleKey)}
-                                    </h3>
-                                </div>
-                                {activeIndex === index && <ProgressBar />}
-                            </button>
-                             <div 
-                                className="grid overflow-hidden transition-all duration-500 ease-in-out"
-                                style={{ gridTemplateRows: activeIndex === index ? '1fr' : '0fr' }}
-                            >
-                                <div className="min-h-0">
-                                    <div className="p-6">
-                                        <p className="text-slate-600 dark:text-slate-300">{t(feature.descriptionKey)}</p>
-                                        <div className="mt-4 -mx-2">
-                                            {feature.visual}
+                                {features.map((feature, index) => (
+                                    <div
+                                        key={index}
+                                        ref={(el) => {
+                                            itemRefs.current[index] = el;
+                                        }}
+                                        className="min-w-full flex flex-col"
+                                    >
+                                        <div className="p-6 pb-4 flex items-center">
+                                            <div
+                                                className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-300 ${
+                                                    activeIndex === index
+                                                        ? 'bg-brand-teal-500 text-white'
+                                                        : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+                                                }`}
+                                            >
+                                                {feature.icon}
+                                            </div>
+                                            <h3 className="ml-4 text-lg font-bold text-slate-900 dark:text-white">
+                                                {t(feature.titleKey)}
+                                            </h3>
+                                        </div>
+                                        <div className="px-6 pb-2 text-slate-600 dark:text-slate-300 min-h-[96px]">
+                                            {t(feature.descriptionKey)}
+                                        </div>
+                                        <div className="px-4 pb-6">
+                                            <div className="rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-900 aspect-[4/3]">
+                                                {feature.visual}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
-                    ))}
+
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-2">
+                            <button
+                                aria-label="Previous feature"
+                                className="h-11 w-11 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
+                                onClick={() => handleTabClick((activeIndex - 1 + features.length) % features.length)}
+                            >
+                                <span className="sr-only">Previous</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+                            <button
+                                aria-label="Next feature"
+                                className="h-11 w-11 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
+                                onClick={() => handleTabClick((activeIndex + 1) % features.length)}
+                            >
+                                <span className="sr-only">Next</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className="pb-5 pt-2 flex items-center justify-center gap-3">
+                            {features.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => handleTabClick(index)}
+                                    className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                                        activeIndex === index ? 'w-6 bg-brand-teal-500' : 'bg-slate-300 dark:bg-slate-700'
+                                    }`}
+                                    aria-label={`Go to ${t(features[index].titleKey)}`}
+                                    aria-pressed={activeIndex === index}
+                                />
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         {isDesktop && lightboxImage && (
