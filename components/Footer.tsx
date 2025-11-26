@@ -38,20 +38,24 @@ const Footer: React.FC = () => {
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    setIsLandingPage(!window.location.pathname.startsWith('/blog'));
+    setIsLandingPage(window.location.pathname === '/');
+    const handleRouteChange = () => setIsLandingPage(window.location.pathname === '/');
+    window.addEventListener('popstate', handleRouteChange);
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+    };
   }, []);
 
 
   const footerLinks = {
     product: [
       { name: t('footer.features'), href: '#features' },
-      { name: t('footer.pricing'), href: '#pricing' },
       { name: t('footer.aiFeatures'), href: '#ai-features' },
+      { name: t('footer.results'), href: '#results' },
+      { name: t('footer.testimonials'), href: '#testimonials' },
+      { name: t('footer.faq'), href: '#faq' },
     ],
-    legal: [
-      { name: t('footer.privacy'), href: '#' },
-      { name: t('footer.terms'), href: '#' },
-    ],
+    legal: [{ name: t('footer.legalCenter'), href: '/legal' }],
   };
 
   const handleLinkClick = (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -63,6 +67,18 @@ const Footer: React.FC = () => {
     if (target) {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  };
+
+  const handleInternalNavigate = (href: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const isModifiedClick = event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
+    if (isModifiedClick) return;
+    if (!href.startsWith('/')) return;
+
+    event.preventDefault();
+    window.history.pushState({}, '', href);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    setIsLangMenuOpen(false);
   };
 
   const resolveHref = (href: string) => {
@@ -90,7 +106,10 @@ const Footer: React.FC = () => {
                   <li key={link.name}>
                     <a
                       href={resolveHref(link.href)}
-                      onClick={handleLinkClick(link.href)}
+                      onClick={(e) => {
+                        handleInternalNavigate(resolveHref(link.href))(e);
+                        handleLinkClick(link.href)(e);
+                      }}
                       className="text-slate-500 dark:text-slate-400 hover:text-brand-teal-500 dark:hover:text-brand-teal-400"
                     >
                       {link.name}
@@ -106,7 +125,7 @@ const Footer: React.FC = () => {
                   <li key={link.name}>
                     <a
                       href={resolveHref(link.href)}
-                      onClick={handleLinkClick(link.href)}
+                      onClick={handleInternalNavigate(resolveHref(link.href))}
                       className="text-slate-500 dark:text-slate-400 hover:text-brand-teal-500 dark:hover:text-brand-teal-400"
                     >
                       {link.name}

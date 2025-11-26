@@ -218,6 +218,85 @@
   border-right-color: #2dd4bf;
 }
 
+.legal-content {
+  color: inherit;
+  line-height: 1.7;
+}
+
+.legal-content h1,
+.legal-content h2,
+.legal-content h3 {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.dark .legal-content h1,
+.dark .legal-content h2,
+.dark .legal-content h3 {
+  color: #e2e8f0;
+}
+
+.legal-content h1 {
+  font-size: 2rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.legal-content h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.legal-content h3 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.legal-content p {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: #334155;
+}
+
+.dark .legal-content p {
+  color: #cbd5f5;
+}
+
+.legal-content ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.legal-content ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.legal-content li {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.legal-content strong {
+  font-weight: 700;
+}
+
+.legal-content hr {
+  border: 0;
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+  margin: 1.5rem 0;
+}
+
+.dark .legal-content hr {
+  border-color: rgba(226, 232, 240, 0.2);
+}
+
 @keyframes slide-in-fade {
   from {
     opacity: 0;

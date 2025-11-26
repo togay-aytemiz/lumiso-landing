@@ -8,6 +8,7 @@ import PackageFeatures from './components/PackageFeatures';
 import Workflow from './components/Workflow';
 import Footer from './components/Footer';
 import ScrollToTopButton from './components/ScrollToTopButton';
+import { legalDocSlugs } from './lib/legal';
 
 const AIFeatures = lazy(() => import('./components/AIFeatures'));
 const Results = lazy(() => import('./components/Results'));
@@ -16,10 +17,18 @@ const CTA = lazy(() => import('./components/CTA'));
 const FAQ = lazy(() => import('./components/FAQ'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const BlogArticlePage = lazy(() => import('./pages/BlogArticlePage'));
+const LegalPage = lazy(() => import('./pages/LegalPage'));
+const LegalIndexPage = lazy(() => import('./pages/LegalIndexPage'));
 
 const SectionFallback: React.FC = () => (
   <div className="py-20 text-center text-slate-400 dark:text-slate-500">
     Loading…
+  </div>
+);
+
+const RouteFallback: React.FC = () => (
+  <div className="min-h-screen bg-slate-50 text-slate-600 dark:bg-slate-950 dark:text-slate-300 flex items-center justify-center">
+    Yükleniyor…
   </div>
 );
 
@@ -50,11 +59,29 @@ const App: React.FC = () => {
   const normalizedPath = pathname === '/' ? '/' : pathname.replace(/\/+$/, '') || '/';
   const pathSegments = normalizedPath.split('/').filter(Boolean);
   const isBlogRoute = pathSegments[0] === 'blog';
+  const isLegalIndexRoute = normalizedPath === '/legal';
+  const isLegalRoute = pathSegments.length === 1 && legalDocSlugs.has(pathSegments[0]);
   const blogSlug = pathSegments.length > 1 ? pathSegments[1] : null;
+
+  if (isLegalIndexRoute) {
+    return (
+      <Suspense fallback={<RouteFallback />}>
+        <LegalIndexPage />
+      </Suspense>
+    );
+  }
+
+  if (isLegalRoute) {
+    return (
+      <Suspense fallback={<RouteFallback />}>
+        <LegalPage slug={pathSegments[0]} />
+      </Suspense>
+    );
+  }
 
   if (isBlogRoute) {
     return (
-      <Suspense fallback={<SectionFallback />}>
+      <Suspense fallback={<RouteFallback />}>
         {blogSlug ? <BlogArticlePage slug={blogSlug} /> : <BlogPage />}
       </Suspense>
     );

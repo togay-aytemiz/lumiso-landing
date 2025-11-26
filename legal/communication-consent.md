@@ -1,5 +1,5 @@
 ---
-id: "commercial-consent"
+id: "communication-consent"
 version: "v1.0"
 last_updated: "2025-02-01"
 document_title: "Ticari Elektronik İleti Onayı"

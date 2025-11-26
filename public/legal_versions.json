@@ -1,0 +1,26 @@
+{
+  "terms": {
+    "version": "v1.0",
+    "last_updated": "2025-02-01"
+  },
+  "privacy": {
+    "version": "v1.0",
+    "last_updated": "2025-02-01"
+  },
+  "kvkk": {
+    "version": "v1.0",
+    "last_updated": "2025-02-01"
+  },
+  "cookie-policy": {
+    "version": "v1.0",
+    "last_updated": "2025-02-01"
+  },
+  "communication-consent": {
+    "version": "v1.0",
+    "last_updated": "2025-02-01"
+  },
+  "dpa": {
+    "version": "v1.0",
+    "last_updated": "2025-02-01"
+  }
+}

@@ -76,15 +76,15 @@ Kullanıcı, Hizmet’i yalnızca hukuka uygun amaçlarla kullanacağını, plat
 
 5.4. Kullanıcı, sistemi kötüye kullanamaz; güvenlik açıklarından yararlanamaz; otomasyon araçlarıyla aşırı yük oluşturamaz; tersine mühendislik gerçekleştiremez.
 
-### 5.5. E-Posta Gönderim Sistemi ve Kullanıcı Sorumluluğu
+5.5. E-Posta Gönderim Sistemi ve Kullanıcı Sorumluluğu
 
-Kullanıcı, Lumiso üzerinden gönderdiği tüm e-posta, mesaj ve bildirim içeriklerinden münhasıran sorumludur. Lumiso’nun e-posta altyapısını kullanması, Kullanıcı’ya Şirket adına hareket etme yetkisi vermez.
+- Kullanıcı, Lumiso üzerinden gönderdiği tüm e-posta, mesaj ve bildirim içeriklerinden münhasıran sorumludur. Lumiso’nun e-posta altyapısını kullanması, Kullanıcı’ya Şirket adına hareket etme yetkisi vermez.
 
-Kullanıcı’nın gönderdiği içeriklerin hukuka aykırı olması, spam/istenmeyen ileti niteliği taşıması, üçüncü kişi haklarını ihlal etmesi, alıcılar tarafından şikâyete konu edilmesi veya Lumiso altyapısına zarar vermesi halinde tüm hukuki, idari ve cezai sorumluluk yalnızca Kullanıcı’ya aittir.
+* Kullanıcı’nın gönderdiği içeriklerin hukuka aykırı olması, spam/istenmeyen ileti niteliği taşıması, üçüncü kişi haklarını ihlal etmesi, alıcılar tarafından şikâyete konu edilmesi veya Lumiso altyapısına zara\* r vermesi halinde tüm hukuki, idari ve cezai sorumluluk yalnızca Kullanıcı’ya aittir.
 
-Şirket; spam bildirimleri, kara liste (blacklist) kayıtları, anti-spam sağlayıcıların yaptırımları veya üçüncü taraf mail altyapı engellemelerinden sorumlu tutulamaz. Bu kapsamda doğan tüm zararlar Kullanıcı’ya aittir.
+* Şirket; spam bildirimleri, kara liste (blacklist) kayıtları, anti-spam sağlayıcıların yaptırımları veya üçüncü taraf mail altyapı engellemelerinden sorumlu tutulamaz. Bu kapsamda doğan tüm zararlar Kullanıcı’ya aittir.
 
-Şirket, spam şüphesi, olağandışı kullanım, kötüye kullanım veya güvenlik gerekçeleriyle Kullanıcı’nın e-posta gönderim yetkisini durdurabilir, sınırlandırabilir, askıya alabilir veya hesabı kapatabilir.
+* Şirket, spam şüphesi, olağandışı kullanım, kötüye kullanım veya güvenlik gerekçeleriyle Kullanıcı’nın e-posta gönderim yetkisini durdurabilir, sınırlandırabilir, askıya alabilir veya hesabı kapatabilir.
 
 ---
 
@@ -100,13 +100,13 @@ Kullanıcı’nın gönderdiği içeriklerin hukuka aykırı olması, spam/isten
 
 6.5. Kullanıcı, yüklediği içeriklerin doğruluğundan ve hukuka uygunluğundan tamamen sorumludur.
 
-### 6.6. E-Posta Gönderim Limitleri ve Teknik Kısıtlamalar
+6.6. E-Posta Gönderim Limitleri ve Teknik Kısıtlamalar
 
-Şirket, Lumiso üzerinden yapılabilecek e-posta gönderim miktarına, hızına, ek boyutlarına veya diğer teknik kriterlere ilişkin limitleri her zaman belirleme, değiştirme veya durdurma hakkına sahiptir.
+- Şirket, Lumiso üzerinden yapılabilecek e-posta gönderim miktarına, hızına, ek boyutlarına veya diğer teknik kriterlere ilişkin limitleri her zaman belirleme, değiştirme veya durdurma hakkına sahiptir.
 
-Kullanıcı, bu limitlere uymayı ve limit aşımı, teknik risk, kötüye kullanım veya spam şüphesi hâlinde gönderimlerin geçici veya kalıcı olarak durdurulabileceğini kabul eder.
+- Kullanıcı, bu limitlere uymayı ve limit aşımı, teknik risk, kötüye kullanım veya spam şüphesi hâlinde gönderimlerin geçici veya kalıcı olarak durdurulabileceğini kabul eder.
 
-Kullanıcı, Lumiso üzerinden gerçekleştirdiği tüm e-posta gönderimlerinin KVKK, Ticari Elektronik İleti Yönetmeliği ve anti-spam kurallarına uygun olduğunu; aksi halde ortaya çıkabilecek idari para cezaları, şikâyet süreçleri, güvenlik problemleri ve kara liste kayıtlarından münhasıran sorumlu olduğunu kabul eder.
+- Kullanıcı, Lumiso üzerinden gerçekleştirdiği tüm e-posta gönderimlerinin KVKK, Ticari Elektronik İleti Yönetmeliği ve anti-spam kurallarına uygun olduğunu; aksi halde ortaya çıkabilecek idari para cezaları, şikâyet süreçleri, güvenlik problemleri ve kara liste kayıtlarından münhasıran sorumlu olduğunu kabul eder.
 
 ---
 
