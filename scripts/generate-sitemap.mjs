@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const SITE_URL = 'https://www.lumiso.app';
 
-const STATIC_PATHS = ['/', '/blog'];
+const STATIC_PATHS = ['/'];
 
 const buildUrlEntry = (route) => `
   <url>

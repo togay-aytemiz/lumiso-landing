@@ -3,15 +3,8 @@
 
   <url>
     <loc>https://www.lumiso.app/</loc>
-    <lastmod>2025-11-26T12:11:35.689Z</lastmod>
+    <lastmod>2025-11-26T12:37:29.941Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://www.lumiso.app/blog</loc>
-    <lastmod>2025-11-26T12:11:35.690Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
   </url>
 </urlset>
