@@ -59,7 +59,7 @@ const PackageFeatures: React.FC = () => {
                 <img
                     src={sources.desktop}
                     alt={t(sources.altKey)}
-                    className="w-full h-auto"
+                    className="w-full h-full object-contain"
                     loading="lazy"
                     decoding="async"
                     sizes="(max-width: 1023px) 100vw, (max-width: 1535px) 70vw, 960px"
@@ -116,7 +116,7 @@ const PackageFeatures: React.FC = () => {
             stopInterval(); // Ensure no duplicates
             intervalRef.current = window.setInterval(() => {
                 setActiveIndex((prevIndex) => (prevIndex + 1) % features.length);
-            }, 5000); // 5 seconds
+            }, 7500);
         };
 
         const stopInterval = () => {
@@ -281,7 +281,7 @@ const PackageFeatures: React.FC = () => {
                                             {t(feature.descriptionKey)}
                                         </div>
                                         <div className="px-4 pb-6">
-                                            <div className="rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-900 aspect-[4/3]">
+                                            <div className="rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-900 aspect-[2/3]">
                                                 {feature.visual}
                                             </div>
                                         </div>
@@ -290,10 +290,10 @@ const PackageFeatures: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="absolute inset-y-0 left-0 flex items-center pl-2">
+                        <div className="pb-3 pt-2 px-3 flex items-center justify-between gap-4">
                             <button
                                 aria-label="Previous feature"
-                                className="h-11 w-11 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
+                                className="h-11 w-11 flex-shrink-0 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
                                 onClick={() => handleTabClick((activeIndex - 1 + features.length) % features.length)}
                             >
                                 <span className="sr-only">Previous</span>
@@ -301,11 +301,33 @@ const PackageFeatures: React.FC = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                                 </svg>
                             </button>
-                        </div>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+                            <div className="flex items-center justify-center gap-2">
+                                {features.map((_, index) => {
+                                    const isActive = activeIndex === index;
+                                    return (
+                                        <div key={index} className="w-5 flex justify-center">
+                                            <button
+                                                onClick={() => handleTabClick(index)}
+                                                className={`relative h-2 overflow-hidden transition-[width,background-color] duration-400 ease-out ${
+                                                    isActive ? 'w-6 bg-brand-teal-100/60 dark:bg-brand-teal-900/40' : 'w-2 bg-slate-300 dark:bg-slate-700'
+                                                } rounded-full`}
+                                                aria-label={`Go to ${t(features[index].titleKey)}`}
+                                                aria-pressed={isActive}
+                                            >
+                                                {isActive && !isInteracting && (
+                                                    <span
+                                                        key={`${activeIndex}-${isInteracting}`}
+                                                        className="block h-full w-0 bg-brand-teal-500 dark:bg-brand-teal-400 progress-bar-animate"
+                                                    />
+                                                )}
+                                            </button>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                             <button
                                 aria-label="Next feature"
-                                className="h-11 w-11 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
+                                className="h-11 w-11 flex-shrink-0 rounded-full bg-white/90 dark:bg-slate-900/80 shadow-md border border-slate-200/80 dark:border-slate-700/60 text-slate-700 dark:text-slate-200 backdrop-blur transition hover:scale-[1.02] active:scale-95"
                                 onClick={() => handleTabClick((activeIndex + 1) % features.length)}
                             >
                                 <span className="sr-only">Next</span>
@@ -313,20 +335,6 @@ const PackageFeatures: React.FC = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                                 </svg>
                             </button>
-                        </div>
-
-                        <div className="pb-5 pt-2 flex items-center justify-center gap-3">
-                            {features.map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => handleTabClick(index)}
-                                    className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                                        activeIndex === index ? 'w-6 bg-brand-teal-500' : 'bg-slate-300 dark:bg-slate-700'
-                                    }`}
-                                    aria-label={`Go to ${t(features[index].titleKey)}`}
-                                    aria-pressed={activeIndex === index}
-                                />
-                            ))}
                         </div>
                     </div>
                 </div>
