@@ -43,7 +43,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
-    if (typeof window === 'undefined') return 'en';
+    if (typeof window === 'undefined') return 'tr';
 
     const params = new URLSearchParams(window.location.search);
     const paramLang = params.get('lang');
@@ -61,7 +61,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return userLang;
     }
 
-    return 'en';
+    return 'tr';
   });
   const [theme, setTheme] = useState<Theme>('light');
   const [seoOverrides, setSeoOverrides] = useState<SeoOverrides | null>(null);
@@ -227,7 +227,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         },
         offers: {
           '@type': 'AggregateOffer',
-          priceCurrency: 'USD',
+          priceCurrency: 'TRY',
           price: '0',
           availability: 'https://schema.org/PreOrder',
         },

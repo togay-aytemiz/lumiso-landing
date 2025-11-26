@@ -12,17 +12,6 @@ export interface SeoContent {
 }
 
 export const seoContent: Record<SupportedLanguage, SeoContent> = {
-  en: {
-    title: 'Lumiso CRM | Client & Workflow OS for Photographers',
-    description:
-      'Lumiso brings every client, booking, invoice, and gallery into one CRM built for photographers. Automate workflows, get paid faster, and wow clients.',
-    keywords:
-      'photographer crm, studio management software, client galleries, photography workflow, invoicing for photographers',
-    ogTitle: 'Lumiso CRM — All-in-one studio & client management for photographers',
-    ogDescription:
-      'Stop juggling tools. Capture leads, automate workflows, deliver galleries, and get paid from a single beautiful dashboard.',
-    ogLocale: 'en_US',
-  },
   tr: {
     title: 'Lumiso CRM | Fotoğrafçılar için CRM ve İş Akışı Platformu',
     description:
@@ -33,5 +22,16 @@ export const seoContent: Record<SupportedLanguage, SeoContent> = {
     ogDescription:
       'Araç karmaşasına son verin. Talepleri yakalayın, iş akışlarını otomatikleştirin, galerileri teslim edin ve tek bir panodan ödeme alın.',
     ogLocale: 'tr_TR',
+  },
+  en: {
+    title: 'Lumiso CRM | Client & Workflow OS for Photographers',
+    description:
+      'Lumiso brings every client, booking, invoice, and gallery into one CRM built for photographers. Automate workflows, get paid faster, and wow clients.',
+    keywords:
+      'photographer crm, studio management software, client galleries, photography workflow, invoicing for photographers',
+    ogTitle: 'Lumiso CRM — All-in-one studio & client management for photographers',
+    ogDescription:
+      'Stop juggling tools. Capture leads, automate workflows, deliver galleries, and get paid from a single beautiful dashboard.',
+    ogLocale: 'en_US',
   },
 };
