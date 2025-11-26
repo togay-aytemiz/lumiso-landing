@@ -217,22 +217,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         description: mergedDescription,
       },
       {
-        '@type': 'Product',
-        name: mergedTitle,
-        description: mergedDescription,
-        url: canonicalUrl,
-        brand: {
-          '@type': 'Organization',
-          name: 'Lumiso',
-        },
-        offers: {
-          '@type': 'AggregateOffer',
-          priceCurrency: 'TRY',
-          price: '0',
-          availability: 'https://schema.org/PreOrder',
-        },
-      },
-      {
         '@type': 'WebSite',
         name: 'Lumiso',
         url: siteOrigin,
