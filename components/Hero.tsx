@@ -84,7 +84,7 @@ const HeroVideoCover: React.FC<{
           <span>{eyebrow}</span>
         </div>
         <div className="flex items-center justify-center">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white text-slate-900 shadow-xl shadow-black/30 transition duration-300 group-hover:scale-105">
+          <div className="hero-play-pulse flex h-24 w-24 items-center justify-center rounded-full bg-white text-slate-900 shadow-xl shadow-black/30 transition duration-300 group-hover:scale-105">
             <PlayIcon className="h-10 w-10 translate-x-[2px]" />
           </div>
         </div>
