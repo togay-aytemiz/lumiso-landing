@@ -477,12 +477,13 @@ export const translations = {
       "Gelir trendlerini, rezervasyonları, takvimi ve müşteri görevlerini gösteren Lumiso kontrol paneli.",
     "hero.video.alt": "Lumiso 1 dakikalık tanıtım videosu kapak görseli.",
     "hero.video.badge": "1:30dk'da Lumiyo'yu öğren",
-    "hero.video.heading": "Lumiso'nun stüdyonu nasıl topladığını gör",
-    "hero.video.duration": "1:30dk izleme",
+    "hero.video.heading":
+      "Lumiso'nun stüdyonuzu ve müşterilerinizi nasıl düzenli tuttuğunu görün",
+    "hero.video.duration": "Sadece 1:30 dk",
     "hero.video.playLabel": "1 dakikalık Lumiso videosunu oynat",
     "hero.video.modalTitle": "1 dakikalık Lumiso tanıtımını izle",
     "hero.video.modalDescription":
-      "Rezervasyon, ödeme ve otomasyon akışının hızlı özeti - sayfa yükünü yavaşlatmaz.",
+      "Lumiso'nun işlerinizi nasıl yolunda tuttuğuna hızlı bir bakış.",
     "hero.video.unsupported": "Tarayıcınız video etiketini desteklemiyor.",
     "common.close": "Kapat",
     "hero.demoModal.title": "Demo ayarla",
