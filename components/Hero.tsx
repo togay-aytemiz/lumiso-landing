@@ -26,57 +26,73 @@ const ClockIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-const DotsHorizontalIcon: React.FC<{ className?: string }> = ({
-  className,
-}) => (
+const PlayIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className={className}
-    fill="none"
     viewBox="0 0 24 24"
-    stroke="currentColor"
-    width="24"
-    height="24"
+    fill="currentColor"
     aria-hidden="true"
     focusable="false"
   >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-    />
+    <path d="M6 4.5a1 1 0 0 1 1.53-.85l11 7.5a1 1 0 0 1 0 1.7l-11 7.5A1 1 0 0 1 6 19.5V4.5Z" />
   </svg>
 );
 
-const HeroScreenshot: React.FC<{ alt: string; onEnlarge?: () => void; isDesktop: boolean }> = ({
-  alt,
-  onEnlarge,
-  isDesktop,
-}) => (
+const HERO_VIDEO_POSTER_DESKTOP = "/hero/Dashboard.webp";
+const HERO_VIDEO_POSTER_DESKTOP_FALLBACK = "/hero/Dashboard.png";
+const HERO_VIDEO_POSTER_MOBILE = "/hero/Dashboard-mobile.webp";
+const HERO_VIDEO_POSTER_MOBILE_FALLBACK = "/hero/Dashboard-mobile.png";
+const HERO_VIDEO_SOURCES = [
+  { type: "video/webm", src: "/videos/lumiso-hero.webm" },
+  { type: "video/mp4", src: "/videos/lumiso-hero.mp4" },
+];
+
+const HeroVideoCover: React.FC<{
+  alt: string;
+  onPlay: () => void;
+  eyebrow: string;
+  description: string;
+  duration: string;
+  playLabel: string;
+}> = ({ alt, onPlay, eyebrow, description, duration, playLabel }) => (
   <div className="w-full mx-auto mt-4 sm:mt-16 max-w-[1400px] lg:max-w-[1500px]">
     <button
       type="button"
-      className={`relative w-full rounded-[22px] border border-white/5 bg-transparent shadow-lg shadow-black/10 overflow-hidden aspect-[726/1266] sm:aspect-[2240/1086] transition ring-0 ${
-        isDesktop ? "cursor-zoom-in hover:border-white/15" : "cursor-default"
-      }`}
-      onClick={isDesktop ? onEnlarge : undefined}
-      aria-label={isDesktop ? "Enlarge hero screenshot" : undefined}
+      className="group relative w-full overflow-hidden rounded-[22px] border border-white/8 bg-slate-900/50 shadow-2xl shadow-black/20 aspect-[726/1266] sm:aspect-video ring-0 transition hover:border-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-teal-400"
+      onClick={onPlay}
+      aria-label={playLabel}
     >
       <picture className="absolute inset-0 block">
-        <source srcSet="/hero/Dashboard-mobile.webp" media="(max-width: 639px)" type="image/webp" />
-        <source srcSet="/hero/Dashboard.webp" media="(min-width: 640px)" type="image/webp" />
-        <source srcSet="/hero/Dashboard-mobile.png" media="(max-width: 639px)" />
+        <source srcSet={HERO_VIDEO_POSTER_MOBILE} media="(max-width: 639px)" type="image/webp" />
+        <source srcSet={HERO_VIDEO_POSTER_DESKTOP} media="(min-width: 640px)" type="image/webp" />
+        <source srcSet={HERO_VIDEO_POSTER_MOBILE_FALLBACK} media="(max-width: 639px)" />
         <img
-          src="/hero/Dashboard.png"
+          src={HERO_VIDEO_POSTER_DESKTOP_FALLBACK}
           alt={alt}
-          className="w-full h-full object-contain"
+          className="h-full w-full object-cover sm:object-cover"
           loading="eager"
           decoding="async"
-          sizes="(max-width: 639px) 100vw, (max-width: 1023px) 90vw, 1400px"
           fetchPriority="high"
         />
       </picture>
+      <div className="absolute inset-0 bg-slate-950/45 transition duration-300 group-hover:bg-slate-950/35" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/65 via-slate-950/25 to-slate-950/5 pointer-events-none" />
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-4 text-center">
+        <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-sm font-semibold text-slate-900 shadow-lg shadow-black/20 backdrop-blur">
+          <ClockIcon className="h-4 w-4" />
+          <span>{eyebrow}</span>
+        </div>
+        <div className="flex items-center justify-center">
+          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white text-slate-900 shadow-xl shadow-black/30 transition duration-300 group-hover:scale-105">
+            <PlayIcon className="h-10 w-10 translate-x-[2px]" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <p className="text-lg sm:text-xl font-semibold text-white drop-shadow-lg">{description}</p>
+          <p className="text-sm text-white/80">{duration}</p>
+        </div>
+      </div>
     </button>
   </div>
 );
@@ -116,8 +132,10 @@ const Hero: React.FC = () => {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
   const rotationRef = useRef<number | null>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
-  const [isHeroLightboxOpen, setIsHeroLightboxOpen] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const modalContainerRef = useRef<HTMLDivElement | null>(null);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
   const [demoForm, setDemoForm] = useState({ name: "", phone: "", note: "" });
   const [demoError, setDemoError] = useState("");
@@ -129,16 +147,11 @@ const Hero: React.FC = () => {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const desktopQuery = window.matchMedia("(min-width: 1024px)");
     const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
-    const handleDesktopChange = () => setIsDesktop(desktopQuery.matches);
     handleChange();
-    handleDesktopChange();
     mediaQuery.addEventListener("change", handleChange);
-    desktopQuery.addEventListener("change", handleDesktopChange);
     return () => {
       mediaQuery.removeEventListener("change", handleChange);
-      desktopQuery.removeEventListener("change", handleDesktopChange);
     };
   }, []);
 
@@ -178,12 +191,21 @@ const Hero: React.FC = () => {
     setIsVideoLoaded(true);
   }, []);
 
-  const openHeroLightbox = useCallback(() => {
-    if (isDesktop) setIsHeroLightboxOpen(true);
-  }, [isDesktop]);
+  const openVideoModal = useCallback(() => {
+    setIsVideoModalOpen(true);
+    setShouldLoadVideo(true);
+  }, []);
 
-  const closeHeroLightbox = useCallback(() => {
-    setIsHeroLightboxOpen(false);
+  const closeVideoModal = useCallback(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+    }
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => undefined);
+    }
+    setIsVideoModalOpen(false);
   }, []);
 
   const openDemoModal = useCallback((event?: React.MouseEvent) => {
@@ -219,6 +241,68 @@ const Hero: React.FC = () => {
     },
     [closeDemoModal, demoForm.name, demoForm.phone, demoForm.note, t]
   );
+
+  useEffect(() => {
+    if (!isVideoModalOpen || typeof document === "undefined") return;
+
+    const originalOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeVideoModal();
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [closeVideoModal, isVideoModalOpen]);
+
+  useEffect(() => {
+    if (!isVideoModalOpen) return;
+
+    const requestFullscreen = async () => {
+      const videoEl = videoRef.current;
+      const containerEl = modalContainerRef.current;
+      const target: HTMLElement | null = videoEl ?? containerEl ?? null;
+
+      if (!target) return;
+
+      const anyVideo = videoEl as unknown as { webkitEnterFullscreen?: () => Promise<void> | void };
+
+      try {
+        if (target.requestFullscreen) {
+          await target.requestFullscreen();
+        } else if (anyVideo?.webkitEnterFullscreen) {
+          await anyVideo.webkitEnterFullscreen();
+        }
+      } catch {
+        // Ignore failures; user can still play inline.
+      }
+
+      try {
+        await videoEl?.play();
+      } catch {
+        // Autoplay might be blocked; user can tap play.
+      }
+    };
+
+    const handleFullscreenChange = () => {
+      if (isVideoModalOpen && !document.fullscreenElement) {
+        setIsVideoModalOpen(false);
+      }
+    };
+
+    requestFullscreen();
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, [isVideoModalOpen]);
 
   return (
     <section className="hero-critical relative bg-slate-950 text-white overflow-hidden pt-16 min-h-screen flex flex-col">
@@ -317,7 +401,14 @@ const Hero: React.FC = () => {
           className="hero-dashboard mt-12 sm:mt-16 animate-slide-in-fade"
           style={{ animationDelay: "900ms" }}
         >
-          <HeroScreenshot alt={t("hero.imageAlt")} onEnlarge={openHeroLightbox} isDesktop={isDesktop} />
+          <HeroVideoCover
+            alt={t("hero.video.alt")}
+            onPlay={openVideoModal}
+            eyebrow={t("hero.video.badge")}
+            description={t("hero.video.heading")}
+            duration={t("hero.video.duration")}
+            playLabel={t("hero.video.playLabel")}
+          />
         </div>
       </div>
 
@@ -410,42 +501,55 @@ const Hero: React.FC = () => {
         </div>
       )}
 
-      <div
-        className={`fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-6 transition-opacity duration-200 ${
-          isDesktop && isHeroLightboxOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-        role="dialog"
-        aria-label="Hero screenshot full view"
-        aria-hidden={!(isDesktop && isHeroLightboxOpen)}
-        onClick={closeHeroLightbox}
-      >
+      {isVideoModalOpen && (
         <div
-          className={`relative w-full max-w-[95vw] md:max-w-[90vw] lg:max-w-6xl xl:max-w-7xl transition-all duration-200 ${
-            isHeroLightboxOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"
-          }`}
-          onClick={(e) => e.stopPropagation()}
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t("hero.video.modalTitle")}
+          onClick={closeVideoModal}
         >
-          <button
-            type="button"
-            className="absolute -top-3 -right-3 bg-white text-slate-900 rounded-full shadow-md px-3 py-1 text-sm font-semibold hover:bg-slate-100"
-            onClick={closeHeroLightbox}
+          <div
+            ref={modalContainerRef}
+            className="w-full max-w-5xl overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 shadow-2xl shadow-black/40"
+            onClick={(e) => e.stopPropagation()}
           >
-            {t("common.close")}
-          </button>
-          <div className="rounded-[22px] overflow-hidden bg-slate-900 shadow-2xl">
-            <picture className="block">
-              <source srcSet="/hero/Dashboard.webp" type="image/webp" />
-              <img
-                src="/hero/Dashboard.png"
-                alt={t("hero.imageAlt")}
-                className="w-full h-auto"
-                loading="eager"
-                decoding="async"
-              />
-            </picture>
+            <div className="relative aspect-video bg-black">
+              <button
+                type="button"
+                className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-900 shadow-lg shadow-black/30 transition hover:bg-white"
+                onClick={closeVideoModal}
+                aria-label={t("common.close")}
+              >
+                ×
+              </button>
+
+              {shouldLoadVideo ? (
+                <video
+                  ref={videoRef}
+                  className="h-full w-full bg-black"
+                  controls
+                  autoPlay
+                  playsInline
+                  preload="metadata"
+                  poster={HERO_VIDEO_POSTER_DESKTOP}
+                >
+                  {HERO_VIDEO_SOURCES.map((source) => (
+                    <source key={source.src} src={source.src} type={source.type} />
+                  ))}
+                  {t("hero.video.unsupported")}
+                </video>
+              ) : (
+                <div className="h-full w-full animate-pulse bg-slate-900" />
+              )}
+            </div>
+            <div className="flex flex-col items-start justify-between gap-3 px-4 py-3 text-sm text-white/80 sm:flex-row sm:items-center">
+              <span className="font-semibold text-white">{t("hero.video.modalTitle")}</span>
+              <p className="sm:text-right">{t("hero.video.modalDescription")}</p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 };

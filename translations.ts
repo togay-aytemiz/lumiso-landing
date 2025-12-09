@@ -21,13 +21,24 @@ export const translations = {
     "hero.cta.subtext.line2": "No credit card required.",
     "hero.imageAlt":
       "Lumiso dashboard showcasing revenue trends, bookings, calendar, and client tasks.",
+    "hero.video.alt": "Cover image for the Lumiso 1-minute walkthrough video.",
+    "hero.video.badge": "See Lumiso in 1:30",
+    "hero.video.heading": "See how Lumiso keeps your studio on track",
+    "hero.video.duration": "1:27 min watch, sound on",
+    "hero.video.playLabel": "Play the 1-minute Lumiso video",
+    "hero.video.modalTitle": "Watch the 1-minute Lumiso walkthrough",
+    "hero.video.modalDescription":
+      "Quick tour of bookings, payments, and automations - no slowdown on load.",
+    "hero.video.unsupported": "Your browser does not support the video tag.",
     "common.close": "Close",
     "hero.demoModal.title": "Schedule a demo",
-    "hero.demoModal.description": "Share your details and we'll reach out to find a time that works.",
+    "hero.demoModal.description":
+      "Share your details and we'll reach out to find a time that works.",
     "hero.demoModal.nameLabel": "Name",
     "hero.demoModal.phoneLabel": "Phone number",
     "hero.demoModal.noteLabel": "Availability / notes",
-    "hero.demoModal.notePlaceholder": "Tell us when you're free or what you'd like to see.",
+    "hero.demoModal.notePlaceholder":
+      "Tell us when you're free or what you'd like to see.",
     "hero.demoModal.submit": "Send request",
     "hero.demoModal.cancel": "Cancel",
     "hero.demoModal.validation": "Please enter your name and phone number.",
@@ -95,15 +106,18 @@ export const translations = {
     "keyFeatures.card1.title": "Unified Client Workspace",
     "keyFeatures.card1.description":
       "Organize all client communication, files, contracts, and invoices in one intuitive space. Stay on top of every detail.",
-    "keyFeatures.card1.imageAlt": "Lumiso contact card timeline showing client notes, invoices, and reminders.",
+    "keyFeatures.card1.imageAlt":
+      "Lumiso contact card timeline showing client notes, invoices, and reminders.",
     "keyFeatures.card2.title": "Smart Automation",
     "keyFeatures.card2.description":
       "Automate repetitive tasks like sending reminders, follow-ups, and thank-you notes. Free up your time for creative work.",
-    "keyFeatures.card2.imageAlt": "Lumiso calendar weekly view with reminders and session events.",
+    "keyFeatures.card2.imageAlt":
+      "Lumiso calendar weekly view with reminders and session events.",
     "keyFeatures.card3.title": "Interactive Galleries",
     "keyFeatures.card3.description":
       "Deliver stunning client galleries with integrated proofing and ordering. Create a seamless and professional client experience.",
-    "keyFeatures.card3.imageAlt": "Lumiso payments dashboard summarizing balances, deposits, and refunds.",
+    "keyFeatures.card3.imageAlt":
+      "Lumiso payments dashboard summarizing balances, deposits, and refunds.",
 
     // Features
     "features.reports.tag": "Reports",
@@ -148,10 +162,14 @@ export const translations = {
     "packageFeatures.tab4.title": "Client Proposals",
     "packageFeatures.tab4.description":
       "Share proposals clients review, sign, and pay in one flow—clear pricing and deposits included.",
-    "packageFeatures.tab1.imageAlt": "Lumiso package flexibility screen showing combined services and items.",
-    "packageFeatures.tab2.imageAlt": "Lumiso service management view with prices, durations, and descriptions.",
-    "packageFeatures.tab3.imageAlt": "Lumiso session types view illustrating different session pipelines.",
-    "packageFeatures.tab4.imageAlt": "Lumiso proposal builder with pricing summary and payment options.",
+    "packageFeatures.tab1.imageAlt":
+      "Lumiso package flexibility screen showing combined services and items.",
+    "packageFeatures.tab2.imageAlt":
+      "Lumiso service management view with prices, durations, and descriptions.",
+    "packageFeatures.tab3.imageAlt":
+      "Lumiso session types view illustrating different session pipelines.",
+    "packageFeatures.tab4.imageAlt":
+      "Lumiso proposal builder with pricing summary and payment options.",
 
     // Workflow
     "workflow.tag": "Visualize Your Process",
@@ -250,13 +268,17 @@ export const translations = {
     "blog.allTopics": "All topics",
     "blog.viewAll": "Explore all articles",
     "blog.readMore": "Read article",
-    "blog.status.missingSource": "Add your Strapi API URL in .env to load live articles.",
-    "blog.status.error": "Unable to reach Strapi right now. Please try again shortly.",
+    "blog.status.missingSource":
+      "Add your Strapi API URL in .env to load live articles.",
+    "blog.status.error":
+      "Unable to reach Strapi right now. Please try again shortly.",
     "blog.noPostsInCategory": "No posts found for this category yet.",
     "blog.article.errorTitle": "We couldn't load this article",
-    "blog.article.errorDescription": "Check your connection or return to the blog home while we resolve the issue.",
+    "blog.article.errorDescription":
+      "Check your connection or return to the blog home while we resolve the issue.",
     "blog.article.notFoundTitle": "This article isn't available",
-    "blog.article.notFoundDescription": "The link might be broken or the story hasn't been published yet.",
+    "blog.article.notFoundDescription":
+      "The link might be broken or the story hasn't been published yet.",
     "blog.article.backToBlog": "Back to blog",
     "blog.article.retry": "Try again",
     "blog.posts": [
@@ -453,13 +475,24 @@ export const translations = {
     "hero.cta.subtext.line2": "Kredi kartı gerekmez.",
     "hero.imageAlt":
       "Gelir trendlerini, rezervasyonları, takvimi ve müşteri görevlerini gösteren Lumiso kontrol paneli.",
+    "hero.video.alt": "Lumiso 1 dakikalık tanıtım videosu kapak görseli.",
+    "hero.video.badge": "1:30dk'da Lumiyo'yu öğren",
+    "hero.video.heading": "Lumiso'nun stüdyonu nasıl topladığını gör",
+    "hero.video.duration": "1:30dk izleme",
+    "hero.video.playLabel": "1 dakikalık Lumiso videosunu oynat",
+    "hero.video.modalTitle": "1 dakikalık Lumiso tanıtımını izle",
+    "hero.video.modalDescription":
+      "Rezervasyon, ödeme ve otomasyon akışının hızlı özeti - sayfa yükünü yavaşlatmaz.",
+    "hero.video.unsupported": "Tarayıcınız video etiketini desteklemiyor.",
     "common.close": "Kapat",
     "hero.demoModal.title": "Demo ayarla",
-    "hero.demoModal.description": "Bilgilerinizi bırakın, size uygun zamanı birlikte belirleyelim.",
+    "hero.demoModal.description":
+      "Bilgilerinizi bırakın, size uygun zamanı birlikte belirleyelim.",
     "hero.demoModal.nameLabel": "Adınız",
     "hero.demoModal.phoneLabel": "Telefon numarası",
     "hero.demoModal.noteLabel": "Müsaitlik / not",
-    "hero.demoModal.notePlaceholder": "Ne zaman uygun olduğunuzu veya görmek istediklerinizi yazın.",
+    "hero.demoModal.notePlaceholder":
+      "Ne zaman uygun olduğunuzu veya görmek istediklerinizi yazın.",
     "hero.demoModal.submit": "Gönder",
     "hero.demoModal.cancel": "Vazgeç",
     "hero.demoModal.validation": "Lütfen adınızı ve telefon numaranızı girin.",
@@ -505,8 +538,7 @@ export const translations = {
       },
     ],
     "whyLumiso.cta.title": "İş Akışınızı Bugün Dönüştürün",
-    "whyLumiso.cta.subtext":
-      "14 günlük ücretsiz deneme. Kredi kartı gerekmez.",
+    "whyLumiso.cta.subtext": "14 günlük ücretsiz deneme. Kredi kartı gerekmez.",
 
     // Key Features
     "keyFeatures.tag": "İşinizi Güçlendiren Temel Özellikler",
@@ -516,15 +548,18 @@ export const translations = {
     "keyFeatures.card1.title": "Kişi kartından bütün ilişkiyi yönetin",
     "keyFeatures.card1.description":
       "Her kişi için çekimler, notlar, hatırlatmalar ve ödemeler aynı yerde tutulur. Kiminle ne konuşuldu, hangi çekimler yapıldı, ne kadar ödendi hepsi tek bakışta görünür.",
-    "keyFeatures.card1.imageAlt": "Lumiso kişi kartı zaman çizelgesinde notlar, faturalar ve hatırlatmalar.",
+    "keyFeatures.card1.imageAlt":
+      "Lumiso kişi kartı zaman çizelgesinde notlar, faturalar ve hatırlatmalar.",
     "keyFeatures.card2.title": "Takvim ve hatırlatmalarla günü kontrol edin",
     "keyFeatures.card2.description":
       "Çekimleriniz takvimde. Yaklaşan çekimler, teslim tarihleriniz ve günlük özet e postaları ile hiçbir şeyi kaçırmazsınız.",
-    "keyFeatures.card2.imageAlt": "Lumiso takvim haftalık görünümü; seanslar, hatırlatmalar ve günlük özet kartları.",
+    "keyFeatures.card2.imageAlt":
+      "Lumiso takvim haftalık görünümü; seanslar, hatırlatmalar ve günlük özet kartları.",
     "keyFeatures.card3.title": "Ödemeleri ve paketleri net takip edin",
     "keyFeatures.card3.description":
       "Kapora, kalan bakiye, ek hizmetler ve iadeler. Her proje için tüm ödeme geçmişini renkli ve anlaşılır rozetlerle takip edin, hiçbir detayı atlamayın.",
-    "keyFeatures.card3.imageAlt": "Lumiso ödeme paneli; tahsilatlar, bekleyen bakiyeler ve ödeme kayıtları özetlenmiş.",
+    "keyFeatures.card3.imageAlt":
+      "Lumiso ödeme paneli; tahsilatlar, bekleyen bakiyeler ve ödeme kayıtları özetlenmiş.",
 
     // Features
     "features.reports.tag": "Günlük Kontrol",
@@ -554,7 +589,8 @@ export const translations = {
 
     // Package Features
     "packageFeatures.tag": "Modern Stüdyo Akışı",
-    "packageFeatures.title": "Paketlerinizi ve hizmetlerinizi düzenli, hızlı ve akıllı şekilde yönetin",
+    "packageFeatures.title":
+      "Paketlerinizi ve hizmetlerinizi düzenli, hızlı ve akıllı şekilde yönetin",
     "packageFeatures.subtitle":
       "Çekim hizmetlerinizi, seans türlerinizi ve paketlerinizi tek merkezden düzenleyin. Her müşteriye özel tekliflerinizi kolayca oluşturun, fiyatlandırmayı standartlaştırın ve operasyonunuzu hafifletin.",
     "packageFeatures.tab1.title": "Paket Esnekliği",
@@ -569,10 +605,14 @@ export const translations = {
     "packageFeatures.tab4.title": "Kapora Yapılandırması",
     "packageFeatures.tab4.description":
       "Kapora tutarlarını özgürce belirleyin, tahsilatları izleyin ve nakit akışını net takip edin.",
-    "packageFeatures.tab1.imageAlt": "Lumiso paket esnekliği ekranı; hizmetlerin ve ürünlerin birleştirildiği yapı.",
-    "packageFeatures.tab2.imageAlt": "Lumiso hizmet yönetimi görünümü; fiyat, süre ve açıklamalar listelenmiş.",
-    "packageFeatures.tab3.imageAlt": "Lumiso seans türleri görünümü; farklı seans akışları gösteriliyor.",
-    "packageFeatures.tab4.imageAlt": "Lumiso teklif oluşturma ekranı; fiyat özeti ve ödeme seçenekleri ile.",
+    "packageFeatures.tab1.imageAlt":
+      "Lumiso paket esnekliği ekranı; hizmetlerin ve ürünlerin birleştirildiği yapı.",
+    "packageFeatures.tab2.imageAlt":
+      "Lumiso hizmet yönetimi görünümü; fiyat, süre ve açıklamalar listelenmiş.",
+    "packageFeatures.tab3.imageAlt":
+      "Lumiso seans türleri görünümü; farklı seans akışları gösteriliyor.",
+    "packageFeatures.tab4.imageAlt":
+      "Lumiso teklif oluşturma ekranı; fiyat özeti ve ödeme seçenekleri ile.",
 
     // Workflow
     "workflow.tag": "Sürecinizi Görselleştirin",
@@ -665,19 +705,24 @@ export const translations = {
     "blog.categorySection.title": "Son yazılarımız",
     "blog.categorySection.subtitle":
       "Lumiso ekibinden ilham veren içgörüler ve hikâyelerle güncel kalın.",
-    "blog.pageIntro.title": "Yeni projelerinize ilham verecek stüdyo hikâyeleri",
+    "blog.pageIntro.title":
+      "Yeni projelerinize ilham verecek stüdyo hikâyeleri",
     "blog.pageIntro.subtitle":
       "Lumiso topluluğundan yaratıcılık, düzen ve daha sakin bir iş kurma üzerine taze bakış açıları.",
     "blog.allTopics": "Tümü",
     "blog.viewAll": "Tüm yazıları keşfet",
     "blog.readMore": "Yazıyı oku",
-    "blog.status.missingSource": "Canlı yazıları görmek için .env dosyanıza Strapi API adresinizi ekleyin.",
-    "blog.status.error": "Strapi'ye şu anda ulaşılamıyor. Lütfen kısa süre sonra tekrar deneyin.",
+    "blog.status.missingSource":
+      "Canlı yazıları görmek için .env dosyanıza Strapi API adresinizi ekleyin.",
+    "blog.status.error":
+      "Strapi'ye şu anda ulaşılamıyor. Lütfen kısa süre sonra tekrar deneyin.",
     "blog.noPostsInCategory": "Bu kategoride henüz bir yazı bulunamadı.",
     "blog.article.errorTitle": "Bu yazıyı yükleyemedik",
-    "blog.article.errorDescription": "Bağlantınızı kontrol edin veya sorunu çözerken blog sayfasına geri dönün.",
+    "blog.article.errorDescription":
+      "Bağlantınızı kontrol edin veya sorunu çözerken blog sayfasına geri dönün.",
     "blog.article.notFoundTitle": "Bu yazı mevcut değil",
-    "blog.article.notFoundDescription": "Bağlantı bozulmuş olabilir ya da içerik henüz yayımlanmadı.",
+    "blog.article.notFoundDescription":
+      "Bağlantı bozulmuş olabilir ya da içerik henüz yayımlanmadı.",
     "blog.article.backToBlog": "Bloga dön",
     "blog.article.retry": "Tekrar dene",
     "blog.posts": [
