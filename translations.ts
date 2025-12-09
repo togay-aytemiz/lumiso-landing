@@ -476,7 +476,7 @@ export const translations = {
     "hero.imageAlt":
       "Gelir trendlerini, rezervasyonları, takvimi ve müşteri görevlerini gösteren Lumiso kontrol paneli.",
     "hero.video.alt": "Lumiso 1 dakikalık tanıtım videosu kapak görseli.",
-    "hero.video.badge": "1:30dk'da Lumiyo'yu öğren",
+    "hero.video.badge": "1:30dk'da Lumiso'yu öğren",
     "hero.video.heading":
       "Lumiso'nun stüdyonuzu ve müşterilerinizi nasıl düzenli tuttuğunu görün",
     "hero.video.duration": "Sadece 1:30 dk",
